@@ -23,7 +23,7 @@ CowRobot::CowRobot()
     m_FeederF = new Intake(10);
     m_FeederB = new Intake(9);
     m_Conveyor = new Conveyor(12, 13, 14, false, false, true);
-    m_Shooter = new Shooter(8, 7, false, false);
+    // m_Shooter = new Shooter(8, 7, false, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
@@ -32,7 +32,7 @@ CowRobot::CowRobot()
     m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
 
 
-    m_Arm = new Arm(5, 6, CONSTANT("ARM_PEAK_OUTPUT"), CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), "ARM", true, true, 0, CONSTANT("ARM_PEAK_OUTPUT"));
+    // m_Arm = new Arm(5, 6, CONSTANT("ARM_PEAK_OUTPUT"), CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), "ARM", true, true, 0, CONSTANT("ARM_PEAK_OUTPUT"));
 
     m_MatchTime = 0;
     m_StartTime = 0;
@@ -80,9 +80,9 @@ void CowRobot::Reset()
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
     m_MatchTime = 0;
-    m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
-    m_Arm->ResetConstants(CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), CONSTANT("ARM_PEAK_OUTPUT"));
-    m_Shooter->ResetConstants();
+    //m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
+    //m_Arm->ResetConstants(CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), CONSTANT("ARM_PEAK_OUTPUT"));
+    //m_Shooter->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -127,7 +127,7 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
 // Please call this once per update cycle.
 void CowRobot::handle()
 {    
-    m_MatchTime = (frc::RobotController::GetFPGATime() * 10e-6)- m_StartTime;
+    m_MatchTime = 1;//(frc::RobotController::GetFPGATime() * 10e-6)- m_StartTime;
 
     if(m_Controller == NULL)
     {
@@ -153,21 +153,21 @@ void CowRobot::handle()
         //2 arm
         //1 unused
 
-        //std::cout << "Gyro: " <<  m_Gyro->GetAngle() << std::endl;
+        std::cout << "gyro: " <<  m_Gyro->GetAngle() << std::endl;
         //std::cout << std::dec
         //          << m_DriveEncoder->Get() << " "
         //      << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
-
+        std::cout << "drive distance: " << GetDriveDistance() << std::endl;
     }
 
-    frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
-    frc::SmartDashboard::PutNumber("Shooter F", GetShooter()->GetSpeedF());
-    frc::SmartDashboard::PutNumber("Shooter B", GetShooter()->GetSpeedB());
+    //frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
+    //frc::SmartDashboard::PutNumber("Shooter F", GetShooter()->GetSpeedF());
+    //frc::SmartDashboard::PutNumber("Shooter B", GetShooter()->GetSpeedB());
 
     m_Intake->handle();
     m_Conveyor->handle();
-    m_Arm->handle();
-    m_Shooter->handle();
+    //m_Arm->handle();
+    //m_Shooter->handle();
     m_FeederF->handle();
     m_FeederB->handle();
     //m_Canifier->Handle();
@@ -363,6 +363,6 @@ void CowRobot::SetRightMotors(float val)
 
 void CowRobot::StartTime()
 {
-    m_StartTime = frc::RobotController::GetFPGATime() * 10e-6;
+    m_StartTime = 1;//frc::RobotController::GetFPGATime() * 10e-6;
 }
 

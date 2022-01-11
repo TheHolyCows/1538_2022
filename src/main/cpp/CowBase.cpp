@@ -34,7 +34,7 @@ void CowBase::RobotInit()
 
 void CowBase::DisabledInit()
 {
-    CowConstants::GetInstance()->RestoreData();
+    //CowConstants::GetInstance()->RestoreData();
     m_Bot->GetGyro()->ResetAngle();
     m_Bot->GetGyro()->BeginCalibration();
     m_Bot->Reset();
@@ -54,8 +54,10 @@ void CowBase::TeleopInit()
 {
     m_Bot->StartTime();
     m_Bot->GetGyro()->FinalizeCalibration();
+    std::cout << "setting controller " << m_OpController << std::endl;
     m_Bot->SetController(m_OpController);
-    m_Bot->GetArm()->SetBrakeMode();
+    std::cout << "controller set successfully" << std::endl;
+    //m_Bot->GetArm()->SetBrakeMode();
 }
 
 void CowBase::DisabledContinuous()
@@ -98,7 +100,7 @@ void CowBase::DisabledPeriodic()
     }
    if(m_Bot)
    {
-	m_Bot->GetArm()->DisabledCalibration();
+	//m_Bot->GetArm()->DisabledCalibration();
    }
 //    m_Bot->PrintToDS();
 }
@@ -111,6 +113,7 @@ void CowBase::AutonomousPeriodic()
 void CowBase::TeleopPeriodic()
 {
     m_Bot->handle();
+    //std::cout << "gyro angle: " << m_Bot->GetGyro()->GetAngle() << std::endl;
 
 //    if(m_Display)
 //    {

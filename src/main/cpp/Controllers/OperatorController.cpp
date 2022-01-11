@@ -44,43 +44,43 @@ void OperatorController::handle(CowRobot *bot)
     //Arm Switch
     if(m_CB->GetOperatorButton(1))
     {
-        bot->GetArm()->SetPosition(CONSTANT("ARM_GOAL"));
+        //bot->GetArm()->SetPosition(CONSTANT("ARM_GOAL"));
     }
     else if(m_CB->GetOperatorButton(2))
     {
-        bot->GetArm()->SetPosition(CONSTANT("ARM_MID"));
+        //bot->GetArm()->SetPosition(CONSTANT("ARM_MID"));
     }
     else if(m_CB->GetOperatorButton(5))
     {
-        bot->GetArm()->SetPosition(CONSTANT("ARM_FAR"));
+        //bot->GetArm()->SetPosition(CONSTANT("ARM_FAR"));
     }
     else if(m_CB->GetSteeringButton(2))
     {
-        bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
+        //bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
     }
     //Shooter Switch
     if(m_CB->GetOperatorButton(10))
     {
-        if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL"), CONSTANT("SHOOTER_B_GOAL"));
-        }
-        else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-        }
-        else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
-        }
-        else
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
-        }
+        // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL"), CONSTANT("SHOOTER_B_GOAL"));
+        // }
+        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
+        // }
+        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
+        // }
+        // else
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
+        // }
     }
     else
     {
-        bot->GetShooter()->SetSpeed(0,0);
+        //bot->GetShooter()->SetSpeed(0,0);
     }
     //Conveyor and Intake and Feeder
     if(m_CB->GetOperatorButton(6))
