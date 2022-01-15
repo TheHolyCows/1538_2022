@@ -11,8 +11,6 @@
 #include "../CowLib/CowMotorController.h"
 #include "../CowLib/CowLPF.h"
 #include "../CowConstants.h"
-#include <wpi/deprecated.h>
-#include <frc/Timer.h>
 #include <string>
 
 class Shooter

@@ -6,7 +6,7 @@
 #define __AUTO_MODE_CONTROLLER_H__
 
 #include "../CowConstants.h"
-#include <frc/Timer.h>
+#include "../CowLib/CowTimer.h"
 #include <deque>
 
 typedef enum
@@ -77,7 +77,7 @@ public:
 class AutoModeController : public GenericController
 {
 private:
-    frc::Timer *m_Timer; //TODO: standardize timing
+    CowLib::CowTimer *m_Timer; //TODO: standardize timing
     std::deque<RobotCommand> m_CommandList;
     RobotCommand m_CurrentCommand;
     

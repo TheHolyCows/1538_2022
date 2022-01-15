@@ -5,9 +5,7 @@
 #ifndef __UTILITY_H__
 #define __UTILITY_H__
 
-#include <wpi/deprecated.h>
 #include "../Declarations.h"
-#include "frc/Timer.h"
 #include <algorithm>
 #include <stdarg.h>
 #include <sstream>

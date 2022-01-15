@@ -127,7 +127,7 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
 // Please call this once per update cycle.
 void CowRobot::handle()
 {    
-    m_MatchTime = 1;//(frc::RobotController::GetFPGATime() * 10e-6)- m_StartTime;
+    m_MatchTime = CowLib::CowTimer::GetFPGATimestamp() - m_StartTime;
 
     if(m_Controller == NULL)
     {
@@ -153,11 +153,12 @@ void CowRobot::handle()
         //2 arm
         //1 unused
 
-        std::cout << "gyro: " <<  m_Gyro->GetAngle() << std::endl;
+        //std::cout << "gyro: " <<  m_Gyro->GetAngle() << std::endl;
         //std::cout << std::dec
         //          << m_DriveEncoder->Get() << " "
         //      << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
-        std::cout << "drive distance: " << GetDriveDistance() << std::endl;
+        //std::cout << "drive distance: " << GetDriveDistance() << std::endl;
+        std::cout << "match time (ours): " << m_MatchTime << std::endl;
     }
 
     //frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
@@ -363,6 +364,6 @@ void CowRobot::SetRightMotors(float val)
 
 void CowRobot::StartTime()
 {
-    m_StartTime = 1;//frc::RobotController::GetFPGATime() * 10e-6;
+    m_StartTime = CowLib::CowTimer::GetFPGATimestamp();
 }
 

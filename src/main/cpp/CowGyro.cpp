@@ -126,10 +126,10 @@ void CowGyro::Handle()
         {
             if(m_LastTime == 0)
             {
-                m_LastTime = frc::RobotController::GetFPGATime() * 1.0e-6;
+                m_LastTime = CowLib::CowTimer::GetFPGATimestamp();
             }
 
-            double currentTime = frc::RobotController::GetFPGATime() * 1.0e-6;
+            double currentTime = CowLib::CowTimer::GetFPGATimestamp();
             double timeElapsed = currentTime - m_LastTime;
             m_LastTime = currentTime;
 
@@ -376,7 +376,7 @@ void CowGyro::FinalizeCalibration()
     std::cout << "attempting to log gyro" << std::endl;
     CowLogger::GetInstance()->Log("Gyro: Zero Bias", m_ZeroBias);
     std::cout << "finished to log gyro" << std::endl;
-    m_LastTime = frc::RobotController::GetFPGATime() * 1.0e-6;
+    m_LastTime = CowLib::CowTimer::GetFPGATimestamp();
 
     //std::cout << "Finalized gyro, angle: " << m_Angle << " bias: " << m_ZeroBias << std::endl;
 }

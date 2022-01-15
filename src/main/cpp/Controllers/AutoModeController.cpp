@@ -1,10 +1,9 @@
 #include "AutoModeController.h"
 #include <iostream>
-#include <frc/Timer.h>
 
 AutoModeController::AutoModeController()
 :
-m_Timer(new frc::Timer()),
+m_Timer(new CowLib::CowTimer()),
 m_CurrentCommand(RobotCommand())
 {
 	m_Timer->Start();
@@ -197,7 +196,7 @@ case CMD_HOLD_DISTANCE:
 	}
 
 	//Check if this command is done / .value() because of seconds_t
-	if(result == true || m_CurrentCommand.m_Command == CMD_NULL || m_Timer->Get().value() > m_CurrentCommand.m_Timeout)
+	if(result == true || m_CurrentCommand.m_Command == CMD_NULL || m_Timer->Get() > m_CurrentCommand.m_Timeout)
 	{
 		// This command is done, go get the next one
 		if(m_CommandList.size() > 0 )
@@ -213,7 +212,7 @@ case CMD_HOLD_DISTANCE:
 
 			if(!m_CurrentCommand.m_Command == CMD_NULL)
 			{
-				printf("Time elapsed: %f\n", m_Timer->Get().value());
+				printf("Time elapsed: %f\n", m_Timer->Get());
 			}
 		}
 		else

@@ -3,8 +3,6 @@
 
 #include "../CowLib/CowMotorController.h"
 #include "../CowConstants.h"
-#include <wpi/deprecated.h>
-#include <frc/Timer.h>
 #include "../CowLib/CowLPF.h"
 #include "../CowLib/CowPID.h"
 

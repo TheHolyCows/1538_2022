@@ -1,7 +1,6 @@
 #ifndef SRC_SUBSYSTEMS_CONVEYOR_H_
 #define SRC_SUBSYSTEMS_CONVEYOR_H_
-#include <wpi/deprecated.h>
-#include <frc/Timer.h>
+
 #include "../CowLib/CowMotorController.h"
 #include "../CowLib/CowLPF.h"
 #include "../CowConstants.h"

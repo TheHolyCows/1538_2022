@@ -7,7 +7,7 @@
 #include "CowLogger.h"
 #include <iostream>
 #include <time.h>
-#include <frc/RobotController.h>
+#include "CowTimer.h"
 
 namespace CowLib
 {
@@ -65,7 +65,7 @@ void CowLogger::Handle()
 
                 std::string key = toPrint.first;
                 double value = toPrint.second;
-                m_OutputFile << (frc::RobotController::GetFPGATime() * 1.0e-6) << " " << key << ": " << value << std::endl;
+                m_OutputFile << (CowLib::CowTimer::GetFPGATimestamp()) << " " << key << ": " << value << std::endl;
                 m_BufferQueue.pop();
             }
             m_Mutex.unlock();
