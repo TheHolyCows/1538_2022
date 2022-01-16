@@ -1,7 +1,8 @@
 //==================================================
-// Copyright (C) 2018 Team 1538 / The Holy Cows
-// Cowtimer.cpp
+// Copyright (C) 2022 Team 1538 / The Holy Cows
+// CowTimer.h
 // author: jon-bassi
+// created on: 2022-1-15
 // derived from wpi/Timer.h
 //==================================================
 
