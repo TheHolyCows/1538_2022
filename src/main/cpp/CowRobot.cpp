@@ -68,6 +68,9 @@ CowRobot::CowRobot()
 
     m_Limelight_PID_P = 0;
     m_Limelight_PID_D = 0;
+
+    // logging server
+    m_LogServer = CowLib::CowLogger::GetInstance();
 }
 
 void CowRobot::Reset()
@@ -81,8 +84,8 @@ void CowRobot::Reset()
     m_RightDriveValue = 0;
     m_MatchTime = 0;
     //m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
-    //m_Arm->ResetConstants(CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), CONSTANT("ARM_PEAK_OUTPUT"));
-    //m_Shooter->ResetConstants();
+    // m_Arm->ResetConstants(CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), CONSTANT("ARM_PEAK_OUTPUT"));
+    // m_Shooter->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -158,20 +161,21 @@ void CowRobot::handle()
         //          << m_DriveEncoder->Get() << " "
         //      << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
         //std::cout << "drive distance: " << GetDriveDistance() << std::endl;
-        std::cout << "match time (ours): " << m_MatchTime << std::endl;
+        //std::cout << "match time (ours): " << m_MatchTime << std::endl;
     }
 
     //frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
     //frc::SmartDashboard::PutNumber("Shooter F", GetShooter()->GetSpeedF());
     //frc::SmartDashboard::PutNumber("Shooter B", GetShooter()->GetSpeedB());
+    m_LogServer->RemoteLog((int32_t)m_Gyro->GetAngle());
 
     m_Intake->handle();
     m_Conveyor->handle();
-    //m_Arm->handle();
-    //m_Shooter->handle();
+    // m_Arm->handle();
+    // m_Shooter->handle();
     m_FeederF->handle();
     m_FeederB->handle();
-    //m_Canifier->Handle();
+    // m_Canifier->Handle();
 
 
     m_DSUpdateCount++;

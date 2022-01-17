@@ -86,6 +86,8 @@ private:
     float m_Limelight_PID_P;
     float m_Limelight_PID_D;
 
+    // logging
+    CowLib::CowLogger *m_LogServer;
 
 public:
     CowRobot();

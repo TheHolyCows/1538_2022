@@ -1,13 +1,15 @@
-/*
- * CowWebDebugger.cpp
- *
- *  Created on: Jan 21, 2016
- *      Author: kchau
- */
+//==================================================
+// Copyright (C) 2022 Team 1538 / The Holy Cows
+// CowLogger.h
+// author: kchau
+// created on: 2016-1-21
+//==================================================
+
 #include "CowLogger.h"
 #include <iostream>
 #include <time.h>
 #include "CowTimer.h"
+#include <errno.h>
 
 namespace CowLib
 {
@@ -20,15 +22,29 @@ std::queue<std::pair<std::string, double>> CowLogger::m_BufferQueue;
 
 CowLogger::CowLogger()
 {
-    m_Thread = new std::thread(CowLogger::Handle);
-    time_t rawTime;
-    struct tm *timeInfo;
-    time(&rawTime);
-    timeInfo = localtime(&rawTime);
-    char buffer[80];
-    strftime(buffer, 80, "/home/lvuser/logs/DebugLog_%h_%d_%j_%H%M.txt", timeInfo);
-    m_OutputFile.open(buffer);
-    std::cout << "Opened file for debugging" << std::endl;
+    // m_Thread = new std::thread(CowLogger::Handle);
+    // time_t rawTime;
+    // struct tm *timeInfo;
+    // time(&rawTime);
+    // timeInfo = localtime(&rawTime);
+    // char buffer[80];
+    // strftime(buffer, 80, "/home/lvuser/logs/DebugLog_%h_%d_%j_%H%M.txt", timeInfo);
+    // m_OutputFile.open(buffer);
+    // std::cout << "Opened file for debugging" << std::endl;
+
+
+    // create sock stuff - using TCP is that too much overhead?
+    m_LogSocket = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+
+    if (m_LogSocket < 0)
+    {
+        std::cout << "error creating socket" << std::endl;
+    }
+
+    m_LogServer.sin_family = AF_INET;
+    m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.210");
+    m_LogServer.sin_port = htons(2341);
+
 }
 
 CowLogger::~CowLogger()
@@ -78,6 +94,16 @@ void CowLogger::Log(std::string key, double value)
     m_Mutex.lock();
     m_BufferQueue.push(std::pair<std::string, double>(key, value));
     m_Mutex.unlock();
+}
+
+void CowLogger::RemoteLog(int32_t logVal)
+{
+    int ret = sendto(GetInstance()->m_LogSocket,&logVal,sizeof(int32_t),
+        0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer),sizeof(m_LogServer));
+    if (ret == -1)
+    {
+        std::cout << "errno: " << strerror(errno) << std::endl;
+    }
 }
 
 } /* namespace CowLib */
