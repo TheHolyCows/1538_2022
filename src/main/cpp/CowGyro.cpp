@@ -177,7 +177,7 @@ bool CowGyro::InitializeGyro()
     int32_t selfCheckResult = DoTransaction(SENSOR_DATA_CMD);
     if(ExtractStatus(selfCheckResult) != SELF_TEST_DATA)
     {
-        std::cerr << "Gyro not in self test: 0x" << std::hex << selfCheckResult <<std::endl;
+        //std::cerr << "Gyro not in self test: 0x" << std::hex << selfCheckResult <<std::endl;
         return false;
     }
 
@@ -185,7 +185,7 @@ bool CowGyro::InitializeGyro()
     bool containsAllErrors = std::includes(m_ALL_ERRORS.begin(), m_ALL_ERRORS.end(), errors.begin(), errors.end());
     if(!containsAllErrors)
     {
-        std::cerr << "Gyro self-test didn't include all errors: 0x" << std::hex << selfCheckResult << std::endl;
+        //std::cerr << "Gyro self-test didn't include all errors: 0x" << std::hex << selfCheckResult << std::endl;
         return false;
     }
 
@@ -265,12 +265,12 @@ int32_t CowGyro::DoTransaction(int32_t command)
 
     if(!IsOddParity(result))
     {
-        std::cerr << "High bytes parity failures" << std::endl;
+        //std::cerr << "High bytes parity failures" << std::endl;
     }
 
     if(!IsOddParity(result))
     {
-        std::cerr << "Whole word parity failure" << std::endl;
+        //std::cerr << "Whole word parity failure" << std::endl;
     }
 
     return result;

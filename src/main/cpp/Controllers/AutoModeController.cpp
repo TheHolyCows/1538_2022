@@ -50,30 +50,30 @@ void AutoModeController::handle(CowRobot *bot)
     }
     if(m_CurrentCommand.m_Shooter)
     {
-         if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL"), CONSTANT("SHOOTER_B_GOAL"));
-        }
-        else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-        }
-        else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID_AUTO"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-        }
-        else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
-        }
-        else
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
-        }
+        // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL"), CONSTANT("SHOOTER_B_GOAL"));
+        // }
+        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
+        // }
+        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID_AUTO"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
+        // }
+        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
+        // }
+        // else
+        // {
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
+        // }
     }
     else
     {
-        bot->GetShooter()->SetSpeed(0,0);
+        // bot->GetShooter()->SetSpeed(0,0);
     }
     // Run the command
 	switch(m_CurrentCommand.m_Command)

@@ -42,7 +42,7 @@ CowLogger::CowLogger()
     }
 
     m_LogServer.sin_family = AF_INET;
-    m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.210");
+    m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.21");
     m_LogServer.sin_port = htons(2341);
 
 }

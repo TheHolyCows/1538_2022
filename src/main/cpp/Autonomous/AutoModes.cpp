@@ -18,20 +18,20 @@ AutoModes::AutoModes()
 	m_Modes["Nothing"];
 	m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_UP"), INTAKE_STOP, false, 1));
 
-	m_Modes["Test"];
-	m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
-	m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
+	// m_Modes["Test"];
+	// m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
+	// m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
 	
-    m_Modes["2 Ball - Opponent Trench Run"];
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .6));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, 3));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_SHOOT, true, 2));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, true, .4));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, 0, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, true, .6));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 208, 0, 0.4, CONSTANT("ARM_DOWN"), INTAKE_IN, true, 8));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 0, -19, 1, CONSTANT("ARM_DOWN"), INTAKE_IN, true, 5));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, 0, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .4));
-	m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_SHOOT, true, 10));
+    // m_Modes["2 Ball - Opponent Trench Run"];
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .6));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, 3));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_SHOOT, true, 2));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, true, .4));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, 0, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, true, .6));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 208, 0, 0.4, CONSTANT("ARM_DOWN"), INTAKE_IN, true, 8));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 0, -19, 1, CONSTANT("ARM_DOWN"), INTAKE_IN, true, 5));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, 0, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .4));
+	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_SHOOT, true, 10));
 	m_Iterator = m_Modes.begin();
 }
 
