@@ -13,7 +13,7 @@ Shooter::Shooter(int motorControllerF, bool changeDirectionF)
 {
     m_MotorF = new CowLib::CowMotorController(motorControllerF);
     m_MotorF->SetControlMode(CowLib::CowMotorController::SPEED);
-
+    m_LogServer = CowLib::CowLogger::GetInstance();
 }
 
 void Shooter::SetSpeed(float speedF)
@@ -35,7 +35,12 @@ float Shooter::GetSpeedF()
 
 void Shooter::handle()
 {
-    // std::cout << "Shooter::handle()" << m_SpeedF << std::endl;    
+    m_LogServer->PIDRemoteLog((double) CONSTANT("SHOOTER_F_GOAL"),
+        (double) GetSpeedF(),
+        m_MotorF->GetInternalMotor()->GetClosedLoopError(),
+        m_MotorF->GetInternalMotor()->GetIntegralAccumulator(),
+        m_MotorF->GetInternalMotor()->GetErrorDerivative());
+      
     if(m_MotorF)
     {
         if(m_SpeedF != 0)

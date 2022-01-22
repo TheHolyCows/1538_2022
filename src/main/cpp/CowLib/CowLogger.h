@@ -32,6 +32,7 @@ public:
     static void Log(std::string key, double value);
     static CowLogger* GetInstance();
     static void RemoteLog(int32_t);
+    static void PIDRemoteLog(double,double,double,double,double);
 private:
     static void Handle();
 };

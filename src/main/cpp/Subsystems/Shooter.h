@@ -11,6 +11,7 @@
 #include "../CowLib/CowMotorController.h"
 #include "../CowLib/CowLPF.h"
 #include "../CowConstants.h"
+#include "../CowLib/CowLogger.h"
 #include <wpi/deprecated.h>
 #include <frc/Timer.h>
 #include <string>
@@ -44,7 +45,7 @@ private:
 
     float m_SpeedF;
 
-
+    CowLib::CowLogger *m_LogServer;
 };
 
 #endif /* SRC_SUBSYSTEMS_SHOOTER_H_ */

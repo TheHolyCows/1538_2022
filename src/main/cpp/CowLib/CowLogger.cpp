@@ -106,4 +106,29 @@ void CowLogger::RemoteLog(int32_t logVal)
     }
 }
 
+/**
+ * CowLogger::PIDRemoteLog(double *pidArray)
+ * logs PID values to remote logging server for graphing and testing
+ * @arg pidArray:
+ *  size 5
+ *  [setPoint, processVar, P, I, D]
+ **/
+void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I, double D)
+{
+    double pidArray[5] = {setPoint, procVar, P, I, D};
+    // int ret = 0;
+    // std::cout << "PIDRemoteLog():" << std::endl;
+    // std::cout << setPoint << std::endl;
+    // std::cout << procVar << std::endl;
+    // std::cout << P << std::endl;
+    // std::cout << I << std::endl;
+    // std::cout << D << std::endl;
+    int ret = sendto(GetInstance()->m_LogSocket, &pidArray, sizeof(pidArray),
+        0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer), sizeof(m_LogServer));
+    if (ret == -1)
+    {
+        std::cout << "errno: " << strerror(errno) << std::endl;
+    }
+}
+
 } /* namespace CowLib */

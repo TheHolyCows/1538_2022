@@ -43,7 +43,6 @@ CowRobot::CowRobot()
 
     //m_Gyro->Reset();
     m_PowerDistributionPanel = new frc::PowerDistribution();
-    m_WebServer = new CowLib::CowLogger();
 
     m_Canifier = new CowLib::CowCanifier(15);
 
@@ -68,9 +67,6 @@ CowRobot::CowRobot()
 
     m_Limelight_PID_P = 0;
     m_Limelight_PID_D = 0;
-
-    // logging server
-    m_LogServer = CowLib::CowLogger::GetInstance();
 }
 
 void CowRobot::Reset()
@@ -167,7 +163,7 @@ void CowRobot::handle()
     //frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
     //frc::SmartDashboard::PutNumber("Shooter F", GetShooter()->GetSpeedF());
     //frc::SmartDashboard::PutNumber("Shooter B", GetShooter()->GetSpeedB());
-    m_LogServer->RemoteLog(m_Shooter->GetSpeedF());
+    //m_LogServer->RemoteLog(m_Shooter->GetSpeedF());
 
     //m_Intake->handle();
     //m_Conveyor->handle();
