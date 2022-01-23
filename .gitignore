@@ -160,3 +160,14 @@ bin/
 
 # Simulation GUI and other tools window save file
 *-window.json
+
+# VSCode docker
+.devcontainer*
+
+# WPILib files
+gradle/
+gradlew
+gradlew.bat
+build.gradle
+settings.gradle
+WPILib-License.md
