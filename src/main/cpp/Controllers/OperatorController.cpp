@@ -64,7 +64,7 @@ void OperatorController::handle(CowRobot *bot)
         // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
         // {
         // std::cout << CONSTANT("SHOOTER_F_GOAL") << std::endl;
-        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
+        //bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
         // }
         // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
         // {
@@ -81,7 +81,7 @@ void OperatorController::handle(CowRobot *bot)
     }
     else
     {
-        bot->GetShooter()->SetSpeed(0);
+        //bot->GetShooter()->SetSpeed(0);
     }
     //Conveyor and Intake and Feeder
     if(m_CB->GetOperatorButton(6))

@@ -23,7 +23,7 @@ CowRobot::CowRobot()
     m_FeederF = new Intake(10);
     m_FeederB = new Intake(9);
     m_Conveyor = new Conveyor(12, 13, 14, false, false, true);
-    m_Shooter = new Shooter(8, false);
+    //m_Shooter = new Shooter(8, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
@@ -81,7 +81,7 @@ void CowRobot::Reset()
     m_MatchTime = 0;
     //m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     // m_Arm->ResetConstants(CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), CONSTANT("ARM_PEAK_OUTPUT"));
-    m_Shooter->ResetConstants();
+    //m_Shooter->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -168,7 +168,7 @@ void CowRobot::handle()
     //m_Intake->handle();
     //m_Conveyor->handle();
     // m_Arm->handle();
-    m_Shooter->handle();
+    //m_Shooter->handle();
     //m_FeederF->handle();
     //m_FeederB->handle();
     // m_Canifier->Handle();
