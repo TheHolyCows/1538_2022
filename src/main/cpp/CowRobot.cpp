@@ -7,9 +7,9 @@
 #include <networktables/NetworkTableInstance.h>
 
 CowRobot::CowRobot()
-{    
+{
     m_DSUpdateCount = 0;
-        
+
     m_Controller = NULL;
 
     // Set up drive motors
@@ -18,11 +18,11 @@ CowRobot::CowRobot()
 
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
-   
+
     m_Intake = new Intake(11);
     m_FeederF = new Intake(10);
     m_FeederB = new Intake(9);
-    m_Conveyor = new Conveyor(12, 13, 14, false, false, true);
+    m_Conveyor = new Conveyor(12, 13, false, false);
     //m_Shooter = new Shooter(8, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
@@ -30,7 +30,6 @@ CowRobot::CowRobot()
 
     m_RightDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
-
 
     // m_Arm = new Arm(5, 6, CONSTANT("ARM_PEAK_OUTPUT"), CONSTANT("ARM_UP_LIMIT"), CONSTANT("ARM_DOWN"), "ARM", true, true, 0, CONSTANT("ARM_PEAK_OUTPUT"));
 
@@ -48,7 +47,7 @@ CowRobot::CowRobot()
 
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
-    
+
     m_PreviousGyroError = 0;
     m_PreviousDriveError = 0;
 
@@ -91,7 +90,7 @@ void CowRobot::SetController(GenericController *controller)
 
 void CowRobot::PrintToDS()
 {
-    if(m_DSUpdateCount % 10 == 0)
+    if (m_DSUpdateCount % 10 == 0)
     {
         m_DSUpdateCount = 0;
     }
@@ -99,36 +98,36 @@ void CowRobot::PrintToDS()
 
 bool CowRobot::DoVisionTracking(float speed, float threshold)
 {
-	GetLimelight()->PutNumber("pipeline", 0);
-	GetLimelight()->PutNumber("ledMode", 3);
+    GetLimelight()->PutNumber("pipeline", 0);
+    GetLimelight()->PutNumber("ledMode", 3);
 
-	float limelightP = GetLimelight()->GetNumber("tx",0.0);
-	m_Limelight_PID_D = m_Limelight_PID_P - m_Limelight_PID_D;
-	m_Limelight_PID_P = limelightP;
+    float limelightP = GetLimelight()->GetNumber("tx", 0.0);
+    m_Limelight_PID_D = m_Limelight_PID_P - m_Limelight_PID_D;
+    m_Limelight_PID_P = limelightP;
 
-	float pid = (m_Limelight_PID_P * CONSTANT("LIMELIGHT_X_KP"));
-	pid += (m_Limelight_PID_D * CONSTANT("LIMELIGHT_X_KD"));
-	DriveSpeedTurn(speed, pid, 0);
+    float pid = (m_Limelight_PID_P * CONSTANT("LIMELIGHT_X_KP"));
+    pid += (m_Limelight_PID_D * CONSTANT("LIMELIGHT_X_KD"));
+    DriveSpeedTurn(speed, pid, 0);
 
-	//Limelight has valid targets
-	if(GetLimelight()->GetNumber("tv", 0) == 1)
-	{
-		//If the target area is larger than the threshold, we likely have the gamepiece or scored
-		if(GetLimelight()->GetNumber("ta", 0) >= threshold)
-		{
-			return true;
-		}  
-		return false;
-	}
+    //Limelight has valid targets
+    if (GetLimelight()->GetNumber("tv", 0) == 1)
+    {
+        //If the target area is larger than the threshold, we likely have the gamepiece or scored
+        if (GetLimelight()->GetNumber("ta", 0) >= threshold)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
 // Used to handle the recurring logic funtions inside the robot.
 // Please call this once per update cycle.
 void CowRobot::handle()
-{    
+{
     m_MatchTime = CowLib::CowTimer::GetFPGATimestamp() - m_StartTime;
 
-    if(m_Controller == NULL)
+    if (m_Controller == NULL)
     {
         printf("No controller for CowRobot!!\n");
         return;
@@ -144,7 +143,7 @@ void CowRobot::handle()
     SetLeftMotors(tmpLeftMotor);
     SetRightMotors(tmpRightMotor);
 
-    if(m_DSUpdateCount % 10 == 0)
+    if (m_DSUpdateCount % 10 == 0)
     {
         //5 is drive
         //4 s1
@@ -173,14 +172,13 @@ void CowRobot::handle()
     //m_FeederB->handle();
     // m_Canifier->Handle();
 
-
     m_DSUpdateCount++;
 }
 
 double CowRobot::GetDriveDistance()
 {
     float position = 0;
-    if(m_LeftDriveA)
+    if (m_LeftDriveA)
     {
         position = m_LeftDriveA->GetPosition() / 13653.334;
         position *= 18.8495;
@@ -194,11 +192,10 @@ bool CowRobot::DriveDistance(double distance)
     double PID_D = CONSTANT("DRIVE_D");
     double error = distance - GetDriveDistance();
     double dError = error - m_PreviousDriveError;
-    double output = PID_P*error + PID_D*dError;
+    double output = PID_P * error + PID_D * dError;
 
     double speed = CONSTANT("PTO_DRIVE_SPEED");
-    DriveLeftRight(speed-output, speed+output);
-
+    DriveLeftRight(speed - output, speed + output);
 
     m_PreviousDriveError = error;
 
@@ -211,16 +208,16 @@ bool CowRobot::DriveDistanceWithHeading(double heading, double distance, double 
     double PID_D = CONSTANT("DRIVE_D");
     double error = distance - GetDriveDistance();
     double dError = error - m_PreviousDriveError;
-    double output = PID_P*error + PID_D*dError;
-    
+    double output = PID_P * error + PID_D * dError;
+
     double throttle = CowLib::LimitMix(output, speed);
     //throttle *= -1;
     //std::cout << "Drive request speed: " << throttle << std::endl;
 
     bool headingResult = DriveWithHeading(heading, throttle);
-    
+
     m_PreviousDriveError = error;
-    
+
     return (fabs(error) < 4 && headingResult);
 }
 
@@ -230,7 +227,7 @@ bool CowRobot::TurnToHeading(double heading)
     double PID_D = CONSTANT("TURN_D");
     double error = m_Gyro->GetAngle() - heading;
     double dError = error - m_PreviousGyroError;
-    double output = PID_P*error + PID_D*dError;
+    double output = PID_P * error + PID_D * dError;
 
     //speed *= -speed;
 
@@ -247,14 +244,14 @@ bool CowRobot::DriveWithHeading(double heading, double speed)
     double PID_D = CONSTANT("TURN_D");
     double error = m_Gyro->GetAngle() - heading;
     double dError = error - m_PreviousGyroError;
-    double output = PID_P*error + PID_D*dError;
+    double output = PID_P * error + PID_D * dError;
 
     //speed *= -speed;
-                
-    DriveLeftRight(speed-output, speed+output);
-    
+
+    DriveLeftRight(speed - output, speed + output);
+
     m_PreviousGyroError = error;
-    
+
     return (fabs(error) < 1 && CowLib::UnitsPerSecond(fabs(dError)) < 0.5);
 }
 
@@ -264,16 +261,15 @@ bool CowRobot::DriveWithHeading(double heading, double speed, double maxSpeed)
     double PID_D = CONSTANT("TURN_D");
     double error = heading - m_Gyro->GetAngle();
     double dError = error - m_PreviousGyroError;
-    double output = PID_P*error + PID_D*dError;
+    double output = PID_P * error + PID_D * dError;
     output = CowLib::LimitMix(output, maxSpeed);
 
-    DriveLeftRight(speed-output, speed+output);
+    DriveLeftRight(speed - output, speed + output);
 
     m_PreviousGyroError = error;
 
     return (fabs(error) < 1 && CowLib::UnitsPerSecond(fabs(dError)) < 0.5);
 }
-
 
 // Allows skid steer robot to be driven using tank drive style inputs
 void CowRobot::DriveLeftRight(float leftDriveValue, float rightDriveValue)
@@ -294,15 +290,15 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
         temp_vel = -temp_vel;
 
     //printf("Velocity: %f, stick: %f\r\n", velocity, temp_vel);
-    
-    if(speed < 0.10 && speed > -0.10)
+
+    if (speed < 0.10 && speed > -0.10)
         speed = 0;
     if (((turn < 0.02) && (turn > -0.02)) || ((speed == 0) && !quickTurn))
         turn = 0;
 
-    if(quickTurn)
+    if (quickTurn)
     {
-        if(speed == 0.0)
+        if (speed == 0.0)
         {
             sensitivity = 1;
         }
@@ -310,7 +306,6 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
         {
             sensitivity = 0.9;
         }
-
     }
     else
     {
@@ -319,7 +314,6 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
 
     turn *= sensitivity;
     turn = -turn;
-    
 
     float left_power = CowLib::LimitMix(-speed - turn);
     float right_power = CowLib::LimitMix(-speed + turn);
@@ -366,4 +360,3 @@ void CowRobot::StartTime()
 {
     m_StartTime = CowLib::CowTimer::GetFPGATimestamp();
 }
-

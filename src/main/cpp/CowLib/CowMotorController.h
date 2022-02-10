@@ -5,7 +5,6 @@
 #ifndef __COWLIB_COWMOTORCONTROLLER_H__
 #define __COWLIB_COWMOTORCONTROLLER_H__
 
-#include <wpi/deprecated.h>
 #include "ctre/Phoenix.h"
 
 namespace CowLib
@@ -13,13 +12,15 @@ namespace CowLib
     class CowMotorController
     {
     public:
-        enum CowNeutralMode {
+        enum CowNeutralMode
+        {
             JUMPER,
             BRAKE,
             COAST,
         };
 
-        enum CowControlMode {
+        enum CowControlMode
+        {
             PERCENTVBUS,
             CURRENT,
             SPEED,
@@ -39,7 +40,7 @@ namespace CowLib
         void SetControlMode(CowControlMode);
         enum CowControlMode GetControlMode();
         float GetPosition();
-	void SetSensorPosition(float position);
+        void SetSensorPosition(float position);
         void SetPIDGains(float pGain, float iGain, float dGain, float fGain, double peakOutput);
         void SetMotionMagic(float accel, float velocity);
         void Set(float);
@@ -47,6 +48,7 @@ namespace CowLib
         void SetPeakCurrent(int amps, int ms);
         double GetOutputCurrent();
         TalonSRX *GetInternalMotor();
+
     private:
         TalonSRX *m_MotorController;
         int m_DeviceNum;
