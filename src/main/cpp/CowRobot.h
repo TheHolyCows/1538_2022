@@ -25,21 +25,22 @@
 #include "Subsystems/Intake.h"
 #include "Subsystems/Conveyor.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Indexer.h"
 
 class CowRobot
 {
 private:
     int m_DSUpdateCount;
-    
+
     GenericController *m_Controller;
-    
+
     // Drive Motors
     CowLib::CowMotorController *m_LeftDriveA;
     CowLib::CowMotorController *m_LeftDriveB;
 
     CowLib::CowMotorController *m_RightDriveA;
     CowLib::CowMotorController *m_RightDriveB;
-    
+
     CowLib::CowMotorController *m_ShooterWheelF;
     CowLib::CowMotorController *m_ShooterWheelB;
 
@@ -53,11 +54,14 @@ private:
     CowLib::CowLogger *m_WebServer;
 
     Arm *m_Arm;
-    Intake *m_Intake;
-    Intake *m_FeederF;
-    Intake *m_FeederB;
+    Intake *m_IntakeF;
+    Intake *m_IntakeR;
+    // Intake *m_FeederF;
+    // Intake *m_FeederB;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
+    Indexer *m_IndexerF;
+    Indexer *m_IndexerR;
 
     float m_LeftDriveValue;
     float m_RightDriveValue;
@@ -107,14 +111,12 @@ public:
 
     std::shared_ptr<nt::NetworkTable> GetLimelight()
     {
-    	return m_LimelightForward;
+        return m_LimelightForward;
     }
     bool DoVisionTracking(float speed, float threshold = 5.00);
     void QuickTurn(float turn);
-    
+
     void StartTime();
-
-
 
     CowLib::CowAlphaNum *GetDisplay()
     {
@@ -131,39 +133,51 @@ public:
         return CowLib::CowGyro::GetInstance();
     }
 
-    Arm* GetArm()
+    Arm *GetArm()
     {
         return m_Arm;
     }
-    Intake* GetIntake()
+    Intake *GetIntakeF()
     {
-        return m_Intake;
+        return m_IntakeF;
     }
-    Intake* GetFeederF()
+    Intake *GetIntakeR()
     {
-        return m_FeederF;
+        return m_IntakeR;
     }
-    Intake* GetFeederB()
-    {
-        return m_FeederB;
-    }
-    Conveyor* GetConveyor()
+    // Intake *GetFeederF()
+    // {
+    //     return m_FeederF;
+    // }
+    // Intake *GetFeederB()
+    // {
+    //     return m_FeederB;
+    // }
+    Conveyor *GetConveyor()
     {
         return m_Conveyor;
     }
-    Shooter* GetShooter()
+    Shooter *GetShooter()
     {
         return m_Shooter;
     }
-    CowLib::CowCanifier* GetCanifier()
+    Indexer *GetIndexerF()
+    {
+        return m_IndexerF;
+    }
+    Indexer *GetIndexerR()
+    {
+        return m_IndexerR;
+    }
+    CowLib::CowCanifier *GetCanifier()
     {
         return m_Canifier;
     }
-    CowLib::CowMotorController* GetShooterF()
+    CowLib::CowMotorController *GetShooterF()
     {
         return m_ShooterWheelF;
     }
-    CowLib::CowMotorController* GetShooterB()
+    CowLib::CowMotorController *GetShooterB()
     {
         return m_ShooterWheelB;
     }
@@ -171,33 +185,34 @@ public:
     void IntakeBalls(double percentage)
     {
         GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
-        GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_ON") * percentage);
-        GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_ON") * percentage);
-        GetIntake()->SetSpeed(CONSTANT("INTAKE_ON") * percentage);
+        // GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_ON") * percentage);
+        // GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_ON") * percentage);
+        // GetIntake()->SetSpeed(CONSTANT("INTAKE_ON") * percentage);
     }
 
     void ExhaustBalls(double percentage)
     {
-        GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
-        GetIntake()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage);
-        GetFeederF()->SetSpeed(-CONSTANT("FEEDER_F_ON") * percentage);
-        GetFeederB()->SetSpeed(-CONSTANT("FEEDER_B_ON") * percentage);
+        // GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
+        // GetIntake()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage);
+        // GetFeederF()->SetSpeed(-CONSTANT("FEEDER_F_ON") * percentage);
+        // GetFeederB()->SetSpeed(-CONSTANT("FEEDER_B_ON") * percentage);
     }
 
     void ShootBalls()
     {
-         GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_SHOOT"));
-         GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_SHOOT"));
-         GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
-         GetIntake()->SetSpeed(CONSTANT("INTAKE_ON"));
+        // GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_SHOOT"));
+        // GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_SHOOT"));
+        // GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
+        // GetIntake()->SetSpeed(CONSTANT("INTAKE_ON"));
     }
 
     void StopRollers()
     {
-         GetConveyor()->SetSpeed(0, 0);
-         GetFeederF()->SetSpeed(0);
-         GetFeederB()->SetSpeed(0);
-         GetIntake()->SetSpeed(0);
+        GetConveyor()->SetSpeed(0, 0);
+        // GetFeederF()->SetSpeed(0);
+        // GetFeederB()->SetSpeed(0);
+        GetIntakeF()->SetSpeed(0);
+        GetIntakeR()->SetSpeed(0);
     }
 
     void UseLeftEncoder()
@@ -210,10 +225,10 @@ public:
 
     void ResetEncoders()
     {
-       //m_LeftDriveA->SetSensorPosition(0); 
-       //m_LeftDriveB->SetSensorPosition(0); 
-       m_RightDriveA->SetSensorPosition(0); 
-       //m_RightDriveB->SetSensorPosition(0); 
+        //m_LeftDriveA->SetSensorPosition(0);
+        //m_LeftDriveB->SetSensorPosition(0);
+        m_RightDriveA->SetSensorPosition(0);
+        //m_RightDriveB->SetSensorPosition(0);
     }
 
     void handle();

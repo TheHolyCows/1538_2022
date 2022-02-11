@@ -2,33 +2,25 @@
 #include <iostream>
 #include <frc/Timer.h>
 
-Indexer::Indexer(int motorControllerA, int motorControllerB, bool changeDirectionA, bool changeDirectionB)
+Indexer::Indexer(int motorController, bool changeDirection)
 {
-    m_MotorA = new CowLib::CowMotorController(motorControllerA);
-    m_MotorB = new CowLib::CowMotorController(motorControllerB);
-    m_SpeedF = 0;
-    m_SpeedR = 0;
-    m_MotorA->GetInternalMotor()->SetInverted(changeDirectionA);
-    m_MotorB->GetInternalMotor()->SetInverted(changeDirectionB);
+    m_Motor = new CowLib::CowMotorController(motorController);
+    m_Speed = 0;
+    m_Motor->GetInternalMotor()->SetInverted(changeDirection);
 }
 
-void Indexer::SetSpeed(float speedF, float speedR)
+void Indexer::SetSpeed(float speed)
 {
-    m_SpeedF = speedF;
-    m_SpeedR = speedR;
+    m_Speed = speed;
 }
 
 void Indexer::handle()
 {
     // Front
-    m_MotorA->Set(m_SpeedF);
-
-    // Rear
-    m_MotorB->Set(m_SpeedR);
+    m_Motor->Set(m_Speed);
 }
 
 Indexer::~Indexer()
 {
-    delete m_MotorA;
-    delete m_MotorB;
+    delete m_Motor;
 }

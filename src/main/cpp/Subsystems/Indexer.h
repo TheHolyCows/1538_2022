@@ -1,5 +1,5 @@
-#ifndef SRC_SUBSYSTEMS_CONVEYOR_H_
-#define SRC_SUBSYSTEMS_CONVEYOR_H_
+#ifndef SRC_SUBSYSTEMS_INDEXER_H_
+#define SRC_SUBSYSTEMS_INDEXER_H_
 
 #include "../CowLib/CowMotorController.h"
 #include "../CowLib/CowLPF.h"
@@ -10,16 +10,14 @@
 class Indexer
 {
 private:
-    CowLib::CowMotorController *m_MotorA;
-    CowLib::CowMotorController *m_MotorB;
-    float m_SpeedF;
-    float m_SpeedR;
+    CowLib::CowMotorController *m_Motor;
+    float m_Speed;
 
 public:
-    Indexer(int motorControllerA, int motorControllerB, bool changeDirectionA, bool changeDirectionB);
-    void SetSpeed(float speedF, float speedR);
+    Indexer(int motorController, bool changeDirection);
+    void SetSpeed(float speed);
     void handle();
     virtual ~Indexer();
 };
 
-#endif /* SRC_SUBSYSTEMS_CONVEYOR_H_ */
+#endif /* SRC_SUBSYSTEMS_INDEXER_H_ */
