@@ -2,64 +2,98 @@
 #include <iostream>
 
 OperatorController::OperatorController(CowControlBoard *controlboard)
-    :
-    m_CB(controlboard)
+    : m_CB(controlboard)
 {
 }
 
 void OperatorController::handle(CowRobot *bot)
 {
     float r_color = m_CB->GetOperatorGamepadAxis(2);
-    r_color = fabs(r_color*254);
+    r_color = fabs(r_color * 254);
     float g_color = m_CB->GetDriveAxis(2);
-    g_color = fabs(g_color*254);
+    g_color = fabs(g_color * 254);
     float b_color = m_CB->GetDriveAxis(0);
-    b_color = fabs(b_color*254);
+    b_color = fabs(b_color * 254);
     bot->GetCanifier()->SetLEDColor(r_color, g_color, b_color);
     bool doingTracking = false;
-    if(m_CB->GetDriveButton(1))
+    if (m_CB->GetDriveButton(1))
     {
         bot->DriveDistanceWithHeading(0, 12, 0.2);
-	    //doingTracking = true;
-    	//bool acquired = bot->DoVisionTracking(-CONSTANT("AUTO_TRACK_SPEED"));
-		//if(acquired)
-		//{
-		//}
+        //doingTracking = true;
+        //bool acquired = bot->DoVisionTracking(-CONSTANT("AUTO_TRACK_SPEED"));
+        //if(acquired)
+        //{
+        //}
     }
     else
     {
-       if(m_CB->GetSteeringButton(3))
-       {
-	        bot->DoVisionTracking(m_CB->GetDriveStickY());
-       }
-       else
-       { 
-        bot->GetLimelight()->PutNumber("pipeline", 3);
-        bot->GetLimelight()->PutNumber("ledMode", 1);
-        bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
-                             m_CB->GetSteeringX(),
-                             m_CB->GetSteeringButton(FAST_TURN));
-      }
+        if (m_CB->GetSteeringButton(3))
+        {
+            bot->DoVisionTracking(m_CB->GetDriveStickY());
+        }
+        else
+        {
+            bot->GetLimelight()->PutNumber("pipeline", 3);
+            bot->GetLimelight()->PutNumber("ledMode", 1);
+            bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
+                                m_CB->GetSteeringX(),
+                                m_CB->GetSteeringButton(FAST_TURN));
+        }
     }
-    //Arm Switch
-    if(m_CB->GetOperatorButton(1))
+    // Intake Position Switches
+    if (m_CB->GetOperatorButton(2))
     {
-        //bot->GetArm()->SetPosition(CONSTANT("ARM_GOAL"));
+        bot->GetIntakeF()->SetExtended(true);
     }
-    else if(m_CB->GetOperatorButton(2))
+    else
     {
-        //bot->GetArm()->SetPosition(CONSTANT("ARM_MID"));
+        bot->GetIntakeF()->SetExtended(false);
     }
-    else if(m_CB->GetOperatorButton(5))
+    if (m_CB->GetOperatorButton(3))
     {
-        //bot->GetArm()->SetPosition(CONSTANT("ARM_FAR"));
+        bot->GetIntakeR()->SetExtended(true);
     }
-    else if(m_CB->GetSteeringButton(2))
+    else
     {
-        //bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
+        bot->GetIntakeR()->SetExtended(false);
     }
+
+    // Conveyor and Intake
+    if (m_CB->GetOperatorButton(5) || m_CB->GetOperatorButton(7))
+    {
+        bot->ExhaustBalls(1, m_CB->GetOperatorButton(5), m_CB->GetOperatorButton(7));
+    }
+    else if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6))
+    {
+        bot->IntakeBalls(1, m_CB->GetOperatorButton(4), m_CB->GetOperatorButton(6));
+    }
+    else
+    {
+        bot->StopRollers();
+    }
+    // if (m_CB->GetOperatorButton(5)) // Front Exhaust
+    // {
+    //     bot->ExhaustBalls(1, true, false);
+    // }
+    // else if (m_CB->GetOperatorButton(4)) // Front Intake
+    // {
+    //     bot->IntakeBalls(1, false, false);
+    // }
+    // else if (m_CB->GetOperatorButton(4) && m_CB->GetOperatorButton(6)) //Intake
+    // {
+    // }
+
+    // else if (m_CB->GetOperatorButton(8)) //Shoot
+    // {
+    //     bot->ShootBalls();
+    // }
+    // else
+    // {
+    //     bot->StopRollers();
+    // }
+
     //Shooter Switch
-    if(m_CB->GetOperatorButton(10))
+    if (m_CB->GetOperatorButton(10))
     {
         // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
         // {
@@ -83,22 +117,4 @@ void OperatorController::handle(CowRobot *bot)
     {
         //bot->GetShooter()->SetSpeed(0);
     }
-    //Conveyor and Intake and Feeder
-    if(m_CB->GetOperatorButton(6))
-    {
-        bot->ExhaustBalls(1);
-    }
-    else if(m_CB->GetOperatorButton(9)) //Intake
-    {
-        bot->IntakeBalls(1);
-    }
-    else if(m_CB->GetOperatorButton(7))//Shoot
-    {
-        bot->ShootBalls();
-    }
-    else
-    {
-        bot->StopRollers();
-    }
 }
-

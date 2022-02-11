@@ -3,12 +3,11 @@
 
 // Constructor for Cow Control Board
 CowControlBoard::CowControlBoard()
-    :
-    m_DriveStick(new frc::Joystick(0)),
-    m_DriveWheel(new frc::Joystick(1)),
-    m_OperatorPanel(new frc::Joystick(2)),
-    m_OperatorGamepad(new frc::Joystick(3)),
-    m_PreviousAuto(false)
+    : m_DriveStick(new frc::Joystick(0)),
+      m_DriveWheel(new frc::Joystick(1)),
+      m_OperatorPanel(new frc::Joystick(2)),
+      m_OperatorGamepad(new frc::Joystick(3)),
+      m_PreviousAuto(false)
 {
 }
 
@@ -21,7 +20,7 @@ float CowControlBoard::GetDriveAxis(unsigned int axis)
 // Returns state of autonomous select button
 bool CowControlBoard::GetAutoSelectButton()
 {
-    if(GetDriveButton(AUTON_BUTTON) && !m_PreviousAuto)
+    if (GetDriveButton(AUTON_BUTTON) && !m_PreviousAuto)
     {
         m_PreviousAuto = GetDriveButton(AUTON_BUTTON);
         return true;

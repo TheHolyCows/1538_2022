@@ -19,17 +19,12 @@ CowRobot::CowRobot()
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
 
-    m_IntakeF = new Intake(10);
-    m_IntakeR = new Intake(11);
+    m_IntakeF = new Intake(7, 8, 1);
+    m_IntakeR = new Intake(9, 10, 2);
 
-    m_IndexerF = new Indexer(7, false);
-    m_IndexerR = new Indexer(8, false);
+    m_Conveyor = new Conveyor(11, 12, false, false);
 
-    // m_FeederF = new Intake(10);
-    // m_FeederB = new Intake(9);
-    m_Conveyor = new Conveyor(12, 13, false, false);
-
-    //m_Shooter = new Shooter(8, false);
+    m_Shooter = new Shooter(13, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);

@@ -25,7 +25,6 @@
 #include "Subsystems/Intake.h"
 #include "Subsystems/Conveyor.h"
 #include "Subsystems/Shooter.h"
-#include "Subsystems/Indexer.h"
 
 class CowRobot
 {
@@ -56,12 +55,10 @@ private:
     Arm *m_Arm;
     Intake *m_IntakeF;
     Intake *m_IntakeR;
-    // Intake *m_FeederF;
-    // Intake *m_FeederB;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
-    Indexer *m_IndexerF;
-    Indexer *m_IndexerR;
+    // Intake *m_FeederF;
+    // Intake *m_FeederB;
 
     float m_LeftDriveValue;
     float m_RightDriveValue;
@@ -145,14 +142,6 @@ public:
     {
         return m_IntakeR;
     }
-    // Intake *GetFeederF()
-    // {
-    //     return m_FeederF;
-    // }
-    // Intake *GetFeederB()
-    // {
-    //     return m_FeederB;
-    // }
     Conveyor *GetConveyor()
     {
         return m_Conveyor;
@@ -160,14 +149,6 @@ public:
     Shooter *GetShooter()
     {
         return m_Shooter;
-    }
-    Indexer *GetIndexerF()
-    {
-        return m_IndexerF;
-    }
-    Indexer *GetIndexerR()
-    {
-        return m_IndexerR;
     }
     CowLib::CowCanifier *GetCanifier()
     {
@@ -182,20 +163,38 @@ public:
         return m_ShooterWheelB;
     }
 
-    void IntakeBalls(double percentage)
+    void IntakeBalls(double percentage, bool front, bool rear)
     {
-        GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
-        // GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_ON") * percentage);
-        // GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_ON") * percentage);
-        // GetIntake()->SetSpeed(CONSTANT("INTAKE_ON") * percentage);
+        if (front || rear)
+        {
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
+        }
+
+        if (front)
+        {
+            GetIntakeF()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
+        }
+        if (rear)
+        {
+            GetIntakeR()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
+        }
     }
 
-    void ExhaustBalls(double percentage)
+    void ExhaustBalls(double percentage, bool front, bool rear)
     {
-        // GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
-        // GetIntake()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage);
-        // GetFeederF()->SetSpeed(-CONSTANT("FEEDER_F_ON") * percentage);
-        // GetFeederB()->SetSpeed(-CONSTANT("FEEDER_B_ON") * percentage);
+        if (front || rear)
+        {
+            GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
+        }
+
+        if (front)
+        {
+            GetIntakeF()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
+        }
+        if (rear)
+        {
+            GetIntakeR()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
+        }
     }
 
     void ShootBalls()
@@ -211,8 +210,8 @@ public:
         GetConveyor()->SetSpeed(0, 0);
         // GetFeederF()->SetSpeed(0);
         // GetFeederB()->SetSpeed(0);
-        GetIntakeF()->SetSpeed(0);
-        GetIntakeR()->SetSpeed(0);
+        GetIntakeF()->SetSpeed(0, 0);
+        GetIntakeR()->SetSpeed(0, 0);
     }
 
     void UseLeftEncoder()
