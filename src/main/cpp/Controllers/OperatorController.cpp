@@ -59,18 +59,22 @@ void OperatorController::handle(CowRobot *bot)
     }
 
     // Conveyor and Intake
+    // If either exhaust button is pressed, call ExhaustBalls with the coresponding bools
     if (m_CB->GetOperatorButton(5) || m_CB->GetOperatorButton(7))
     {
         bot->ExhaustBalls(1, m_CB->GetOperatorButton(5), m_CB->GetOperatorButton(7));
     }
+    // Same as exhaust
     else if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6))
     {
         bot->IntakeBalls(1, m_CB->GetOperatorButton(4), m_CB->GetOperatorButton(6));
     }
     else
     {
-        bot->StopRollers();
+        // Not using stop rollers because shooting uses the conveyor
+        bot->IntakeBalls(0, false, false);
     }
+
     // if (m_CB->GetOperatorButton(5)) // Front Exhaust
     // {
     //     bot->ExhaustBalls(1, true, false);

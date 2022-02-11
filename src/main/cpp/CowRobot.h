@@ -163,6 +163,7 @@ public:
         return m_ShooterWheelB;
     }
 
+    // Handles both ends: if the bool is true, that side is activated
     void IntakeBalls(double percentage, bool front, bool rear)
     {
         if (front || rear)
@@ -180,6 +181,7 @@ public:
         }
     }
 
+    // Handles both ends: If the bool is true, that side is activated
     void ExhaustBalls(double percentage, bool front, bool rear)
     {
         if (front || rear)
@@ -199,17 +201,13 @@ public:
 
     void ShootBalls()
     {
-        // GetFeederF()->SetSpeed(CONSTANT("FEEDER_F_SHOOT"));
-        // GetFeederB()->SetSpeed(CONSTANT("FEEDER_B_SHOOT"));
-        // GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
+        GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
         // GetIntake()->SetSpeed(CONSTANT("INTAKE_ON"));
     }
 
     void StopRollers()
     {
         GetConveyor()->SetSpeed(0, 0);
-        // GetFeederF()->SetSpeed(0);
-        // GetFeederB()->SetSpeed(0);
         GetIntakeF()->SetSpeed(0, 0);
         GetIntakeR()->SetSpeed(0, 0);
     }

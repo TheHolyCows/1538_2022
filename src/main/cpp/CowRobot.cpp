@@ -24,7 +24,7 @@ CowRobot::CowRobot()
 
     m_Conveyor = new Conveyor(11, 12, false, false);
 
-    m_Shooter = new Shooter(13, false);
+    m_Shooter = new Shooter(13, 14, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
