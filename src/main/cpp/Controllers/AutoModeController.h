@@ -26,47 +26,44 @@ typedef enum
 typedef enum
 {
     INTAKE_STOP = 0,
-    INTAKE_IN,
-    INTAKE_OUT,
+    INTAKE_F_IN,
+    INTAKE_R_IN,
+    INTAKE_F_OUT,
+    INTAKE_R_OUT,
     INTAKE_SHOOT
 } e_IntakeMode;
 
 class RobotCommand
 {
 public:
-    
     e_RobotCommand m_Command;
     e_IntakeMode m_IntakeMode;
     double m_EncoderCount;
     double m_Heading;
     double m_Speed;
-    double m_ArmPosition;
+    // double m_ArmPosition;
     bool m_Shooter;
     double m_Timeout;
-    
-    RobotCommand() :
-        m_Command(CMD_NULL),
-        m_IntakeMode(INTAKE_STOP),
-        m_EncoderCount(0),
-        m_Heading(0),
-        m_Speed(0),
-        m_ArmPosition(0),
-        m_Shooter(false),
-        m_Timeout(0)
+
+    RobotCommand() : m_Command(CMD_NULL),
+                     m_IntakeMode(INTAKE_STOP),
+                     m_EncoderCount(0),
+                     m_Heading(0),
+                     m_Speed(0),
+                     m_Shooter(false),
+                     m_Timeout(0)
     {
     }
-    
+
     RobotCommand(e_RobotCommand cmd,
-            double encoder, double heading,
-                 double speed, double armPosition, e_IntakeMode intakeMode, bool shooterOn,  double timeout) :
-        m_Command(cmd),
-        m_EncoderCount(encoder),
-        m_Heading(heading),
-        m_Speed(speed),
-        m_ArmPosition(armPosition),
-        m_IntakeMode(intakeMode),
-        m_Shooter(shooterOn),
-        m_Timeout(timeout)
+                 double encoder, double heading,
+                 double speed, e_IntakeMode intakeMode, bool shooterOn, double timeout) : m_Command(cmd),
+                                                                                          m_EncoderCount(encoder),
+                                                                                          m_Heading(heading),
+                                                                                          m_Speed(speed),
+                                                                                          m_IntakeMode(intakeMode),
+                                                                                          m_Shooter(shooterOn),
+                                                                                          m_Timeout(timeout)
     {
     }
 };
@@ -80,7 +77,7 @@ private:
     CowLib::CowTimer *m_Timer; //TODO: standardize timing
     std::deque<RobotCommand> m_CommandList;
     RobotCommand m_CurrentCommand;
-    
+
     void doNothing(CowRobot *bot);
     float m_OriginalEncoder;
 

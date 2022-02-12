@@ -57,37 +57,51 @@ void OperatorController::handle(CowRobot *bot)
     }
     else if (m_CB->GetOperatorButton(8)) // Shoot
     {
-        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_TEST")); // Temporary solution
+        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_TEST")); // Temporary
         bot->ShootBalls();                                     // Stops intakes, runs indexers and conveyor
     }
     else
     {
+        bot->GetShooter()->SetSpeed(0);
         bot->StopRollers();
     }
 
-    //Shooter Switch
-    if (m_CB->GetOperatorButton(10))
+    if (m_CB->GetOperatorButton(11))
     {
-        // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
-        // {
-        //     std::cout << CONSTANT("SHOOTER_F_GOAL") << std::endl;
-        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
-        // }
-        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
-        // {
-        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-        // }
-        // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
-        // {
-        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
-        // }
-        // else
-        // {
-        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
-        // }
+        // Somehow get distance to target and calculate hood angle and shooter speed
+        bot->GetShooter()->SetHoodPosition(0);
+        bot->GetShooter()->SetSpeed(0);
     }
-    else
+
+    // Climber
+    if (m_CB->GetOperatorButton(12))
     {
-        //bot->GetShooter()->SetSpeed(0);
+        // Climb
     }
+
+    // Shooter Switch
+    // if (m_CB->GetOperatorButton(10))
+    // {
+    //     if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
+    //     {
+    //         std::cout << CONSTANT("SHOOTER_F_GOAL") << std::endl;
+    //         bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
+    //     }
+    //     else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
+    //     {
+    //         bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
+    //     }
+    //     else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
+    //     {
+    //         bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
+    //     }
+    //     else
+    //     {
+    //         bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
+    //     }
+    // }
+    // else
+    // {
+    //     bot->GetShooter()->SetSpeed(0);
+    // }
 }

@@ -30,14 +30,22 @@ void AutoModeController::handle(CowRobot *bot)
 	bot->GetLimelight()->PutNumber("pipeline", 0);
 	bot->GetLimelight()->PutNumber("ledMode", 1);
 
-	bot->GetArm()->SetPosition(m_CurrentCommand.m_ArmPosition);
-	if (m_CurrentCommand.m_IntakeMode == INTAKE_IN)
+	// bot->GetArm()->SetPosition(m_CurrentCommand.m_ArmPosition);
+	if (m_CurrentCommand.m_IntakeMode == INTAKE_F_IN)
 	{
-		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, true);
+		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, false);
 	}
-	else if (m_CurrentCommand.m_IntakeMode == INTAKE_OUT)
+	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
-		bot->ExhaustBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, true);
+		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), false, true);
+	}
+	else if (m_CurrentCommand.m_IntakeMode == INTAKE_F_OUT)
+	{
+		bot->ExhaustBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, false);
+	}
+	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_OUT)
+	{
+		bot->ExhaustBalls(CONSTANT("INTAKE_PERCENT_AUTO"), false, true);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
 	{

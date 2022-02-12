@@ -5,7 +5,7 @@ AutoModes *AutoModes::m_SingletonInstance = NULL;
 
 AutoModes *AutoModes::GetInstance()
 {
-	if(m_SingletonInstance == NULL)
+	if (m_SingletonInstance == NULL)
 	{
 		m_SingletonInstance = new AutoModes();
 	}
@@ -16,13 +16,14 @@ AutoModes::AutoModes()
 {
 	// Set up our selection order
 	m_Modes["Nothing"];
-	m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_UP"), INTAKE_STOP, false, 1));
+	m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, INTAKE_STOP, false, 1));
+	// m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_UP"), INTAKE_STOP, false, 1));
 
 	// m_Modes["Test"];
 	// m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
 	// m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
-	
-    // m_Modes["2 Ball - Opponent Trench Run"];
+
+	// m_Modes["2 Ball - Opponent Trench Run"];
 	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .6));
 	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, 3));
 	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_SHOOT, true, 2));
@@ -48,11 +49,11 @@ const char *AutoModes::GetName()
 void AutoModes::NextMode()
 {
 	++m_Iterator;
-	if(m_Iterator == m_Modes.end())
+	if (m_Iterator == m_Modes.end())
 	{
 		m_Iterator = m_Modes.begin();
 	}
 	std::string str(GetName());
 	std::string temp = "Auto mode: " + str;
-	FRC_ReportError(frc::err::Error,"%s",temp);
+	FRC_ReportError(frc::err::Error, "%s", temp);
 }

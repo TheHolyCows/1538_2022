@@ -40,8 +40,8 @@ private:
     CowLib::CowMotorController *m_RightDriveA;
     CowLib::CowMotorController *m_RightDriveB;
 
-    CowLib::CowMotorController *m_ShooterWheelF;
-    CowLib::CowMotorController *m_ShooterWheelB;
+    // CowLib::CowMotorController *m_ShooterWheelF;
+    // CowLib::CowMotorController *m_ShooterWheelB;
 
     CowLib::CowCanifier *m_Canifier;
 
@@ -52,7 +52,7 @@ private:
     CowLib::CowAlphaNum *m_LEDDisplay;
     CowLib::CowLogger *m_WebServer;
 
-    Arm *m_Arm;
+    // Arm *m_Arm;
     Intake *m_IntakeF;
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
@@ -130,10 +130,10 @@ public:
         return CowLib::CowGyro::GetInstance();
     }
 
-    Arm *GetArm()
-    {
-        return m_Arm;
-    }
+    // Arm *GetArm()
+    // {
+    //     return m_Arm;
+    // }
     Intake *GetIntakeF()
     {
         return m_IntakeF;
@@ -154,14 +154,14 @@ public:
     {
         return m_Canifier;
     }
-    CowLib::CowMotorController *GetShooterF()
-    {
-        return m_ShooterWheelF;
-    }
-    CowLib::CowMotorController *GetShooterB()
-    {
-        return m_ShooterWheelB;
-    }
+    // CowLib::CowMotorController *GetShooterF()
+    // {
+    //     return m_ShooterWheelF;
+    // }
+    // CowLib::CowMotorController *GetShooterB()
+    // {
+    //     return m_ShooterWheelB;
+    // }
 
     // Handles both ends: if the bool is true, that side is activated
     void IntakeBalls(double percentage, bool front, bool rear)

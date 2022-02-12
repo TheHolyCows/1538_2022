@@ -24,7 +24,7 @@ CowRobot::CowRobot()
 
     m_Conveyor = new Conveyor(11, 12, false, false);
 
-    m_Shooter = new Shooter(13, 14, false, 0, 0);
+    m_Shooter = new Shooter(13, 14, false);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
@@ -160,18 +160,18 @@ void CowRobot::handle()
         //std::cout << "match time (ours): " << m_MatchTime << std::endl;
     }
 
-    //frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
-    //frc::SmartDashboard::PutNumber("Shooter F", GetShooter()->GetSpeedF());
-    //frc::SmartDashboard::PutNumber("Shooter B", GetShooter()->GetSpeedB());
+    // frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
+    // frc::SmartDashboard::PutNumber("Shooter", GetShooter()->GetSpeedF());
+    // frc::SmartDashboard::PutBoolean("Front Intake Deployed", GetIntakeF()->GetExtended());
+    // frc::SmartDashboard::PutBoolean("Rear Intake Deployed", GetIntakeR()->GetExtended());
+
     //m_LogServer->RemoteLog(m_Shooter->GetSpeedF());
 
-    //m_Intake->handle();
-    //m_Conveyor->handle();
-    // m_Arm->handle();
-    //m_Shooter->handle();
-    //m_FeederF->handle();
-    //m_FeederB->handle();
-    // m_Canifier->Handle();
+    m_IntakeF->handle();
+    m_IntakeR->handle();
+    m_Conveyor->handle();
+    m_Shooter->handle();
+    m_Canifier->Handle();
 
     m_DSUpdateCount++;
 }

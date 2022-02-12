@@ -21,6 +21,10 @@ public:
     Intake(int motorControllerA, int motorControllerB, int solenoidChannel);
     void SetSpeed(float intakeSpeed, float indexerSpeed);
     void SetExtended(bool extended);
+    bool GetExtended()
+    {
+        return m_IntakeExtended;
+    }
     void handle();
     virtual ~Intake();
 };
