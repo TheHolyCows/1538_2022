@@ -24,8 +24,11 @@ void Intake::SetExtended(bool extended)
 
 void Intake::handle()
 {
+    // Extended
+    m_Solenoid->Set(m_IntakeExtended);
+
     // Intake
-    if (m_IntakeExtended)
+    if (m_Solenoid->Get())
     {
         m_MotorA->Set(m_Speed);
     }
@@ -36,14 +39,11 @@ void Intake::handle()
 
     // Indexer
     m_MotorB->Set(m_IndexerSpeed);
-
-    // Position
-    m_Solenoid->Set(m_IntakeExtended);
 }
 
 Intake::~Intake()
 {
     delete m_MotorA;
     delete m_MotorB;
-    // delete m_Solenoid
+    delete m_Solenoid;
 }

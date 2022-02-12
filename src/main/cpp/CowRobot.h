@@ -175,6 +175,7 @@ public:
         {
             GetIntakeF()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
         }
+
         if (rear)
         {
             GetIntakeR()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
@@ -193,6 +194,7 @@ public:
         {
             GetIntakeF()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
         }
+
         if (rear)
         {
             GetIntakeR()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
@@ -202,7 +204,8 @@ public:
     void ShootBalls()
     {
         GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
-        // GetIntake()->SetSpeed(CONSTANT("INTAKE_ON"));
+        GetIntakeF()->SetSpeed(0, CONSTANT("INDEXER_ON"));
+        GetIntakeR()->SetSpeed(0, CONSTANT("INDEXER_ON"));
     }
 
     void StopRollers()

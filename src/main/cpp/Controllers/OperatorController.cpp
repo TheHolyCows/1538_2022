@@ -40,69 +40,38 @@ void OperatorController::handle(CowRobot *bot)
                                 m_CB->GetSteeringButton(FAST_TURN));
         }
     }
-    // Intake Position Switches
-    if (m_CB->GetOperatorButton(2))
-    {
-        bot->GetIntakeF()->SetExtended(true);
-    }
-    else
-    {
-        bot->GetIntakeF()->SetExtended(false);
-    }
-    if (m_CB->GetOperatorButton(3))
-    {
-        bot->GetIntakeR()->SetExtended(true);
-    }
-    else
-    {
-        bot->GetIntakeR()->SetExtended(false);
-    }
 
-    // Conveyor and Intake
+    // Intake Position Switches
+    bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(2));
+    bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(3));
+
+    // Intakes, Indexers, and Conveyor
     // If either exhaust button is pressed, call ExhaustBalls with the coresponding bools
     if (m_CB->GetOperatorButton(5) || m_CB->GetOperatorButton(7))
     {
         bot->ExhaustBalls(1, m_CB->GetOperatorButton(5), m_CB->GetOperatorButton(7));
     }
-    // Same as exhaust
-    else if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6))
+    else if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6)) // Same as exhaust
     {
         bot->IntakeBalls(1, m_CB->GetOperatorButton(4), m_CB->GetOperatorButton(6));
     }
+    else if (m_CB->GetOperatorButton(8)) // Shoot
+    {
+        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_TEST")); // Temporary solution
+        bot->ShootBalls();                                     // Stops intakes, runs indexers and conveyor
+    }
     else
     {
-        // Not using stop rollers because shooting uses the conveyor
-        bot->IntakeBalls(0, false, false);
+        bot->StopRollers();
     }
-
-    // if (m_CB->GetOperatorButton(5)) // Front Exhaust
-    // {
-    //     bot->ExhaustBalls(1, true, false);
-    // }
-    // else if (m_CB->GetOperatorButton(4)) // Front Intake
-    // {
-    //     bot->IntakeBalls(1, false, false);
-    // }
-    // else if (m_CB->GetOperatorButton(4) && m_CB->GetOperatorButton(6)) //Intake
-    // {
-    // }
-
-    // else if (m_CB->GetOperatorButton(8)) //Shoot
-    // {
-    //     bot->ShootBalls();
-    // }
-    // else
-    // {
-    //     bot->StopRollers();
-    // }
 
     //Shooter Switch
     if (m_CB->GetOperatorButton(10))
     {
         // if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
         // {
-        // std::cout << CONSTANT("SHOOTER_F_GOAL") << std::endl;
-        //bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
+        //     std::cout << CONSTANT("SHOOTER_F_GOAL") << std::endl;
+        //     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL")); //, CONSTANT("SHOOTER_B_GOAL"));
         // }
         // else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
         // {
