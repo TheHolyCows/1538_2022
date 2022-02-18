@@ -3,11 +3,12 @@
 #include <frc/Timer.h>
 #include <frc/Solenoid.h>
 
-Intake::Intake(int motorControllerA, int motorControllerB, int solenoidChannel)
+Intake::Intake(int motorControllerA, int motorControllerB, int solenoidChannelA, int solenoidChannelB)
 {
     m_MotorA = new CowLib::CowMotorController(motorControllerA);
     m_MotorB = new CowLib::CowMotorController(motorControllerB);
-    m_Solenoid = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannel);
+    m_SolenoidA = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelA);
+    m_SolenoidB = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelB);
     m_Speed = 0;
 }
 
@@ -25,10 +26,11 @@ void Intake::SetExtended(bool extended)
 void Intake::handle()
 {
     // Extended
-    m_Solenoid->Set(m_IntakeExtended);
+    m_SolenoidA->Set(m_IntakeExtended);
+    m_SolenoidB->Set(m_IntakeExtended);
 
     // Intake
-    if (m_Solenoid->Get())
+    if (m_SolenoidA->Get() && m_SolenoidB->Get())
     {
         m_MotorA->Set(m_Speed);
     }
@@ -45,5 +47,6 @@ Intake::~Intake()
 {
     delete m_MotorA;
     delete m_MotorB;
-    delete m_Solenoid;
+    delete m_SolenoidA;
+    delete m_SolenoidB;
 }

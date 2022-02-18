@@ -19,8 +19,8 @@ CowRobot::CowRobot()
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
 
-    m_IntakeF = new Intake(7, 8, 1);
-    m_IntakeR = new Intake(9, 10, 2);
+    m_IntakeF = new Intake(7, 8, 1, 2);
+    m_IntakeR = new Intake(9, 10, 3, 4);
 
     m_Conveyor = new Conveyor(11, 12, false, false);
 
