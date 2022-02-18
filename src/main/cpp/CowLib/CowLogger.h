@@ -18,6 +18,22 @@
 namespace CowLib {
 
 class CowLogger {
+public:
+    CowLogger();
+    virtual ~CowLogger();
+    static void Log(std::string key, double value);
+    static CowLogger* GetInstance();
+    static void VarRemoteLog(uint32_t,void**);
+    static void StrRemoteLog(std::string);
+    static void PIDRemoteLog(double,double,double,double,double);
+
+    enum CowLogProtocol
+    {
+        VAR_LOG=0,
+        STR_LOG,
+        PID_LOG,
+    };
+
 private:
     std::thread *m_Thread;
     static std::mutex m_Mutex;
@@ -26,15 +42,23 @@ private:
     static CowLogger* m_Instance;
     struct sockaddr_in m_LogServer;
     int m_LogSocket;
-public:
-    CowLogger();
-    virtual ~CowLogger();
-    static void Log(std::string key, double value);
-    static CowLogger* GetInstance();
-    static void RemoteLog(int32_t);
-    static void PIDRemoteLog(double,double,double,double,double);
-private:
-    static void Handle();
+
+    void Handle();
+
+    struct CowLogHdr
+    {
+        CowLogProtocol  proto;
+        uint32_t        dataLen;
+    };
+
+    struct CowPIDLog
+    {
+        uint32_t setPoint;
+        uint32_t procVar;
+        uint32_t pVar;
+        uint32_t iVar;
+        uint32_t dVar;
+    };
 };
 
 } /* namespace CowLib */

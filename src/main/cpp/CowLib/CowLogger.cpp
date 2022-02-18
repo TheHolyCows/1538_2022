@@ -43,7 +43,7 @@ CowLogger::CowLogger()
 
     m_LogServer.sin_family = AF_INET;
     m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.21");
-    m_LogServer.sin_port = htons(2341);
+    m_LogServer.sin_port = htons(6969);
 
 }
 
@@ -96,13 +96,41 @@ void CowLogger::Log(std::string key, double value)
     m_Mutex.unlock();
 }
 
-void CowLogger::RemoteLog(int32_t logVal)
+/**
+ * CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
+ * WIP
+ **/ 
+void CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
 {
-    int ret = sendto(GetInstance()->m_LogSocket,&logVal,sizeof(int32_t),
-        0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer),sizeof(m_LogServer));
+    // WIP
+    return;
+}
+
+/**
+ * CowLogger::StrLog(std::string logStr)
+ * logs string to remote logging server for debugging
+ * @arg logStr: string to log
+ **/
+void CowLogger::StrRemoteLog(std::string logStr)
+{
+    CowLogger::CowLogHdr logHdr;
+    logHdr.proto = CowLib::CowLogger::STR_LOG;
+    logHdr.dataLen = logStr.length() + 1;
+
+    char data[sizeof(CowLogHdr) + logHdr.dataLen + 1];
+
+    // copy header
+    memcpy(data, &logHdr, sizeof(logHdr));
+
+    // copy string and null terminate
+    strncpy(data + sizeof(CowLogHdr), logStr.c_str(), logStr.length());
+    data[sizeof(CowLogHdr) + logHdr.dataLen] = '\0';
+
+    int ret = sendto(GetInstance()->m_LogSocket, &data, sizeof(data),
+        0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer), sizeof(m_LogServer));
     if (ret == -1)
     {
-        std::cout << "errno: " << strerror(errno) << std::endl;
+        std::cout << "StrLog() errno: " << strerror(errno) << std::endl;
     }
 }
 
@@ -115,19 +143,26 @@ void CowLogger::RemoteLog(int32_t logVal)
  **/
 void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I, double D)
 {
-    double pidArray[5] = {setPoint, procVar, P, I, D};
-    // int ret = 0;
-    // std::cout << "PIDRemoteLog():" << std::endl;
-    // std::cout << setPoint << std::endl;
-    // std::cout << procVar << std::endl;
-    // std::cout << P << std::endl;
-    // std::cout << I << std::endl;
-    // std::cout << D << std::endl;
-    int ret = sendto(GetInstance()->m_LogSocket, &pidArray, sizeof(pidArray),
+    CowLogger::CowLogHdr logHdr;
+    logHdr.proto = CowLib::CowLogger::PID_LOG;
+    logHdr.dataLen = sizeof(CowPIDLog);
+
+    CowLogger::CowPIDLog pidPacket;
+    pidPacket.setPoint = setPoint;
+    pidPacket.procVar = procVar;
+    pidPacket.pVar = P;
+    pidPacket.iVar = I;
+    pidPacket.dVar = D;
+
+    char data[sizeof(CowLogHdr) + sizeof(CowPIDLog)];
+    memcpy(data,&logHdr,sizeof(CowLogHdr));
+    memcpy(data+sizeof(CowLogHdr),&pidPacket,sizeof(CowPIDLog));
+    
+    int ret = sendto(GetInstance()->m_LogSocket, &data, sizeof(data),
         0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer), sizeof(m_LogServer));
     if (ret == -1)
     {
-        std::cout << "errno: " << strerror(errno) << std::endl;
+        std::cout << "PIDRemoteLog() errno: " << strerror(errno) << std::endl;
     }
 }
 
