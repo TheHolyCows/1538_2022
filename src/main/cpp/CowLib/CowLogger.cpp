@@ -117,14 +117,14 @@ void CowLogger::StrRemoteLog(std::string logStr)
     logHdr.proto = CowLib::CowLogger::STR_LOG;
     logHdr.dataLen = logStr.length() + 1;
 
-    char data[sizeof(CowLogHdr) + logHdr.dataLen + 1];
+    void* data = malloc(sizeof(CowLogHdr) + logHdr.dataLen + 1);
 
     // copy header
     memcpy(data, &logHdr, sizeof(logHdr));
 
     // copy string and null terminate
-    strncpy(data + sizeof(CowLogHdr), logStr.c_str(), logStr.length());
-    data[sizeof(CowLogHdr) + logHdr.dataLen] = '\0';
+    memcpy(((char*) data) + sizeof(CowLogHdr), logStr.c_str(), logStr.length());
+    ((char*) data)[sizeof(CowLogHdr) + logStr.length()] = '\0';
 
     int ret = sendto(GetInstance()->m_LogSocket, &data, sizeof(data),
         0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer), sizeof(m_LogServer));
@@ -154,9 +154,9 @@ void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I
     pidPacket.iVar = I;
     pidPacket.dVar = D;
 
-    char data[sizeof(CowLogHdr) + sizeof(CowPIDLog)];
+    void* data = malloc(sizeof(CowLogHdr) + sizeof(CowPIDLog));
     memcpy(data,&logHdr,sizeof(CowLogHdr));
-    memcpy(data+sizeof(CowLogHdr),&pidPacket,sizeof(CowPIDLog));
+    memcpy(((char*) data)+sizeof(CowLogHdr),&pidPacket,sizeof(CowPIDLog));
     
     int ret = sendto(GetInstance()->m_LogSocket, &data, sizeof(data),
         0, reinterpret_cast<sockaddr *>(&GetInstance()->m_LogServer), sizeof(m_LogServer));
