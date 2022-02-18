@@ -1,8 +1,8 @@
 //==================================================
 // Copyright (C) 2022 Team 1538 / The Holy Cows
 // CowLogger.h
-// author: kchau
-// created on: 2016-1-21
+// author: jon-bassi
+// created on: 2022-1-16
 //==================================================
 
 #include "CowLogger.h"

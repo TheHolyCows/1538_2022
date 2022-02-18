@@ -47,6 +47,7 @@ void OperatorController::handle(CowRobot *bot)
 
     // Intakes, Indexers, and Conveyor
     // If either exhaust button is pressed, call ExhaustBalls with the coresponding bools
+    // TODO: come back to this logic - shooting while intaking is broken
     if (m_CB->GetOperatorButton(5) || m_CB->GetOperatorButton(7))
     {
         bot->ExhaustBalls(1, m_CB->GetOperatorButton(5), m_CB->GetOperatorButton(7));
