@@ -94,6 +94,7 @@ void CowBase::DisabledPeriodic()
 
             /*
              * POSITION FIRST_OWNERSHIP SECOND_OWNERSHIP DRIVE
+             * iterates over AutoModes
              */
             AutoModes::GetInstance()->NextMode();
         }

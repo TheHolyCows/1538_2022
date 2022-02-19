@@ -55,5 +55,5 @@ void AutoModes::NextMode()
 	}
 	std::string str(GetName());
 	std::string temp = "Auto mode: " + str;
-	FRC_ReportError(frc::err::Error, "%s", temp);
+	FRC_ReportError(frc::err::Error, "{}", temp);
 }

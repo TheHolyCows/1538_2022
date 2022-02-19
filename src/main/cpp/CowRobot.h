@@ -228,10 +228,10 @@ public:
 
     void ResetEncoders()
     {
-        //m_LeftDriveA->SetSensorPosition(0);
-        //m_LeftDriveB->SetSensorPosition(0);
+        m_LeftDriveA->SetSensorPosition(0);
+        m_LeftDriveB->SetSensorPosition(0);
         m_RightDriveA->SetSensorPosition(0);
-        //m_RightDriveB->SetSensorPosition(0);
+        m_RightDriveB->SetSensorPosition(0);
     }
 
     void handle();

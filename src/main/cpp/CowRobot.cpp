@@ -168,8 +168,8 @@ void CowRobot::handle()
     m_IntakeR->handle();
     m_Conveyor->handle();
     m_Shooter->handle();
-    m_Canifier->Handle();
-
+    //m_Canifier->Handle();
+    
     m_DSUpdateCount++;
 }
 

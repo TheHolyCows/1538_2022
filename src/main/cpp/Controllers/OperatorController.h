@@ -6,7 +6,6 @@
 #define __OPERATOR_CONTROLLER_H__
 
 #include <math.h>
-#include <wpi/deprecated.h>
 #include "../CowRobot.h"
 #include "../CowControlBoard.h"
 #include "../CowLib/CowLib.h"
