@@ -19,7 +19,6 @@ namespace CowLib {
 
 class CowLogger {
 public:
-    CowLogger();
     virtual ~CowLogger();
     static void Log(std::string key, double value);
     static CowLogger* GetInstance();
@@ -35,10 +34,11 @@ public:
     };
 
 private:
-    std::thread *m_Thread;
-    static std::mutex m_Mutex;
-    static std::queue<std::pair<std::string, double>> m_BufferQueue;
-    static std::ofstream m_OutputFile;
+    CowLogger();
+    // std::thread *m_Thread;
+    // static std::mutex m_Mutex;
+    // static std::queue<std::pair<std::string, double>> m_BufferQueue;
+    // static std::ofstream m_OutputFile;
     static CowLogger* m_Instance;
     struct sockaddr_in m_LogServer;
     int m_LogSocket;

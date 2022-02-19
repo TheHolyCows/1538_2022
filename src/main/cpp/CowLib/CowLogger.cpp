@@ -8,31 +8,16 @@
 #include "CowLogger.h"
 #include <iostream>
 #include <time.h>
-#include "CowTimer.h"
 #include <errno.h>
+#include <string.h>
 
 namespace CowLib
 {
 
-CowLogger* CowLogger::m_Instance = 0;
-
-std::mutex CowLogger::m_Mutex;
-std::ofstream CowLogger::m_OutputFile;
-std::queue<std::pair<std::string, double>> CowLogger::m_BufferQueue;
+CowLogger* CowLogger::m_Instance = NULL;
 
 CowLogger::CowLogger()
 {
-    // m_Thread = new std::thread(CowLogger::Handle);
-    // time_t rawTime;
-    // struct tm *timeInfo;
-    // time(&rawTime);
-    // timeInfo = localtime(&rawTime);
-    // char buffer[80];
-    // strftime(buffer, 80, "/home/lvuser/logs/DebugLog_%h_%d_%j_%H%M.txt", timeInfo);
-    // m_OutputFile.open(buffer);
-    // std::cout << "Opened file for debugging" << std::endl;
-
-
     // create sock stuff - using TCP is that too much overhead?
     m_LogSocket = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
 
@@ -49,15 +34,12 @@ CowLogger::CowLogger()
 
 CowLogger::~CowLogger()
 {
-    m_OutputFile.close();
-    m_Thread->detach();
-    delete m_Thread;
-
+    return;
 }
 
 CowLogger* CowLogger::GetInstance()
 {
-    if(m_Instance == 0)
+    if(m_Instance == NULL)
     {
         m_Instance = new CowLogger();
     }
@@ -67,38 +49,37 @@ CowLogger* CowLogger::GetInstance()
 
 void CowLogger::Handle()
 {
-    while(true)
-    {
-        //std::cout << "Test from CowWebDebugger" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    // while(true)
+    // {
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        if(!m_BufferQueue.empty())
-        {
-            m_Mutex.lock();
-            while(!m_BufferQueue.empty())
-            {
-                std::pair<std::string, double> toPrint = m_BufferQueue.front();
+    //     if(!m_BufferQueue.empty())
+    //     {
+    //         m_Mutex.lock();
+    //         while(!m_BufferQueue.empty())
+    //         {
+    //             std::pair<std::string, double> toPrint = m_BufferQueue.front();
 
-                std::string key = toPrint.first;
-                double value = toPrint.second;
-                m_OutputFile << (CowLib::CowTimer::GetFPGATimestamp()) << " " << key << ": " << value << std::endl;
-                m_BufferQueue.pop();
-            }
-            m_Mutex.unlock();
-        }
-    }
+    //             std::string key = toPrint.first;
+    //             double value = toPrint.second;
+    //             m_OutputFile << (CowLib::CowTimer::GetFPGATimestamp()) << " " << key << ": " << value << std::endl;
+    //             m_BufferQueue.pop();
+    //         }
+    //         m_Mutex.unlock();
+    //     }
+    // }
 }
 
 void CowLogger::Log(std::string key, double value)
 {
-    m_Mutex.lock();
-    m_BufferQueue.push(std::pair<std::string, double>(key, value));
-    m_Mutex.unlock();
+    // m_Mutex.lock();
+    // m_BufferQueue.push(std::pair<std::string, double>(key, value));
+    // m_Mutex.unlock();
 }
 
 /**
  * CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
- * WIP
+ * logs a variable amount of 32 bit data to our remote server
  **/ 
 void CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
 {
@@ -132,6 +113,8 @@ void CowLogger::StrRemoteLog(std::string logStr)
     {
         std::cout << "StrLog() errno: " << strerror(errno) << std::endl;
     }
+
+    free(data);
 }
 
 /**
@@ -164,6 +147,8 @@ void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I
     {
         std::cout << "PIDRemoteLog() errno: " << strerror(errno) << std::endl;
     }
+
+    free(data);
 }
 
 } /* namespace CowLib */
