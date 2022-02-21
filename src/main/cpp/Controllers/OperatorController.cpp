@@ -42,23 +42,24 @@ void OperatorController::handle(CowRobot *bot)
     }
 
     // Intake Position Switches
-    bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(2));
-    bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(3));
+    bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(8));
+    bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(10));
 
     // Intakes, Indexers, and Conveyor
     // If either exhaust button is pressed, call ExhaustBalls with the coresponding bools
     // TODO: come back to this logic - shooting while intaking is broken
-    if (m_CB->GetOperatorButton(5) || m_CB->GetOperatorButton(7))
+    // front exhaust and rear exhaust
+    if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6))
     {
-        bot->ExhaustBalls(1, m_CB->GetOperatorButton(5), m_CB->GetOperatorButton(7));
+        bot->ExhaustBalls(1, m_CB->GetOperatorButton(4), m_CB->GetOperatorButton(6));
     }
-    else if (m_CB->GetOperatorButton(4) || m_CB->GetOperatorButton(6)) // Same as exhaust
+    // front intake or rear intake
+    else if (m_CB->GetOperatorButton(7) || m_CB->GetOperatorButton(9)) // Same as exhaust
     {
-        bot->IntakeBalls(1, m_CB->GetOperatorButton(4), m_CB->GetOperatorButton(6));
+        bot->IntakeBalls(1, m_CB->GetOperatorButton(7), m_CB->GetOperatorButton(9));
     }
-    else if (m_CB->GetOperatorButton(8)) // Shoot
+    else if (m_CB->GetOperatorButton(5)) // Shoot
     {
-        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_TEST")); // Temporary
         bot->ShootBalls();                                     // Stops intakes, runs indexers and conveyor
     }
     else
@@ -67,18 +68,18 @@ void OperatorController::handle(CowRobot *bot)
         bot->StopRollers();
     }
 
-    if (m_CB->GetOperatorButton(11))
+    if (m_CB->GetOperatorButton(3))
     {
         // Somehow get distance to target and calculate hood angle and shooter speed
-        bot->GetShooter()->SetHoodPosition(0);
-        bot->GetShooter()->SetSpeed(0);
+        //bot->GetShooter()->SetHoodPosition(0);
+        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_TEST"));
     }
 
-    // Climber
-    if (m_CB->GetOperatorButton(12))
-    {
-        // Climb
-    }
+    // // Climber
+    // if (m_CB->GetOperatorButton(12))
+    // {
+    //     // Climb
+    // }
 
     // Shooter Switch
     // if (m_CB->GetOperatorButton(10))

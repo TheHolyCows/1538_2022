@@ -73,11 +73,11 @@ float Shooter::GetHoodPosition()
 
 void Shooter::handle()
 {
-    m_LogServer->PIDRemoteLog((double)m_SpeedShooter,
-                              (double)GetSpeedF(),
-                              m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
-                              m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
-                              m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
+    // m_LogServer->PIDRemoteLog((double)m_SpeedShooter,
+    //                           (double)GetSpeedF(),
+    //                           m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
+    //                           m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
+    //                           m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
 
     if (m_MotorShooter)
     {

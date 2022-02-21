@@ -15,7 +15,7 @@ Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, int soleno
     m_MotorIntake = new CowLib::CowMotorController(intakeMotor);
     m_MotorIndex = new CowLib::CowMotorController(indexMotor);
     m_SolenoidA = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelA);
-    m_SolenoidB = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelB);
+    //m_SolenoidB = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelB);
     m_IntakeSpeed = 0;
     m_IndexSpeed = 0;
 }
@@ -35,7 +35,7 @@ void Intake::handle()
 {
     // Extended
     m_SolenoidA->Set(m_IntakeExtended);
-    m_SolenoidB->Set(m_IntakeExtended);
+    //m_SolenoidB->Set(m_IntakeExtended);
 
     // Intake
     if (m_SolenoidA->Get() && m_SolenoidB->Get())
@@ -56,5 +56,5 @@ Intake::~Intake()
     delete m_MotorIntake;
     delete m_MotorIndex;
     delete m_SolenoidA;
-    delete m_SolenoidB;
+    //delete m_SolenoidB;
 }

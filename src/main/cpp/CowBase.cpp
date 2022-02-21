@@ -113,7 +113,7 @@ void CowBase::AutonomousPeriodic()
 
 void CowBase::TeleopPeriodic()
 {
-    m_Bot->handle();
+    //m_Bot->handle();
     //std::cout << "gyro angle: " << m_Bot->GetGyro()->GetAngle() << std::endl;
 
 //    if(m_Display)

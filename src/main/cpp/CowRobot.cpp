@@ -19,8 +19,8 @@ CowRobot::CowRobot()
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
 
-    m_IntakeF = new Intake(7, 5, 30, 30);
-    m_IntakeR = new Intake(8, 6, 30, 30);
+    m_IntakeF = new Intake(7, 5, 0, 0);
+    m_IntakeR = new Intake(8, 6, 1, 0);
 
     m_Conveyor = new Conveyor(9, 10);
 
@@ -42,7 +42,7 @@ CowRobot::CowRobot()
     //m_Gyro->Reset();
     m_PowerDistributionPanel = new frc::PowerDistribution();
 
-    m_Canifier = new CowLib::CowCanifier(15);
+    //m_Canifier = new CowLib::CowCanifier(15);
 
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
@@ -55,7 +55,7 @@ CowRobot::CowRobot()
     m_TipTime = 0;
     m_Tipping = false;
 
-    m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
+    //m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
     //m_CameraServer = frc::CameraServer::GetInstance();
     //cs::UsbCamera temp = m_CameraServer->StartAutomaticCapture();
     //
