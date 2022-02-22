@@ -10,20 +10,22 @@
 #include <frc/Timer.h>
 #include <frc/Solenoid.h>
 
-Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, int solenoidChannelB)
+Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scale)
 {
     m_MotorIntake = new CowLib::CowMotorController(intakeMotor);
     m_MotorIndex = new CowLib::CowMotorController(indexMotor);
-    m_SolenoidA = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelA);
-    //m_SolenoidB = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelB);
+
+    m_Scale = scale;
+
+    m_Solenoid = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelA);
     m_IntakeSpeed = 0;
     m_IndexSpeed = 0;
 }
 
 void Intake::SetSpeed(float intakeSpeed, float indexerSpeed)
 {
-    m_IntakeSpeed = intakeSpeed;
-    m_IndexSpeed = indexerSpeed;
+    m_IntakeSpeed = intakeSpeed * m_Scale;
+    m_IndexSpeed = indexerSpeed * m_Scale;
 }
 
 void Intake::SetExtended(bool extended)
@@ -33,12 +35,11 @@ void Intake::SetExtended(bool extended)
 
 void Intake::handle()
 {
-    // Extended
-    m_SolenoidA->Set(m_IntakeExtended);
-    //m_SolenoidB->Set(m_IntakeExtended);
+    // Pneumatics
+    m_Solenoid->Set(m_IntakeExtended);
 
     // Intake
-    if (m_SolenoidA->Get() && m_SolenoidB->Get())
+    if (m_Solenoid->Get())
     {
         m_MotorIntake->Set(m_IntakeSpeed);
     }
@@ -55,6 +56,6 @@ Intake::~Intake()
 {
     delete m_MotorIntake;
     delete m_MotorIndex;
-    delete m_SolenoidA;
+    delete m_Solenoid;
     //delete m_SolenoidB;
 }

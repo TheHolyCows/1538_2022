@@ -19,8 +19,8 @@ CowRobot::CowRobot()
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
 
-    m_IntakeF = new Intake(7, 5, 0, 0);
-    m_IntakeR = new Intake(8, 6, 1, 0);
+    m_IntakeF = new Intake(7, 5, 1, -1);
+    m_IntakeR = new Intake(8, 6, 0, 1);
 
     m_Conveyor = new Conveyor(9, 10);
 
@@ -143,6 +143,9 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        // std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
+        // std::cout << "Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
+
         //5 is drive
         //4 s1
         //3 s2
@@ -169,7 +172,7 @@ void CowRobot::handle()
     m_Conveyor->handle();
     m_Shooter->handle();
     //m_Canifier->Handle();
-    
+
     m_DSUpdateCount++;
 }
 
@@ -311,10 +314,10 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
     }
 
     turn *= sensitivity;
-    turn = -turn;
+    // turn = -turn;
 
-    float left_power = CowLib::LimitMix(-speed - turn);
-    float right_power = CowLib::LimitMix(-speed + turn);
+    float left_power = CowLib::LimitMix(speed - turn);
+    float right_power = CowLib::LimitMix(speed + turn);
 
     DriveLeftRight(left_power, right_power);
 }

@@ -25,7 +25,7 @@ public:
     void SetHoodPosition(float position);
     float GetSetpointF()
     {
-        return m_SpeedShooter;
+        return m_Setpoint;
     }
     float GetSetpointH()
     {
@@ -53,6 +53,7 @@ private:
     CowLib::CowLPF *m_RampLPF_F;
 
     float m_SpeedShooter;
+    float m_Setpoint;
 
     float m_HoodPosition;
     float m_HoodUpLimit;

@@ -43,7 +43,7 @@ private:
     // CowLib::CowMotorController *m_ShooterWheelF;
     // CowLib::CowMotorController *m_ShooterWheelB;
 
-    CowLib::CowCanifier *m_Canifier;
+    // CowLib::CowCanifier *m_Canifier;
 
     CowLib::CowGyro *m_Gyro;
 
@@ -134,6 +134,7 @@ public:
     // {
     //     return m_Arm;
     // }
+
     Intake *GetIntakeF()
     {
         return m_IntakeF;
@@ -150,12 +151,12 @@ public:
     {
         return m_Shooter;
     }
-    CowLib::CowCanifier *GetCanifier()
-    {
-        return m_Canifier;
-    }
-    // CowLib::CowMotorController *GetShooterF()
+    // CowLib::CowCanifier *GetCanifier()
     // {
+    //     return m_Canifier;
+    // }
+    // CowLib::CowMotorController *GetShooterF()
+    //f {
     //     return m_ShooterWheelF;
     // }
     // CowLib::CowMotorController *GetShooterB()
@@ -203,11 +204,15 @@ public:
 
     void ShootBalls()
     {
-        if (fabs(m_Shooter->GetSpeedF() - m_Shooter->GetSetpointF()) <= CONSTANT("SHOOTER_SPEED_TOLERANCE"))
+        if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
         {
             GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
             GetIntakeF()->SetSpeed(0, CONSTANT("INDEXER_ON"));
             GetIntakeR()->SetSpeed(0, CONSTANT("INDEXER_ON"));
+        }
+        else
+        {
+            GetConveyor()->SetSpeed(GetConveyor()->GetLowerSpeed(), 0);
         }
     }
 

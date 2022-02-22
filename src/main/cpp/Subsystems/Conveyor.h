@@ -27,6 +27,11 @@ public:
     void SetSpeed(float speedLower, float speedUpper);
     void handle();
     virtual ~Conveyor();
+
+    float GetLowerSpeed()
+    {
+        return -m_SpeedLower;
+    }
 };
 
 #endif /* SRC_SUSBSYTEMS_CONVEYOR_H_ */

@@ -18,7 +18,7 @@ Shooter::Shooter(int shooterMotor, int hoodMotor)
     m_MotorHood = new CowLib::CowMotorController(hoodMotor);
     m_MotorHood->SetControlMode(CowLib::CowMotorController::MOTIONMAGIC);
     m_HoodPosition = 0;
-    m_MotorHood->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_MotorHood->SetNeutralMode(CowLib::CowMotorController::BRAKE);
 
     ResetConstants();
 
@@ -28,24 +28,25 @@ Shooter::Shooter(int shooterMotor, int hoodMotor)
 
 void Shooter::SetSpeed(float speedShooter)
 {
+    m_Setpoint = speedShooter;
     speedShooter = (speedShooter * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
     m_SpeedShooter = speedShooter;
 }
 
 void Shooter::SetHoodPosition(float position)
 {
-    if (position < m_HoodDownLimit)
-    {
-        m_HoodPosition = m_HoodDownLimit;
-    }
-    else if (position > m_HoodUpLimit)
-    {
-        m_HoodPosition = m_HoodUpLimit;
-    }
-    else
-    {
-        m_HoodPosition = position;
-    }
+    // if (position < m_HoodDownLimit)
+    // {
+    //     m_HoodPosition = m_HoodDownLimit;
+    // }
+    // else if (position > m_HoodUpLimit)
+    // {
+    //     m_HoodPosition = m_HoodUpLimit;
+    // }
+    // else
+    // {
+    m_HoodPosition = position;
+    // }
 }
 
 void Shooter::ResetConstants()
@@ -73,11 +74,11 @@ float Shooter::GetHoodPosition()
 
 void Shooter::handle()
 {
-    // m_LogServer->PIDRemoteLog((double)m_SpeedShooter,
-    //                           (double)GetSpeedF(),
-    //                           m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
-    //                           m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
-    //                           m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
+    m_LogServer->PIDRemoteLog((double)m_SpeedShooter,
+                              (double)GetSpeedF(),
+                              m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
+                              m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
+                              m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
 
     if (m_MotorShooter)
     {

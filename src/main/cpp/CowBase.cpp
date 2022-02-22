@@ -3,12 +3,11 @@
 #include <iostream>
 
 CowBase::CowBase()
-    :
-    m_ControlBoard(new CowControlBoard()),
-    m_OpController(new OperatorController(m_ControlBoard)),
-    m_AutoController(new AutoModeController()),
-    m_Constants(CowConstants::GetInstance())
-{    
+    : m_ControlBoard(new CowControlBoard()),
+      m_OpController(new OperatorController(m_ControlBoard)),
+      m_AutoController(new AutoModeController()),
+      m_Constants(CowConstants::GetInstance())
+{
     CowConstants::GetInstance()->RestoreData();
     m_Bot = new CowRobot();
 
@@ -79,16 +78,16 @@ void CowBase::DisabledPeriodic()
 {
     //m_Bot->GyroHandleCalibration();
 
-    if(m_Display)
+    if (m_Display)
     {
         m_Display->DisplayPeriodic();
     }
 
-    if(m_ControlBoard->GetAutoSelectButton())
+    if (m_ControlBoard->GetAutoSelectButton())
     {
         m_Constants->RestoreData();
 
-        if(m_ControlBoard->GetDriveButton(1))
+        if (m_ControlBoard->GetDriveButton(1))
         {
             m_Bot->Reset();
 
@@ -99,11 +98,11 @@ void CowBase::DisabledPeriodic()
             AutoModes::GetInstance()->NextMode();
         }
     }
-   if(m_Bot)
-   {
-	//m_Bot->GetArm()->DisabledCalibration();
-   }
-//    m_Bot->PrintToDS();
+    if (m_Bot)
+    {
+        //m_Bot->GetArm()->DisabledCalibration();
+    }
+    //    m_Bot->PrintToDS();
 }
 
 void CowBase::AutonomousPeriodic()
@@ -113,13 +112,13 @@ void CowBase::AutonomousPeriodic()
 
 void CowBase::TeleopPeriodic()
 {
-    //m_Bot->handle();
+    m_Bot->handle();
     //std::cout << "gyro angle: " << m_Bot->GetGyro()->GetAngle() << std::endl;
 
-//    if(m_Display)
-//    {
-//        m_Display->DisplayPeriodic();
-//    }
+    //    if(m_Display)
+    //    {
+    //        m_Display->DisplayPeriodic();
+    //    }
 }
 
 int main() { return frc::StartRobot<CowBase>(); }

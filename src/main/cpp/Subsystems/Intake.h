@@ -19,14 +19,14 @@ class Intake
 private:
     CowLib::CowMotorController *m_MotorIntake;
     CowLib::CowMotorController *m_MotorIndex;
-    frc::Solenoid *m_SolenoidA;
-    frc::Solenoid *m_SolenoidB;
+    frc::Solenoid *m_Solenoid;
     float m_IntakeSpeed;
     float m_IndexSpeed;
     bool m_IntakeExtended;
+    float m_Scale;
 
 public:
-    Intake(int intakeMotor, int indexMotor, int solenoidChannelA, int solenoidChannelB);
+    Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scale);
     void SetSpeed(float intakeSpeed, float indexSpeed);
     void SetExtended(bool extended);
     bool GetExtended()

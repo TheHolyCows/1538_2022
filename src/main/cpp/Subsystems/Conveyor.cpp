@@ -13,6 +13,10 @@ Conveyor::Conveyor(int upperMotor, int lowerMotor)
 {
     m_MotorUpper = new CowLib::CowMotorController(upperMotor);
     m_MotorLower = new CowLib::CowMotorController(lowerMotor);
+
+    m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_MotorLower->SetNeutralMode(CowLib::CowMotorController::COAST);
+
     m_SpeedUpper = 0;
     m_SpeedLower = 0;
 
@@ -23,8 +27,8 @@ Conveyor::Conveyor(int upperMotor, int lowerMotor)
 
 void Conveyor::SetSpeed(float speedUpper, float speedLower)
 {
-    m_SpeedUpper = speedUpper;
-    m_SpeedLower = speedLower;
+    m_SpeedUpper = -speedUpper;
+    m_SpeedLower = -speedLower;
 }
 
 void Conveyor::handle()
