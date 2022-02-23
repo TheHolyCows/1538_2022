@@ -207,8 +207,8 @@ public:
         if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
         {
             GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
-            GetIntakeF()->SetSpeed(0, CONSTANT("INDEXER_ON"));
-            GetIntakeR()->SetSpeed(0, CONSTANT("INDEXER_ON"));
+            GetIntakeF()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
+            GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
         }
         else
         {

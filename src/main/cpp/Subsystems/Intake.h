@@ -28,6 +28,8 @@ private:
 public:
     Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scale);
     void SetSpeed(float intakeSpeed, float indexSpeed);
+    void SetIntakeSpeed(float speed);
+    void SetIndexSpeed(float speed);
     void SetExtended(bool extended);
     bool GetExtended()
     {

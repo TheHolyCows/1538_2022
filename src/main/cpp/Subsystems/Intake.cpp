@@ -22,10 +22,18 @@ Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scal
     m_IndexSpeed = 0;
 }
 
-void Intake::SetSpeed(float intakeSpeed, float indexerSpeed)
+void Intake::SetSpeed(float intakeSpeed, float indexSpeed)
 {
     m_IntakeSpeed = intakeSpeed * m_Scale;
-    m_IndexSpeed = indexerSpeed * m_Scale;
+    m_IndexSpeed = indexSpeed * m_Scale;
+}
+void Intake::SetIntakeSpeed(float speed)
+{
+    m_IntakeSpeed = speed * m_Scale;
+}
+void Intake::SetIndexSpeed(float speed)
+{
+    m_IndexSpeed = speed * m_Scale;
 }
 
 void Intake::SetExtended(bool extended)
