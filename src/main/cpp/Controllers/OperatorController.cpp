@@ -6,8 +6,6 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 {
 }
 
-float shooterSpeed = 0;
-
 void OperatorController::handle(CowRobot *bot)
 {
     // float r_color = m_CB->GetOperatorGamepadAxis(2);
@@ -59,7 +57,17 @@ void OperatorController::handle(CowRobot *bot)
     // front intake or rear intake
     else if (m_CB->GetOperatorButton(7) || m_CB->GetOperatorButton(9)) // Same as exhaust
     {
-        bot->IntakeBalls(1, m_CB->GetOperatorButton(7), m_CB->GetOperatorButton(9));
+        // Shoot while intaking (not the most elegant solution)
+        if (m_CB->GetOperatorButton(5))
+        {
+            bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
+            bot->GetIntakeF()->SetSpeed(CONSTANT("INTAKE_ON"), CONSTANT("INDEXER_ON"));
+            bot->GetIntakeR()->SetSpeed(CONSTANT("INTAKE_ON"), CONSTANT("INDEXER_ON"));
+        }
+        else
+        {
+            bot->IntakeBalls(1, m_CB->GetOperatorButton(7), m_CB->GetOperatorButton(9));
+        }
     }
     else if (m_CB->GetOperatorButton(5)) // Shoot
     {
@@ -72,8 +80,18 @@ void OperatorController::handle(CowRobot *bot)
 
     if (m_CB->GetOperatorButton(3))
     {
-        // bot->GetShooter()->SetHoodPosition(0);
-        bot->GetShooter()->SetSpeed(shooterSpeed);
+        if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+        {
+            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+        }
+        else if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
+        {
+            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+        }
+        else
+        {
+            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+        }
     }
     else
     {
@@ -83,11 +101,9 @@ void OperatorController::handle(CowRobot *bot)
     if (m_CB->GetOperatorButton(1))
     {
         bot->GetShooter()->SetHoodPosition(CONSTANT("HOOD_UP"));
-        shooterSpeed = CONSTANT("SHOOTER_SPEED_UP");
     }
     else if (m_CB->GetOperatorButton(2))
     {
         bot->GetShooter()->SetHoodPosition(CONSTANT("HOOD_DOWN"));
-        shooterSpeed = CONSTANT("SHOOTER_SPEED_DOWN");
     }
 }

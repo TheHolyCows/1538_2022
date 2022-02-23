@@ -16,10 +16,11 @@ AutoModes::AutoModes()
 {
 	// Set up our selection order
 	m_Modes["Nothing"];
-	m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, INTAKE_STOP, false, 1));
-	// m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_UP"), INTAKE_STOP, false, 1));
+	m_Modes["Nothing"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 1));
 
-	// m_Modes["Test"];
+	m_Modes["Test"];
+	m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 1));
+	m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, true, false, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 1));
 	// m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
 	// m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, CONSTANT("ARM_DOWN"), INTAKE_STOP, false, 1));
 

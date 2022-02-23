@@ -41,7 +41,9 @@ public:
     double m_EncoderCount;
     double m_Heading;
     double m_Speed;
-    // double m_ArmPosition;
+    bool m_FrontIntakeExtended;
+    bool m_RearIntakeExtended;
+    double m_HoodPosition;
     bool m_Shooter;
     double m_Timeout;
 
@@ -50,20 +52,28 @@ public:
                      m_EncoderCount(0),
                      m_Heading(0),
                      m_Speed(0),
+                     m_FrontIntakeExtended(false),
+                     m_RearIntakeExtended(false),
+                     m_HoodPosition(0),
                      m_Shooter(false),
                      m_Timeout(0)
     {
     }
 
     RobotCommand(e_RobotCommand cmd,
-                 double encoder, double heading,
-                 double speed, e_IntakeMode intakeMode, bool shooterOn, double timeout) : m_Command(cmd),
-                                                                                          m_EncoderCount(encoder),
-                                                                                          m_Heading(heading),
-                                                                                          m_Speed(speed),
-                                                                                          m_IntakeMode(intakeMode),
-                                                                                          m_Shooter(shooterOn),
-                                                                                          m_Timeout(timeout)
+                 double encoder, double heading, double speed,
+                 bool frontIntakeExtended, bool rearIntakeExtended,
+                 e_IntakeMode intakeMode, double hoodPosition,
+                 bool shooterOn, double timeout) : m_Command(cmd),
+                                                   m_EncoderCount(encoder),
+                                                   m_Heading(heading),
+                                                   m_Speed(speed),
+                                                   m_FrontIntakeExtended(frontIntakeExtended),
+                                                   m_RearIntakeExtended(rearIntakeExtended),
+                                                   m_IntakeMode(intakeMode),
+                                                   m_HoodPosition(hoodPosition),
+                                                   m_Shooter(shooterOn),
+                                                   m_Timeout(timeout)
     {
     }
 };
@@ -74,7 +84,7 @@ public:
 class AutoModeController : public GenericController
 {
 private:
-    CowLib::CowTimer *m_Timer; //TODO: standardize timing
+    CowLib::CowTimer *m_Timer; // TODO: standardize timing
     std::deque<RobotCommand> m_CommandList;
     RobotCommand m_CurrentCommand;
 

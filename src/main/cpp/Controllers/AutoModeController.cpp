@@ -27,10 +27,17 @@ void AutoModeController::reset()
 void AutoModeController::handle(CowRobot *bot)
 {
 	bool result = false;
-	bot->GetLimelight()->PutNumber("pipeline", 0);
-	bot->GetLimelight()->PutNumber("ledMode", 1);
+
+	// Caused crash when in Op Controller
+	// bot->GetLimelight()->PutNumber("pipeline", 0);
+	// bot->GetLimelight()->PutNumber("ledMode", 1);
 
 	// bot->GetArm()->SetPosition(m_CurrentCommand.m_ArmPosition);
+
+	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
+	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
+	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
+
 	if (m_CurrentCommand.m_IntakeMode == INTAKE_F_IN)
 	{
 		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, false);
@@ -55,33 +62,27 @@ void AutoModeController::handle(CowRobot *bot)
 	{
 		bot->StopRollers();
 	}
+
 	if (m_CurrentCommand.m_Shooter)
 	{
-		// if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_GOAL"))
-		// {
-		//     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_GOAL"), CONSTANT("SHOOTER_B_GOAL"));
-		// }
-		// else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID"))
-		// {
-		//     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-		// }
-		// else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_MID_AUTO"))
-		// {
-		//     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_MID"), CONSTANT("SHOOTER_B_MID"));
-		// }
-		// else if (bot->GetArm()->GetSetpoint() == CONSTANT("ARM_FAR"))
-		// {
-		//     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_FAR"), CONSTANT("SHOOTER_B_FAR"));
-		// }
-		// else
-		// {
-		//     bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_F_ON"), CONSTANT("SHOOTER_B_ON"));
-		// }
+		if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+		{
+			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+		}
+		else if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
+		{
+			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+		}
+		else
+		{
+			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+		}
 	}
 	else
 	{
-		// bot->GetShooter()->SetSpeed(0,0);
+		bot->GetShooter()->SetSpeed(0);
 	}
+
 	// Run the command
 	switch (m_CurrentCommand.m_Command)
 	{
@@ -202,7 +203,7 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	}
 
-	//Check if this command is done / .value() because of seconds_t
+	// Check if this command is done / .value() because of seconds_t
 	if (result == true || m_CurrentCommand.m_Command == CMD_NULL || m_Timer->Get() > m_CurrentCommand.m_Timeout)
 	{
 		// This command is done, go get the next one
@@ -215,7 +216,7 @@ void AutoModeController::handle(CowRobot *bot)
 			m_CurrentCommand = m_CommandList.front();
 			m_OriginalEncoder = bot->GetDriveDistance();
 			m_CommandList.pop_front();
-			//bot->GetEncoder()->Reset();
+			// bot->GetEncoder()->Reset();
 
 			if (!m_CurrentCommand.m_Command == CMD_NULL)
 			{
