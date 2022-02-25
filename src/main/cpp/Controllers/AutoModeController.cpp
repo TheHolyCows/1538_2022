@@ -32,27 +32,26 @@ void AutoModeController::handle(CowRobot *bot)
 	// bot->GetLimelight()->PutNumber("pipeline", 0);
 	// bot->GetLimelight()->PutNumber("ledMode", 1);
 
-	// bot->GetArm()->SetPosition(m_CurrentCommand.m_ArmPosition);
-
+	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
 	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
 
 	if (m_CurrentCommand.m_IntakeMode == INTAKE_F_IN)
 	{
-		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, false);
+		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false, CONSTANT("INTAKE_PERCENT_AUTO"));
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
-		bot->IntakeBalls(CONSTANT("INTAKE_PERCENT_AUTO"), false, true);
+		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true, CONSTANT("INTAKE_PERCENT_AUTO"));
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_F_OUT)
 	{
-		bot->ExhaustBalls(CONSTANT("INTAKE_PERCENT_AUTO"), true, false);
+		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false, CONSTANT("INTAKE_PERCENT_AUTO"));
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_OUT)
 	{
-		bot->ExhaustBalls(CONSTANT("INTAKE_PERCENT_AUTO"), false, true);
+		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true, CONSTANT("INTAKE_PERCENT_AUTO"));
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
 	{
@@ -65,18 +64,7 @@ void AutoModeController::handle(CowRobot *bot)
 
 	if (m_CurrentCommand.m_Shooter)
 	{
-		if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
-		{
-			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-		}
-		else if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
-		{
-			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
-		}
-		else
-		{
-			bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-		}
+		bot->RunShooter();
 	}
 	else
 	{
@@ -106,7 +94,7 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_TURN_INTAKE:
 	{
 		result = bot->TurnToHeading(m_CurrentCommand.m_Heading);
-		//bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
+		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
 
 		break;
 	}
@@ -120,7 +108,7 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_HOLD_DISTANCE:
 	{
 		bot->DriveDistanceWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_EncoderCount, m_CurrentCommand.m_Speed);
-		//bot->GetArm()->SetIntakeSpeed(-0.2);
+		// bot->GetArm()->SetIntakeSpeed(-0.2);
 
 		result = false;
 		break;
@@ -136,21 +124,21 @@ void AutoModeController::handle(CowRobot *bot)
 		float direction = 1;
 		if (m_OriginalEncoder > m_CurrentCommand.m_EncoderCount)
 		{
-			//We want to go backward
+			// We want to go backward
 			direction = -1;
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
-		//bot->GetArm()->SetIntakeSpeed(-0.2);
+		// bot->GetArm()->SetIntakeSpeed(-0.2);
 
-		if (direction == 1) //Going forward
+		if (direction == 1) // Going forward
 		{
 			if (bot->GetDriveDistance() > m_CurrentCommand.m_EncoderCount)
 			{
 				result = true;
 			}
 		}
-		else //Going backward
+		else // Going backward
 		{
 			if (bot->GetDriveDistance() < m_CurrentCommand.m_EncoderCount)
 			{
@@ -165,22 +153,22 @@ void AutoModeController::handle(CowRobot *bot)
 		float direction = 1;
 		if (m_OriginalEncoder > m_CurrentCommand.m_EncoderCount)
 		{
-			//We want to go backward
+			// We want to go backward
 			direction = -1;
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
 		//		bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
-		//bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
+		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
 
-		if (direction == 1) //Going forward
+		if (direction == 1) // Going forward
 		{
 			if (bot->GetDriveDistance() > m_CurrentCommand.m_EncoderCount)
 			{
 				result = true;
 			}
 		}
-		else //Going backward
+		else // Going backward
 		{
 			if (bot->GetDriveDistance() < m_CurrentCommand.m_EncoderCount)
 			{

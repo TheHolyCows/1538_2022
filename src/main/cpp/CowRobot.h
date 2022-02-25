@@ -28,6 +28,23 @@
 
 class CowRobot
 {
+public:
+    enum ConveyorMode
+    {
+        CONVEYOR_OFF = 0,
+        CONVEYOR_EXHAUST = 1,
+        CONVEYOR_INTAKE = 2,
+        CONVEYOR_SHOOT = 3
+    };
+
+    enum IntakeMode
+    {
+        INTAKE_OFF = 0,
+        INTAKE_EXHAUST = 1,
+        INTAKE_INTAKE = 2,
+        INTAKE_SHOOT = 3
+    };
+
 private:
     int m_DSUpdateCount;
 
@@ -59,6 +76,9 @@ private:
     Shooter *m_Shooter;
     // Intake *m_FeederF;
     // Intake *m_FeederB;
+
+    ConveyorMode m_ConveyorMode;
+    IntakeMode m_IntakeMode;
 
     float m_LeftDriveValue;
     float m_RightDriveValue;
@@ -106,7 +126,8 @@ public:
     void DriveLeftRight(float leftDriveValue, float rightDriveValue);
     bool TurnToHeading(double heading);
 
-    std::shared_ptr<nt::NetworkTable> GetLimelight()
+    std::shared_ptr<nt::NetworkTable>
+    GetLimelight()
     {
         return m_LimelightForward;
     }
@@ -156,7 +177,7 @@ public:
     //     return m_Canifier;
     // }
     // CowLib::CowMotorController *GetShooterF()
-    //f {
+    // f {
     //     return m_ShooterWheelF;
     // }
     // CowLib::CowMotorController *GetShooterB()
@@ -164,51 +185,70 @@ public:
     //     return m_ShooterWheelB;
     // }
 
-    // Handles both ends: if the bool is true, that side is activated
-    void IntakeBalls(double percentage, bool front, bool rear)
+    void SetConveyorMode(ConveyorMode mode, double percentage = 1.0)
     {
-        if (front || rear)
+        if (m_ConveyorMode < mode)
         {
-            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
+            m_ConveyorMode = mode;
         }
 
-        if (front)
+        switch (mode)
         {
-            GetIntakeF()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
-        }
-
-        if (rear)
-        {
-            GetIntakeR()->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
-        }
-    }
-
-    // Handles both ends: If the bool is true, that side is activated
-    void ExhaustBalls(double percentage, bool front, bool rear)
-    {
-        if (front || rear)
-        {
+        case CONVEYOR_OFF:
+            GetConveyor()->SetSpeed(0, 0);
+            break;
+        case CONVEYOR_EXHAUST:
             GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
-        }
-
-        if (front)
-        {
-            GetIntakeF()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
-        }
-
-        if (rear)
-        {
-            GetIntakeR()->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
+            break;
+        case CONVEYOR_INTAKE:
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
+            break;
+        case CONVEYOR_SHOOT:
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW") * percentage, CONSTANT("CONVEYOR_SHOOT_UP") * percentage);
+            break;
         }
     }
 
+    void SetIntakeMode(IntakeMode mode, bool rear, double percentage = 1.0)
+    {
+        Intake *intake = NULL;
+        if (rear)
+        {
+            intake = GetIntakeR();
+        }
+        else
+        {
+            intake = GetIntakeF();
+        }
+
+        if (m_IntakeMode < mode)
+        {
+            m_IntakeMode = mode;
+        }
+
+        switch (mode)
+        {
+        case INTAKE_OFF:
+            intake->SetSpeed(0, 0);
+            break;
+        case INTAKE_EXHAUST:
+            intake->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
+            break;
+        case INTAKE_INTAKE:
+            intake->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
+            break;
+        case INTAKE_SHOOT:
+            intake->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
+            break;
+        }
+    }
     void ShootBalls()
     {
         if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
         {
-            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW"), CONSTANT("CONVEYOR_SHOOT_UP"));
-            GetIntakeF()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
-            GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
+            SetConveyorMode(CONVEYOR_SHOOT);
+            SetIntakeMode(INTAKE_SHOOT, false);
+            SetIntakeMode(INTAKE_SHOOT, true);
         }
         else
         {
@@ -221,6 +261,23 @@ public:
         GetConveyor()->SetSpeed(0, 0);
         GetIntakeF()->SetSpeed(0, 0);
         GetIntakeR()->SetSpeed(0, 0);
+    }
+
+    // Sets shooter speed based on hood position
+    void RunShooter()
+    {
+        if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+        }
+        else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+        }
+        else
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DEFAULT"));
+        }
     }
 
     void UseLeftEncoder()

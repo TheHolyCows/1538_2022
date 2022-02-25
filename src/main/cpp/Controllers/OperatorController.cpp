@@ -46,49 +46,42 @@ void OperatorController::handle(CowRobot *bot)
     bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(SWITCH_FRONT_INTAKE));
     bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(SWITCH_REAR_INTAKE));
 
-    // Intakes, Indexers, and Conveyor
-    // If either exhaust button is pressed, call ExhaustBalls with the coresponding bools
-    // TODO: come back to this logic - shooting while intaking is impossible
-    // front exhaust and rear exhaust
-    if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST) || m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
+    // Front Intake / Exhaust
+    if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
     {
-        bot->ExhaustBalls(1, m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST), m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST));
+        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+        bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
     }
-    else if (m_CB->GetOperatorButton(BUTTON_SHOOT)) // Shoot
+    else if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
     {
-        bot->ShootBalls(); // Stops intakes, runs indexers and conveyor
-
-        // Intake while shooting
-        if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE) || m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
-        {
-            bot->GetIntakeF()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
-            bot->GetIntakeR()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
-        }
-    }
-    // front intake or rear intake
-    else if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE) || m_CB->GetOperatorButton(BUTTON_REAR_INTAKE)) // Same as exhaust
-    {
-        bot->IntakeBalls(1, m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE), m_CB->GetOperatorButton(BUTTON_REAR_INTAKE));
-    }
-    else
-    {
-        bot->StopRollers();
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false);
     }
 
+    // Rear Intake / Exhaust
+    if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
+    {
+        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+        bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true);
+    }
+    else if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
+    {
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
+    }
+
+    // Shooting
+    if (m_CB->GetOperatorButton(BUTTON_SHOOT))
+    {
+        bot->SetConveyorMode(CowRobot::CONVEYOR_SHOOT);
+        bot->SetIntakeMode(CowRobot::INTAKE_SHOOT, false);
+        bot->SetIntakeMode(CowRobot::INTAKE_SHOOT, true);
+    }
+
+    // Sets speed according to hood position
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
-        if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-        }
-        else if (bot->GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
-        }
-        else
-        {
-            bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-        }
+        bot->RunShooter();
     }
     else
     {

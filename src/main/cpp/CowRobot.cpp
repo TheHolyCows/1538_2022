@@ -39,10 +39,10 @@ CowRobot::CowRobot()
 
     m_Gyro = CowLib::CowGyro::GetInstance();
 
-    //m_Gyro->Reset();
+    // m_Gyro->Reset();
     m_PowerDistributionPanel = new frc::PowerDistribution();
 
-    //m_Canifier = new CowLib::CowCanifier(15);
+    // m_Canifier = new CowLib::CowCanifier(15);
 
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
@@ -55,13 +55,13 @@ CowRobot::CowRobot()
     m_TipTime = 0;
     m_Tipping = false;
 
-    //m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
-    //m_CameraServer = frc::CameraServer::GetInstance();
-    //cs::UsbCamera temp = m_CameraServer->StartAutomaticCapture();
+    // m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
+    // m_CameraServer = frc::CameraServer::GetInstance();
+    // cs::UsbCamera temp = m_CameraServer->StartAutomaticCapture();
     //
-    //std::cout << "Set pixelformat: " << temp.SetPixelFormat(cs::VideoMode::kYUYV) << std::endl;
-    //std::cout << "Set resolution: " << temp.SetResolution(CONSTANT("CAMERA_W"), CONSTANT("CAMERA_H")) << std::endl;
-    //std::cout << "Set framerate: " << temp.SetFPS(CONSTANT("CAMERA_FPS")) << std::endl;
+    // std::cout << "Set pixelformat: " << temp.SetPixelFormat(cs::VideoMode::kYUYV) << std::endl;
+    // std::cout << "Set resolution: " << temp.SetResolution(CONSTANT("CAMERA_W"), CONSTANT("CAMERA_H")) << std::endl;
+    // std::cout << "Set framerate: " << temp.SetFPS(CONSTANT("CAMERA_FPS")) << std::endl;
 
     m_Limelight_PID_P = 0;
     m_Limelight_PID_D = 0;
@@ -77,7 +77,7 @@ void CowRobot::Reset()
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
     m_MatchTime = 0;
-    //m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
+    // m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     m_Shooter->ResetConstants();
 }
 
@@ -107,10 +107,10 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
     pid += (m_Limelight_PID_D * CONSTANT("LIMELIGHT_X_KD"));
     DriveSpeedTurn(speed, pid, 0);
 
-    //Limelight has valid targets
+    // Limelight has valid targets
     if (GetLimelight()->GetNumber("tv", 0) == 1)
     {
-        //If the target area is larger than the threshold, we likely have the gamepiece or scored
+        // If the target area is larger than the threshold, we likely have the gamepiece or scored
         if (GetLimelight()->GetNumber("ta", 0) >= threshold)
         {
             return true;
@@ -131,7 +131,7 @@ void CowRobot::handle()
         return;
     }
 
-    //printf("Handling...\n");
+    // printf("Handling...\n");
     m_Controller->handle(this);
 
     // Default drive
@@ -146,18 +146,18 @@ void CowRobot::handle()
         // std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
         // std::cout << "Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
 
-        //5 is drive
-        //4 s1
-        //3 s2
-        //2 arm
-        //1 unused
+        // 5 is drive
+        // 4 s1
+        // 3 s2
+        // 2 arm
+        // 1 unused
 
-        //std::cout << "gyro: " <<  m_Gyro->GetAngle() << std::endl;
-        //std::cout << std::dec
-        //          << m_DriveEncoder->Get() << " "
-        //      << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
-        //std::cout << "drive distance: " << GetDriveDistance() << std::endl;
-        //std::cout << "match time (ours): " << m_MatchTime << std::endl;
+        // std::cout << "gyro: " <<  m_Gyro->GetAngle() << std::endl;
+        // std::cout << std::dec
+        //           << m_DriveEncoder->Get() << " "
+        //       << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
+        // std::cout << "drive distance: " << GetDriveDistance() << std::endl;
+        // std::cout << "match time (ours): " << m_MatchTime << std::endl;
     }
 
     // frc::SmartDashboard::PutNumber("Drive Distance", GetDriveDistance());
@@ -165,13 +165,13 @@ void CowRobot::handle()
     // frc::SmartDashboard::PutBoolean("Front Intake Deployed", GetIntakeF()->GetExtended());
     // frc::SmartDashboard::PutBoolean("Rear Intake Deployed", GetIntakeR()->GetExtended());
 
-    //m_LogServer->RemoteLog(m_Shooter->GetSpeedF());
+    // m_LogServer->RemoteLog(m_Shooter->GetSpeedF());
 
     m_IntakeF->handle();
     m_IntakeR->handle();
     m_Conveyor->handle();
     m_Shooter->handle();
-    //m_Canifier->Handle();
+    // m_Canifier->Handle();
 
     m_DSUpdateCount++;
 }
@@ -212,8 +212,8 @@ bool CowRobot::DriveDistanceWithHeading(double heading, double distance, double 
     double output = PID_P * error + PID_D * dError;
 
     double throttle = CowLib::LimitMix(output, speed);
-    //throttle *= -1;
-    //std::cout << "Drive request speed: " << throttle << std::endl;
+    // throttle *= -1;
+    // std::cout << "Drive request speed: " << throttle << std::endl;
 
     bool headingResult = DriveWithHeading(heading, throttle);
 
@@ -230,7 +230,7 @@ bool CowRobot::TurnToHeading(double heading)
     double dError = error - m_PreviousGyroError;
     double output = PID_P * error + PID_D * dError;
 
-    //speed *= -speed;
+    // speed *= -speed;
 
     DriveLeftRight(-output, output);
 
@@ -247,7 +247,7 @@ bool CowRobot::DriveWithHeading(double heading, double speed)
     double dError = error - m_PreviousGyroError;
     double output = PID_P * error + PID_D * dError;
 
-    //speed *= -speed;
+    // speed *= -speed;
 
     DriveLeftRight(speed - output, speed + output);
 
@@ -283,14 +283,14 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
 {
     // Linear degredation of steeering based off of velocity
 
-    //velocity *= 0.003;
+    // velocity *= 0.003;
     float temp_vel = speed;
     float sensitivity = 0;
 
     if (temp_vel < 0)
         temp_vel = -temp_vel;
 
-    //printf("Velocity: %f, stick: %f\r\n", velocity, temp_vel);
+    // printf("Velocity: %f, stick: %f\r\n", velocity, temp_vel);
 
     if (speed < 0.10 && speed > -0.10)
         speed = 0;
