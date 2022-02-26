@@ -78,7 +78,8 @@ private:
     // Intake *m_FeederB;
 
     ConveyorMode m_ConveyorMode;
-    IntakeMode m_IntakeMode;
+    IntakeMode m_IntakeModeF;
+    IntakeMode m_IntakeModeR;
 
     float m_LeftDriveValue;
     float m_RightDriveValue;
@@ -172,6 +173,7 @@ public:
     {
         return m_Shooter;
     }
+
     // CowLib::CowCanifier *GetCanifier()
     // {
     //     return m_Canifier;
@@ -192,7 +194,7 @@ public:
             m_ConveyorMode = mode;
         }
 
-        switch (mode)
+        switch (m_ConveyorMode)
         {
         case CONVEYOR_OFF:
             GetConveyor()->SetSpeed(0, 0);
@@ -209,7 +211,7 @@ public:
         }
     }
 
-    void SetIntakeMode(IntakeMode mode, bool rear, double percentage = 1.0)
+    void SetIntakeMode(IntakeMode currentMode, bool rear, double percentage = 1.0)
     {
         Intake *intake = NULL;
         if (rear)
@@ -221,12 +223,25 @@ public:
             intake = GetIntakeF();
         }
 
-        if (m_IntakeMode < mode)
+        IntakeMode *intakeMode = NULL;
+
+        if (rear)
         {
-            m_IntakeMode = mode;
+            intakeMode = &m_IntakeModeR;
+        }
+        else
+        {
+            intakeMode = &m_IntakeModeF;
         }
 
-        switch (mode)
+        // TODO: make m_intakeMode work
+
+        if (*intakeMode < currentMode)
+        {
+            *intakeMode = currentMode;
+        }
+
+        switch (*intakeMode)
         {
         case INTAKE_OFF:
             intake->SetSpeed(0, 0);
@@ -242,6 +257,24 @@ public:
             break;
         }
     }
+
+    void ResetConveyorMode()
+    {
+        m_ConveyorMode = CONVEYOR_OFF;
+    }
+
+    void ResetIntakeMode(bool rear)
+    {
+        if (rear)
+        {
+            m_IntakeModeR = INTAKE_OFF;
+        }
+        else
+        {
+            m_IntakeModeF = INTAKE_OFF;
+        }
+    }
+
     void ShootBalls()
     {
         if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
@@ -276,7 +309,8 @@ public:
         }
         else
         {
-            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DEFAULT"));
+            // GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DEFAULT"));
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
         }
     }
 

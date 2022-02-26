@@ -21,6 +21,7 @@ AutoModes::AutoModes()
 	m_Modes["Test"];
 	m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 1));
 	m_Modes["Test"].push_back(RobotCommand(CMD_TURN, 0, 90, 0.4, true, false, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 1));
+	m_Modes["Test"].push_back(RobotCommand(CMD_WAIT, 0, 90, 0, true, false, INTAKE_F_IN, CONSTANT("HOOD_UP"), false, 1));
 
 	// m_Modes["2 Ball - Opponent Trench Run"];
 	// m_Modes["2 Ball - Opponent Trench Run"].push_back(RobotCommand(CMD_TURN, 0, -29, 0.4, CONSTANT("ARM_MID_AUTO"), INTAKE_STOP, true, .6));
