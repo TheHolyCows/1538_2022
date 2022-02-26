@@ -46,10 +46,12 @@ void OperatorController::handle(CowRobot *bot)
     bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(SWITCH_FRONT_INTAKE));
     bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(SWITCH_REAR_INTAKE));
 
-    // Default conveyor and intake modes to off
+    // Resets variables to off but doesn't actually turn them off
     bot->ResetConveyorMode();
     bot->ResetIntakeMode(false);
     bot->ResetIntakeMode(true);
+
+    // Whenever SetConveyorMode or SetIntakeMode are called, only changes the mode if new value is higher priority
 
     // Front Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
@@ -62,10 +64,6 @@ void OperatorController::handle(CowRobot *bot)
         bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
     }
-    // else
-    // {
-    //     bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
-    // }
 
     // Rear Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
@@ -78,23 +76,14 @@ void OperatorController::handle(CowRobot *bot)
         bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true);
     }
-    // else
-    // {
-    //     bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
-    // }
 
     // Shooting
     if (m_CB->GetOperatorButton(BUTTON_SHOOT))
     {
         bot->ShootBalls();
     }
-    // else
-    // {
-    //    bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
-    //     bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
-    //     bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
-    // }
 
+    // If nothing ever changed the conveyor or intake modes, sets them to off
     bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
     bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
     bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);

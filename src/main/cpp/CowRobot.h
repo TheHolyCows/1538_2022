@@ -57,11 +57,6 @@ private:
     CowLib::CowMotorController *m_RightDriveA;
     CowLib::CowMotorController *m_RightDriveB;
 
-    // CowLib::CowMotorController *m_ShooterWheelF;
-    // CowLib::CowMotorController *m_ShooterWheelB;
-
-    // CowLib::CowCanifier *m_Canifier;
-
     CowLib::CowGyro *m_Gyro;
 
     frc::PowerDistribution *m_PowerDistributionPanel;
@@ -69,13 +64,10 @@ private:
     CowLib::CowAlphaNum *m_LEDDisplay;
     CowLib::CowLogger *m_WebServer;
 
-    // Arm *m_Arm;
     Intake *m_IntakeF;
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
-    // Intake *m_FeederF;
-    // Intake *m_FeederB;
 
     ConveyorMode m_ConveyorMode;
     IntakeMode m_IntakeModeF;
@@ -152,11 +144,6 @@ public:
         return CowLib::CowGyro::GetInstance();
     }
 
-    // Arm *GetArm()
-    // {
-    //     return m_Arm;
-    // }
-
     Intake *GetIntakeF()
     {
         return m_IntakeF;
@@ -178,20 +165,14 @@ public:
     // {
     //     return m_Canifier;
     // }
-    // CowLib::CowMotorController *GetShooterF()
-    // f {
-    //     return m_ShooterWheelF;
-    // }
-    // CowLib::CowMotorController *GetShooterB()
-    // {
-    //     return m_ShooterWheelB;
-    // }
 
-    void SetConveyorMode(ConveyorMode mode, double percentage = 1.0)
+    // Sets the conveyor mode the new mode if the new mode is higher priority
+    void SetConveyorMode(ConveyorMode newMode, double percentage = 1.0)
     {
-        if (m_ConveyorMode < mode)
+        // Only changes the conveyor mode if the new mode is higher priority
+        if (m_ConveyorMode < newMode)
         {
-            m_ConveyorMode = mode;
+            m_ConveyorMode = newMode;
         }
 
         switch (m_ConveyorMode)
@@ -211,8 +192,10 @@ public:
         }
     }
 
-    void SetIntakeMode(IntakeMode currentMode, bool rear, double percentage = 1.0)
+    // Sets the intake mode the new mode if the new mode is higher priority
+    void SetIntakeMode(IntakeMode newMode, bool rear, double percentage = 1.0)
     {
+        // Creates pointers to the intake and intake mode coresponding to the selected side
         Intake *intake = NULL;
         IntakeMode *intakeMode = NULL;
 
@@ -227,9 +210,10 @@ public:
             intakeMode = &m_IntakeModeF;
         }
 
-        if (*intakeMode < currentMode)
+        // Only changes the intake mode if the new mode is higher priority
+        if (*intakeMode < newMode)
         {
-            *intakeMode = currentMode;
+            *intakeMode = newMode;
         }
 
         switch (*intakeMode)
@@ -249,11 +233,13 @@ public:
         }
     }
 
+    // Sets conveyor mode to off without actually stoping conveyor
     void ResetConveyorMode()
     {
         m_ConveyorMode = CONVEYOR_OFF;
     }
 
+    // Sets intake mode to off without actually stoping intake
     void ResetIntakeMode(bool rear)
     {
         if (rear)
@@ -266,6 +252,7 @@ public:
         }
     }
 
+    // Waits for shooter speed tolerance, then sets conveyor and intake to shoot
     void ShootBalls()
     {
         if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
@@ -280,6 +267,7 @@ public:
         }
     }
 
+    // Stops conveyor and intakes
     void StopRollers()
     {
         GetConveyor()->SetSpeed(0, 0);
