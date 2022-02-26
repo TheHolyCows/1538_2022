@@ -214,27 +214,18 @@ public:
     void SetIntakeMode(IntakeMode currentMode, bool rear, double percentage = 1.0)
     {
         Intake *intake = NULL;
-        if (rear)
-        {
-            intake = GetIntakeR();
-        }
-        else
-        {
-            intake = GetIntakeF();
-        }
-
         IntakeMode *intakeMode = NULL;
 
         if (rear)
         {
+            intake = GetIntakeR();
             intakeMode = &m_IntakeModeR;
         }
         else
         {
+            intake = GetIntakeF();
             intakeMode = &m_IntakeModeF;
         }
-
-        // TODO: make m_intakeMode work
 
         if (*intakeMode < currentMode)
         {
