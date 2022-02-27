@@ -19,7 +19,9 @@ void OperatorController::handle(CowRobot *bot)
     bool doingTracking = false;
     if (m_CB->GetDriveButton(1))
     {
-        bot->DriveDistanceWithHeading(0, 12, 0.2);
+        // bot->DriveDistanceWithHeading(0, 12, 0.2);
+        bot->TurnToHeading(90);
+
         // doingTracking = true;
         // bool acquired = bot->DoVisionTracking(-CONSTANT("AUTO_TRACK_SPEED"));
         // if(acquired)

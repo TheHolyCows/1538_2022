@@ -64,7 +64,7 @@ void Shooter::ResetConstants()
 
 float Shooter::GetSpeedF()
 {
-    return (m_MotorShooter->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60;
+    return (m_MotorShooter->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
 }
 
 float Shooter::GetHoodPosition()
@@ -74,27 +74,28 @@ float Shooter::GetHoodPosition()
 
 void Shooter::handle()
 {
-    m_LogServer->PIDRemoteLog((double)m_SpeedShooter,
+    m_LogServer->PIDRemoteLog((double)GetSetpointF(),
                               (double)GetSpeedF(),
                               m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
                               m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
-                              m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
+                              m_MotorShooter->GetOutputCurrent());
+    //   m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
 
     if (m_MotorShooter)
     {
         if (m_SpeedShooter != 0)
         {
-            //float res = (m_MotorF->GetInternalMotor()->GetSelectedSensorVelocity())*(10.0/2048.0)*60;
-            //std::cout << "Speed: " << res << std::endl;
+            // float res = (m_MotorF->GetInternalMotor()->GetSelectedSensorVelocity())*(10.0/2048.0)*60;
+            // std::cout << "Speed: " << res << std::endl;
             m_MotorShooter->SetControlMode(CowLib::CowMotorController::SPEED);
 
-            //m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
+            // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
 
             m_MotorShooter->Set(m_SpeedShooter);
         }
         else
         {
-            //m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
+            // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
 
             m_MotorShooter->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 

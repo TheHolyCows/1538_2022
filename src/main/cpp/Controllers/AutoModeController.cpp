@@ -103,7 +103,7 @@ void AutoModeController::handle(CowRobot *bot)
 		result = bot->TurnToHeading(m_CurrentCommand.m_Heading);
 		break;
 	}
-	case CMD_TURN_INTAKE:
+	case CMD_TURN_INTAKE: // Why does this exist?
 	{
 		result = bot->TurnToHeading(m_CurrentCommand.m_Heading);
 		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));

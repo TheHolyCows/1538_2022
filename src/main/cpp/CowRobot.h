@@ -255,7 +255,9 @@ public:
     // Waits for shooter speed tolerance, then sets conveyor and intake to shoot
     void ShootBalls()
     {
-        if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE"))
+        // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
+        // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
+        if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE") && GetShooter()->GetSetpointF() != 0)
         {
             SetConveyorMode(CONVEYOR_SHOOT);
             SetIntakeMode(INTAKE_SHOOT, false);

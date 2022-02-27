@@ -26,11 +26,11 @@ CowRobot::CowRobot()
 
     m_Shooter = new Shooter(11, 12);
 
-    m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
-    m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
 
-    m_RightDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
-    m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_RightDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
 
     m_MatchTime = 0;
     m_StartTime = 0;
@@ -65,6 +65,8 @@ CowRobot::CowRobot()
 
     m_Limelight_PID_P = 0;
     m_Limelight_PID_D = 0;
+
+    std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 }
 
 void CowRobot::Reset()
@@ -143,8 +145,10 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        // std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
-        // std::cout << "Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
+        // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
+        // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
+        // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
+        // std::cout << "HOOD: Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 
         // 5 is drive
         // 4 s1
@@ -182,7 +186,7 @@ double CowRobot::GetDriveDistance()
     if (m_LeftDriveA)
     {
         position = m_LeftDriveA->GetPosition() / 13653.334;
-        position *= 18.8495;
+        position *= 12.56636;
     }
     return position;
 }
@@ -232,7 +236,7 @@ bool CowRobot::TurnToHeading(double heading)
 
     // speed *= -speed;
 
-    DriveLeftRight(-output, output);
+    DriveLeftRight(output, -output);
 
     m_PreviousGyroError = error;
 
