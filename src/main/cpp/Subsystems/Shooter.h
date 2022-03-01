@@ -23,6 +23,7 @@ public:
     bool AtTarget();
     void SetSpeed(float speedF);
     void SetHoodPosition(float position);
+    void ZeroHoodPosition(void);
     float GetSetpointF()
     {
         return m_Setpoint;
@@ -63,6 +64,9 @@ private:
     float m_HoodPosition;
     float m_HoodUpLimit;
     float m_HoodDownLimit;
+
+    bool m_ZeroingHood;
+    bool m_HoodZeroed;
 
     CowLib::CowLogger *m_LogServer;
 };

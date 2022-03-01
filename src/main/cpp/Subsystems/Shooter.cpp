@@ -23,6 +23,7 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
     m_MotorHood->SetControlMode(CowLib::CowMotorController::MOTIONMAGIC);
     m_HoodPosition = 0;
     m_MotorHood->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_HoodZeroed = false;
 
     ResetConstants();
 
@@ -39,18 +40,33 @@ void Shooter::SetSpeed(float speedShooter)
 
 void Shooter::SetHoodPosition(float position)
 {
-    // if (position < m_HoodDownLimit)
-    // {
-    //     m_HoodPosition = m_HoodDownLimit;
-    // }
-    // else if (position > m_HoodUpLimit)
-    // {
-    //     m_HoodPosition = m_HoodUpLimit;
-    // }
-    // else
-    // {
     m_HoodPosition = position;
-    // }
+}
+
+void Shooter::ZeroHoodPosition()
+{
+    if (m_HoodZeroed)
+    {
+        m_ZeroingHood = false;
+        return;
+    }
+    
+    float current = m_MotorHood->GetOutputCurrent();
+    if (current > 10.0)
+    {
+        m_ZeroingHood = false;
+        m_HoodZeroed = true;
+
+        float hoodDelta = m_HoodUpLimit - m_HoodDownLimit;
+
+        m_HoodDownLimit = hoodDelta < 0? m_HoodPosition - 100 : m_HoodPosition + 100;
+        m_HoodUpLimit = hoodDelta < 0? m_HoodDownLimit - fabs(hoodDelta) : m_HoodDownLimit + fabs(hoodDelta);
+        return;
+    }
+
+    // this may need to be reversed depending on motor orientation
+    m_HoodPosition += 5;
+    m_MotorHood->Set(m_HoodPosition);
 }
 
 void Shooter::ResetConstants()
@@ -68,11 +84,13 @@ void Shooter::ResetConstants()
 
 float Shooter::CalcShooterTolerance()
 {
+    // min incase i forget to update constants on the robot
     return std::min(m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE"), CONSTANT("SHOOTER_SPEED_UP"));
 }
 
 float Shooter::GetSpeedF()
 {
+    // *2 at the end of this statement for gear ratio on shooter
     return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
 }
 
@@ -89,23 +107,17 @@ void Shooter::handle()
                               m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
                               m_MotorShooter1->GetInternalMotor()->GetErrorDerivative());
 
-    if (m_MotorShooter1)
+    if (m_MotorShooter1 && m_MotorShooter2)
     {
         if (m_SpeedShooter != 0)
         {
-            //float res = (m_MotorF->GetInternalMotor()->GetSelectedSensorVelocity())*(10.0/2048.0)*60;
-            //std::cout << "Speed: " << res << std::endl;
             m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
-
-            // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
 
             m_MotorShooter1->Set(m_SpeedShooter);
             m_MotorShooter2->Set(m_Motor1ID);
         }
         else
         {
-            // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
-
             m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 
             m_MotorShooter1->Set(m_SpeedShooter);
@@ -115,7 +127,15 @@ void Shooter::handle()
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(m_HoodPosition);
+        if (m_ZeroingHood && !m_HoodZeroed)
+        {
+            ZeroHoodPosition();
+        }
+        else
+        {
+            m_MotorHood->Set(m_HoodPosition);
+        }
+        
     }
 }
 

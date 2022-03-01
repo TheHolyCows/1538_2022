@@ -18,17 +18,24 @@ namespace CowLib
 
     CowLogger::CowLogger()
     {
-        // create sock stuff - using TCP is that too much overhead?
-        m_LogSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-        if (m_LogSocket < 0)
+        if (CONSTANT("DEBUG_PID") == 1)
         {
-            std::cout << "error creating socket" << std::endl;
-        }
+            m_LogSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-        m_LogServer.sin_family = AF_INET;
-        m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.233");
-        m_LogServer.sin_port = htons(6969);
+            if (m_LogSocket < 0)
+            {
+                std::cout << "error creating socket" << std::endl;
+            }
+
+            m_LogServer.sin_family = AF_INET;
+            m_LogServer.sin_addr.s_addr = inet_addr("10.15.38.233");
+            m_LogServer.sin_port = htons(6969);
+        }
+        else
+        {
+            m_LogSocket = -1;
+        }
+        
     }
 
     CowLogger::~CowLogger()
@@ -82,6 +89,11 @@ namespace CowLib
  **/
     void CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
     {
+        if (CONSTANT("DEBUG_PID") == 0)
+        {
+            return;
+        }
+        
         // WIP
         return;
     }
@@ -93,6 +105,11 @@ namespace CowLib
  **/
     void CowLogger::StrRemoteLog(std::string logStr)
     {
+        if (CONSTANT("DEBUG_PID") == 0)
+        {
+            return;
+        }
+        
         CowLogger::CowLogHdr logHdr;
         logHdr.proto = CowLib::CowLogger::STR_LOG;
         logHdr.dataLen = logStr.length() + 1;
@@ -125,6 +142,11 @@ namespace CowLib
  **/
     void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I, double D)
     {
+        if (CONSTANT("DEBUG_PID") == 0)
+        {
+            return;
+        }
+
         // CowLogger::CowLogHdr logHdr;
         // logHdr.proto = CowLib::CowLogger::PID_LOG;
         // logHdr.dataLen = sizeof(CowPIDLog);
