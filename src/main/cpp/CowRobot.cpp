@@ -3,8 +3,6 @@
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/RobotController.h>
-#include <networktables/NetworkTable.h>
-#include <networktables/NetworkTableInstance.h>
 
 CowRobot::CowRobot()
 {
@@ -26,6 +24,8 @@ CowRobot::CowRobot()
 
     // my b, added 2nd shooter after hood
     m_Shooter = new Shooter(11, 13, 12);
+
+    m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -55,11 +55,6 @@ CowRobot::CowRobot()
     m_AccelY_LPF = new CowLib::CowLPF(CONSTANT("TIP_LPF"));
     m_TipTime = 0;
     m_Tipping = false;
-
-    m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
-
-    m_Limelight_PID_P = 0;
-    m_Limelight_PID_D = 0;
 
     std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 }
@@ -91,38 +86,6 @@ void CowRobot::PrintToDS()
     }
 }
 
-bool CowRobot::DoVisionTracking(float speed, float threshold)
-{
-    GetLimelight()->PutNumber("pipeline", 0);
-    GetLimelight()->PutNumber("ledMode", 3);
-
-    float limelightP = GetLimelight()->GetNumber("tx", 0.0);
-    m_Limelight_PID_D = m_Limelight_PID_P - m_Limelight_PID_D;
-    m_Limelight_PID_P = limelightP;
-
-    float pid = (m_Limelight_PID_P * CONSTANT("LIMELIGHT_X_KP"));
-    pid += (m_Limelight_PID_D * CONSTANT("LIMELIGHT_X_KD"));
-    DriveSpeedTurn(speed, pid, true);
-
-    if (fabs(GetLimelight()->GetNumber("tx",0.0)) <= threshold)
-    {
-        return true;
-    }
-
-    return false;
-    
-    // Limelight has valid targets
-    // if (GetLimelight()->GetNumber("tv", 0) == 1)
-    // {
-    //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
-    //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
-    //     {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-}
-
 // Used to handle the recurring logic funtions inside the robot.
 // Please call this once per update cycle.
 void CowRobot::handle()
@@ -147,7 +110,6 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        std::cout << "ll: " << GetLimelight()->GetNumber("tx", 0.0) << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
@@ -181,6 +143,31 @@ void CowRobot::handle()
     // m_Canifier->Handle();
 
     m_DSUpdateCount++;
+}
+
+bool CowRobot::DoVisionTracking(float speed, float threshold)
+{
+    float pid = m_Limelight->CalcNewPid();
+    
+    DriveSpeedTurn(speed, pid, true);
+
+    if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
+    {
+        return true;
+    }
+
+    return false;
+    
+    // Limelight has valid targets
+    // if (GetLimelight()->GetNumber("tv", 0) == 1)
+    // {
+    //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
+    //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
+    //     {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }
 
 double CowRobot::GetDriveDistance()

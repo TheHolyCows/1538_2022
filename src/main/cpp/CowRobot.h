@@ -20,11 +20,11 @@
 #include "CowLib/CowCanifier.h"
 #include "CowLib/CowLPF.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "networktables/NetworkTable.h"
 #include "Subsystems/Arm.h"
 #include "Subsystems/Intake.h"
 #include "Subsystems/Conveyor.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Limelight.h"
 
 class CowRobot
 {
@@ -68,6 +68,7 @@ private:
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
+    Limelight *m_Limelight;
 
     ConveyorMode m_ConveyorMode;
     IntakeMode m_IntakeModeF;
@@ -92,12 +93,8 @@ private:
 
     float m_TipTime;
     bool m_Tipping;
-    std::shared_ptr<nt::NetworkTable> m_LimelightForward;
     frc::CameraServer *m_CameraServer;
     cs::UsbCamera *m_UsbCamera;
-
-    float m_Limelight_PID_P;
-    float m_Limelight_PID_D;
 
     // logging
     CowLib::CowLogger *m_LogServer;
@@ -109,6 +106,7 @@ public:
     void GyroFinalizeCalibration();
     void SetController(GenericController *controller);
     void PrintToDS();
+    bool DoVisionTracking(float speed, float threshold=5.0);
     double GetDriveDistance();
     bool DriveDistance(double distance);
     bool DriveDistanceWithHeading(double heading, double distance, double speed);
@@ -118,12 +116,6 @@ public:
     void DriveLeftRight(float leftDriveValue, float rightDriveValue);
     bool TurnToHeading(double heading);
 
-    std::shared_ptr<nt::NetworkTable>
-    GetLimelight()
-    {
-        return m_LimelightForward;
-    }
-    bool DoVisionTracking(float speed, float threshold = 5.00);
     void QuickTurn(float turn);
 
     void StartTime();
@@ -159,11 +151,10 @@ public:
     {
         return m_Shooter;
     }
-
-    // CowLib::CowCanifier *GetCanifier()
-    // {
-    //     return m_Canifier;
-    // }
+    Limelight *GetLimelight()
+    {
+        return m_Limelight;
+    }
 
     // Sets the conveyor mode the new mode if the new mode is higher priority
     void SetConveyorMode(ConveyorMode newMode, double percentage = 1.0)

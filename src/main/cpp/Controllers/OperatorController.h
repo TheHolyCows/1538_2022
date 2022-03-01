@@ -12,6 +12,7 @@
 #include "../Declarations.h"
 #include "../CowConstants.h"
 #include "../CowLib/CowLatch.h"
+#include "../Subsystems/Limelight.h"
 
 class OperatorController : public GenericController
 {

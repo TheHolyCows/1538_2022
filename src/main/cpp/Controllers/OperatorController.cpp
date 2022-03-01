@@ -18,6 +18,8 @@ void OperatorController::handle(CowRobot *bot)
     // bot->GetCanifier()->SetLEDColor(r_color, g_color, b_color);
 
     bool doingTracking = true;
+    bool targetAcquired = false;
+
     if (m_CB->GetDriveButton(1))
     {
         // bot->DriveDistanceWithHeading(0, 12, 0.2);
@@ -33,15 +35,18 @@ void OperatorController::handle(CowRobot *bot)
     {
         doingTracking = true;
 
-        bot->GetLimelight()->PutNumber("pipeline", 0);
-        bot->GetLimelight()->PutNumber("ledMode", 3);
+        bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
+
         // set cooldown timer before calling the vision tracking function
         // let 0.5 seconds pass before attempting to move the robot
         // this allows the camera to adjust to the new contrast
-        bool isValidTargets = bot->GetLimelight()->PutNumber("tv", 0);
+        bool isValidTargets = bot->GetLimelight()->GetValidTargets();
         if (m_TrackingCooldownTimer/25.0 > 0.5 && isValidTargets == true)
         {
-            bool acquired = bot->DoVisionTracking(m_CB->GetDriveStickY(),CONSTANT("TRACKING_THRESHOLD"));
+            targetAcquired = bot->DoVisionTracking(m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
+            //placeholder for hood adjustment
+            int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
+            std::cout << "move hood to: " << autoHoodPos << std::endl;
         }
         m_TrackingCooldownTimer += 1.0;
     }
@@ -50,12 +55,13 @@ void OperatorController::handle(CowRobot *bot)
         if (doingTracking = true)
         {
             m_TrackingCooldownTimer = 0.0;
-            bot->GetLimelight()->PutNumber("pipeline", 3);
-            bot->GetLimelight()->PutNumber("ledMode", 1);
+            doingTracking = false;
+            bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
+
+            // is this necessary?
             bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
                                 m_CB->GetSteeringX(),
                                 m_CB->GetSteeringButton(FAST_TURN));
-            doingTracking = false;
         }
     }
 
@@ -97,7 +103,18 @@ void OperatorController::handle(CowRobot *bot)
     // Shooting
     if (m_CB->GetOperatorButton(BUTTON_SHOOT))
     {
-        bot->ShootBalls();
+        // secondary check if driver is holding down tracking button
+        if (doingTracking)
+        {
+            if (targetAcquired)
+            {
+                bot->ShootBalls();
+            }
+        }
+        else
+        {
+            bot->ShootBalls();
+        }
     }
 
     // If nothing ever changed the conveyor or intake modes, sets them to off
