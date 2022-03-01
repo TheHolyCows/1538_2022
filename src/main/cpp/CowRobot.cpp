@@ -24,7 +24,8 @@ CowRobot::CowRobot()
 
     m_Conveyor = new Conveyor(9, 10);
 
-    m_Shooter = new Shooter(11, 12);
+    // my b, added 2nd shooter after hood
+    m_Shooter = new Shooter(11, 13, 12);
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);

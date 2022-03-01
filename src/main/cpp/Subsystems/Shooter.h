@@ -19,7 +19,7 @@
 class Shooter
 {
 public:
-    Shooter(int motorControllerF, int motorControllerH);
+    Shooter(int motorControllerS1, int motorControllerS2, int motorControllerH);
     bool AtTarget();
     void SetSpeed(float speedF);
     void SetHoodPosition(float position);
@@ -35,9 +35,9 @@ public:
     void ResetConstants();
     void SetClosedLoopError(int error)
     {
-        if (m_MotorShooter)
+        if (m_MotorShooter1)
         {
-            m_MotorShooter->SetClosedLoopError(error);
+            m_MotorShooter1->SetClosedLoopError(error);
         }
     }
     void handle();
@@ -48,9 +48,12 @@ public:
     virtual ~Shooter();
 
 private:
-    CowLib::CowMotorController *m_MotorShooter;
+    CowLib::CowMotorController *m_MotorShooter1;
+    CowLib::CowMotorController *m_MotorShooter2;
     CowLib::CowMotorController *m_MotorHood;
     CowLib::CowLPF *m_RampLPF_F;
+
+    int m_Motor1ID;
 
     float m_SpeedShooter;
     float m_Setpoint;

@@ -9,10 +9,14 @@
 #include <iostream>
 #include <frc/Timer.h>
 
-Shooter::Shooter(int shooterMotor, int hoodMotor)
+Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
 {
-    m_MotorShooter = new CowLib::CowMotorController(shooterMotor);
-    m_MotorShooter->SetControlMode(CowLib::CowMotorController::SPEED);
+    m_MotorShooter1 = new CowLib::CowMotorController(shooterMotor1);
+    m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
+
+    m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
+    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    m_Motor1ID = shooterMotor1;
 
     // Variable Hood
     m_MotorHood = new CowLib::CowMotorController(hoodMotor);
@@ -53,7 +57,7 @@ void Shooter::ResetConstants()
 {
     // Shooter
     printf("P: %lf\n I: %lf\n D: %lf\n F: %lf\n", CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
-    m_MotorShooter->SetPIDGains(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"), 1);
+    m_MotorShooter1->SetPIDGains(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"), 1);
 
     // Variable Hood
     m_MotorHood->SetPIDGains(CONSTANT("HOOD_P"), CONSTANT("HOOD_I"), CONSTANT("HOOD_D"), 0, 1);
@@ -64,7 +68,7 @@ void Shooter::ResetConstants()
 
 float Shooter::GetSpeedF()
 {
-    return (m_MotorShooter->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
+    return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
 }
 
 float Shooter::GetHoodPosition()
@@ -74,32 +78,33 @@ float Shooter::GetHoodPosition()
 
 void Shooter::handle()
 {
-    m_LogServer->PIDRemoteLog((double)GetSetpointF(),
+    m_LogServer->PIDRemoteLog((double)m_Setpoint,
                               (double)GetSpeedF(),
-                              m_MotorShooter->GetInternalMotor()->GetClosedLoopError(),
-                              m_MotorShooter->GetInternalMotor()->GetIntegralAccumulator(),
-                              m_MotorShooter->GetOutputCurrent());
-    //   m_MotorShooter->GetInternalMotor()->GetErrorDerivative());
+                              m_MotorShooter1->GetInternalMotor()->GetClosedLoopError(),
+                              m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
+                              m_MotorShooter1->GetInternalMotor()->GetErrorDerivative());
 
-    if (m_MotorShooter)
+    if (m_MotorShooter1)
     {
         if (m_SpeedShooter != 0)
         {
-            // float res = (m_MotorF->GetInternalMotor()->GetSelectedSensorVelocity())*(10.0/2048.0)*60;
-            // std::cout << "Speed: " << res << std::endl;
-            m_MotorShooter->SetControlMode(CowLib::CowMotorController::SPEED);
+            //float res = (m_MotorF->GetInternalMotor()->GetSelectedSensorVelocity())*(10.0/2048.0)*60;
+            //std::cout << "Speed: " << res << std::endl;
+            m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
             // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
 
-            m_MotorShooter->Set(m_SpeedShooter);
+            m_MotorShooter1->Set(m_SpeedShooter);
+            m_MotorShooter2->Set(m_Motor1ID);
         }
         else
         {
             // m_RampLPF_F->UpdateBeta(CONSTANT("SHOOT_RAMP_LPF"));
 
-            m_MotorShooter->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+            m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 
-            m_MotorShooter->Set(m_SpeedShooter);
+            m_MotorShooter1->Set(m_SpeedShooter);
+            m_MotorShooter2->Set(m_Motor1ID);
         }
     }
 
@@ -111,6 +116,7 @@ void Shooter::handle()
 
 Shooter::~Shooter()
 {
-    delete m_MotorShooter;
+    delete m_MotorShooter1;
+    delete m_MotorShooter2;
     delete m_MotorHood;
 }
