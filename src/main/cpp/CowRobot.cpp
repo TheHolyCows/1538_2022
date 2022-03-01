@@ -56,13 +56,7 @@ CowRobot::CowRobot()
     m_TipTime = 0;
     m_Tipping = false;
 
-    // m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
-    // m_CameraServer = frc::CameraServer::GetInstance();
-    // cs::UsbCamera temp = m_CameraServer->StartAutomaticCapture();
-    //
-    // std::cout << "Set pixelformat: " << temp.SetPixelFormat(cs::VideoMode::kYUYV) << std::endl;
-    // std::cout << "Set resolution: " << temp.SetResolution(CONSTANT("CAMERA_W"), CONSTANT("CAMERA_H")) << std::endl;
-    // std::cout << "Set framerate: " << temp.SetFPS(CONSTANT("CAMERA_FPS")) << std::endl;
+    m_LimelightForward = nt::NetworkTableInstance::GetDefault().GetTable("limelight-front");
 
     m_Limelight_PID_P = 0;
     m_Limelight_PID_D = 0;
@@ -108,18 +102,25 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
 
     float pid = (m_Limelight_PID_P * CONSTANT("LIMELIGHT_X_KP"));
     pid += (m_Limelight_PID_D * CONSTANT("LIMELIGHT_X_KD"));
-    DriveSpeedTurn(speed, pid, 0);
+    DriveSpeedTurn(speed, pid, true);
 
-    // Limelight has valid targets
-    if (GetLimelight()->GetNumber("tv", 0) == 1)
+    if (fabs(GetLimelight()->GetNumber("tx",0.0)) <= threshold)
     {
-        // If the target area is larger than the threshold, we likely have the gamepiece or scored
-        if (GetLimelight()->GetNumber("ta", 0) >= threshold)
-        {
-            return true;
-        }
-        return false;
+        return true;
     }
+
+    return false;
+    
+    // Limelight has valid targets
+    // if (GetLimelight()->GetNumber("tv", 0) == 1)
+    // {
+    //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
+    //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
+    //     {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }
 
 // Used to handle the recurring logic funtions inside the robot.
@@ -146,6 +147,7 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        std::cout << "ll: " << GetLimelight()->GetNumber("tx", 0.0) << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;

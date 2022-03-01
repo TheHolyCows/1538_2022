@@ -93,7 +93,6 @@ private:
     float m_TipTime;
     bool m_Tipping;
     std::shared_ptr<nt::NetworkTable> m_LimelightForward;
-    std::shared_ptr<nt::NetworkTable> m_LimelightBackward;
     frc::CameraServer *m_CameraServer;
     cs::UsbCamera *m_UsbCamera;
 

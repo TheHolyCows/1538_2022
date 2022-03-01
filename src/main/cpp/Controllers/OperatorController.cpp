@@ -4,6 +4,7 @@
 OperatorController::OperatorController(CowControlBoard *controlboard)
     : m_CB(controlboard)
 {
+    m_TrackingCooldownTimer = 0.0;
 }
 
 void OperatorController::handle(CowRobot *bot)
@@ -16,31 +17,45 @@ void OperatorController::handle(CowRobot *bot)
     // b_color = fabs(b_color * 254);
     // bot->GetCanifier()->SetLEDColor(r_color, g_color, b_color);
 
-    bool doingTracking = false;
+    bool doingTracking = true;
     if (m_CB->GetDriveButton(1))
     {
         // bot->DriveDistanceWithHeading(0, 12, 0.2);
-        bot->TurnToHeading(90);
+        //bot->TurnToHeading(90);
 
         // doingTracking = true;
-        // bool acquired = bot->DoVisionTracking(-CONSTANT("AUTO_TRACK_SPEED"));
+        // bool acquired = bot->DoVisionTracking(1,CONSTANT("TRACKING_THRESHOLD"));
         // if(acquired)
         // {
         // }
     }
+    if (m_CB->GetSteeringButton(3))
+    {
+        doingTracking = true;
+
+        bot->GetLimelight()->PutNumber("pipeline", 0);
+        bot->GetLimelight()->PutNumber("ledMode", 3);
+        // set cooldown timer before calling the vision tracking function
+        // let 0.5 seconds pass before attempting to move the robot
+        // this allows the camera to adjust to the new contrast
+        bool isValidTargets = bot->GetLimelight()->PutNumber("tv", 0);
+        if (m_TrackingCooldownTimer/25.0 > 0.5 && isValidTargets == true)
+        {
+            bool acquired = bot->DoVisionTracking(m_CB->GetDriveStickY(),CONSTANT("TRACKING_THRESHOLD"));
+        }
+        m_TrackingCooldownTimer += 1.0;
+    }
     else
     {
-        if (m_CB->GetSteeringButton(3))
+        if (doingTracking = true)
         {
-            // bot->DoVisionTracking(m_CB->GetDriveStickY());
-        }
-        else
-        {
-            // bot->GetLimelight()->PutNumber("pipeline", 3);
-            // bot->GetLimelight()->PutNumber("ledMode", 1);
+            m_TrackingCooldownTimer = 0.0;
+            bot->GetLimelight()->PutNumber("pipeline", 3);
+            bot->GetLimelight()->PutNumber("ledMode", 1);
             bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
                                 m_CB->GetSteeringX(),
                                 m_CB->GetSteeringButton(FAST_TURN));
+            doingTracking = false;
         }
     }
 

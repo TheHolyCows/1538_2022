@@ -39,6 +39,8 @@ private:
 public:
     OperatorController(CowControlBoard *controlboard);
     void handle(CowRobot *bot);
+
+    double m_TrackingCooldownTimer;
 };
 
 #endif /* __OPERATOR_CONTROLLER_H__ */
