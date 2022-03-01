@@ -247,7 +247,10 @@ public:
     {
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
-        if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < CONSTANT("SHOOTER_SPEED_TOLERANCE") && GetShooter()->GetSetpointF() != 0)
+
+        float speedTolerance = GetShooter()->CalcShooterTolerance();
+
+        if (fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) < speedTolerance && GetShooter()->GetSetpointF() != 0)
         {
             SetConveyorMode(CONVEYOR_SHOOT);
             SetIntakeMode(INTAKE_SHOOT, false);

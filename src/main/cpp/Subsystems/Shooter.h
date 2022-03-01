@@ -42,6 +42,8 @@ public:
     }
     void handle();
 
+    float CalcShooterTolerance(void);
+
     float GetSpeedF();
     float GetHoodPosition();
 

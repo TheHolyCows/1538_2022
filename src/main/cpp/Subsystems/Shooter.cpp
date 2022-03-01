@@ -66,6 +66,11 @@ void Shooter::ResetConstants()
     m_HoodDownLimit = CONSTANT("HOOD_DOWN_LIMIT");
 }
 
+float Shooter::CalcShooterTolerance()
+{
+    return std::min(m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE"), CONSTANT("SHOOTER_SPEED_UP"))
+}
+
 float Shooter::GetSpeedF()
 {
     return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;

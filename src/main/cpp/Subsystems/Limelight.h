@@ -30,6 +30,7 @@ public:
     float GetTargetYPos(void);
 
     int CalcHoodPos(void);
+    float CalcShooterSpeed(void);
     float CalcNewPid(void);
 
     void ResetPID(void);

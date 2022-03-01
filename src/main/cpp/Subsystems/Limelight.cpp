@@ -53,6 +53,11 @@ int Limelight::CalcHoodPos()
     return std::min(CONSTANT("HOOD_UP") - (CONSTANT("HOOD_UP") * tarArea), CONSTANT("HOOD_DOWN"));
 }
 
+float Limelight::CalcShooterSpeed()
+{
+    return 0.0;
+}
+
 float Limelight::CalcNewPid()
 {
     float tmp_limelight_P = m_Limelight->GetNumber("tx", 0.0);

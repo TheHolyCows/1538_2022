@@ -47,6 +47,9 @@ void OperatorController::handle(CowRobot *bot)
             //placeholder for hood adjustment
             int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
             std::cout << "move hood to: " << autoHoodPos << std::endl;
+
+            float shootSpeed = bot->GetLimelight()->CalcShooterSpeed();
+            std::cout << "shoot speed: " << shootSpeed << std::endl;
         }
         m_TrackingCooldownTimer += 1.0;
     }
