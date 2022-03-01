@@ -55,7 +55,7 @@ void OperatorController::handle(CowRobot *bot)
     }
     else
     {
-        if (doingTracking = true)
+        if (doingTracking)
         {
             m_TrackingCooldownTimer = 0.0;
             doingTracking = false;
