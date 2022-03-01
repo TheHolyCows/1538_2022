@@ -68,7 +68,7 @@ void Shooter::ResetConstants()
 
 float Shooter::CalcShooterTolerance()
 {
-    return std::min(m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE"), CONSTANT("SHOOTER_SPEED_UP"))
+    return std::min(m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE"), CONSTANT("SHOOTER_SPEED_UP"));
 }
 
 float Shooter::GetSpeedF()
