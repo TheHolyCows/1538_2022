@@ -22,7 +22,10 @@ public:
     Shooter(int motorControllerS1, int motorControllerS2, int motorControllerH);
     bool AtTarget();
     void SetSpeed(float speedF);
+    void SetSpeedHoodRelative(void);
     void SetHoodPosition(float position);
+    void SetHoodPositionUp(void);
+    void SetHoodPositionDown(void);
     void ZeroHoodPosition(void);
     float GetSetpointF()
     {

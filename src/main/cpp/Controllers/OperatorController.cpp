@@ -30,6 +30,7 @@ void OperatorController::handle(CowRobot *bot)
         // if(acquired)
         // {
         // }
+        // bot->GetShooter()->ZeroHoodPosition();
     }
     if (m_CB->GetSteeringButton(3))
     {
@@ -46,10 +47,7 @@ void OperatorController::handle(CowRobot *bot)
             targetAcquired = bot->DoVisionTracking(m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
             //placeholder for hood adjustment
             int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
-            std::cout << "move hood to: " << autoHoodPos << std::endl;
-
-            float shootSpeed = bot->GetLimelight()->CalcShooterSpeed();
-            std::cout << "shoot speed: " << shootSpeed << std::endl;
+            bot->GetShooter()->SetHoodPosition(autoHoodPos);
         }
         m_TrackingCooldownTimer += 1.0;
     }
@@ -128,7 +126,8 @@ void OperatorController::handle(CowRobot *bot)
     // Sets speed according to hood position
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
-        bot->RunShooter();
+        // bot->RunShooter();
+        bot->GetShooter()->SetSpeedHoodRelative();
     }
     else
     {
@@ -137,10 +136,10 @@ void OperatorController::handle(CowRobot *bot)
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
     {
-        bot->GetShooter()->SetHoodPosition(CONSTANT("HOOD_UP"));
+        bot->GetShooter()->SetHoodPositionUp();
     }
     else if (m_CB->GetOperatorButton(BUTTON_HOOD_DOWN))
     {
-        bot->GetShooter()->SetHoodPosition(CONSTANT("HOOD_DOWN"));
+        bot->GetShooter()->SetHoodPositionDown();
     }
 }

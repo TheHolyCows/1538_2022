@@ -38,9 +38,32 @@ void Shooter::SetSpeed(float speedShooter)
     m_SpeedShooter = speedShooter;
 }
 
+void Shooter::SetSpeedHoodRelative()
+{
+    // ranges from 0 -> 1.0
+    float percentOfHood = (m_HoodPosition - m_HoodDownLimit) / CONSTANT("HOOD_DELTA");
+
+    int speedDelta = CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN");
+    SetSpeed((speedDelta * percentOfHood) + CONSTANT("SHOOTER_SPEED_DOWN"));
+}
+
+/**
+ * Sets position of variable hood
+ * Value is added to the hood down limit, therefore it is a relative position
+ **/
 void Shooter::SetHoodPosition(float position)
 {
-    m_HoodPosition = position;
+    m_HoodPosition = m_HoodDownLimit + position;
+}
+
+void Shooter::SetHoodPositionUp()
+{
+    m_HoodPosition = m_HoodUpLimit;
+}
+
+void Shooter::SetHoodPositionDown()
+{
+    m_HoodPosition = m_HoodDownLimit;
 }
 
 void Shooter::ZeroHoodPosition()
@@ -50,22 +73,29 @@ void Shooter::ZeroHoodPosition()
         m_ZeroingHood = false;
         return;
     }
+    else
+    {
+        m_ZeroingHood = true;
+    }
     
     float current = m_MotorHood->GetOutputCurrent();
-    if (current > 10.0)
+    std::cout << "hood current: " << current << std::endl;
+    if (current >= 0.25)
     {
         m_ZeroingHood = false;
         m_HoodZeroed = true;
 
-        float hoodDelta = m_HoodUpLimit - m_HoodDownLimit;
+        float hoodDelta = CONSTANT("HOOD_DELTA");
 
-        m_HoodDownLimit = hoodDelta < 0? m_HoodPosition - 100 : m_HoodPosition + 100;
-        m_HoodUpLimit = hoodDelta < 0? m_HoodDownLimit - fabs(hoodDelta) : m_HoodDownLimit + fabs(hoodDelta);
+        m_HoodPosition = hoodDelta < 0? m_HoodPosition - 200 : m_HoodPosition + 200;
+        m_HoodDownLimit = m_HoodPosition;
+        m_HoodUpLimit = m_HoodPosition + hoodDelta;
+        
         return;
     }
 
     // this may need to be reversed depending on motor orientation
-    m_HoodPosition += 5;
+    m_HoodPosition += 25;
     m_MotorHood->Set(m_HoodPosition);
 }
 
@@ -78,14 +108,16 @@ void Shooter::ResetConstants()
     // Variable Hood
     m_MotorHood->SetPIDGains(CONSTANT("HOOD_P"), CONSTANT("HOOD_I"), CONSTANT("HOOD_D"), 0, 1);
     m_MotorHood->SetMotionMagic(CONSTANT("HOOD_ACCEL"), CONSTANT("HOOD_VELOCITY"));
-    m_HoodUpLimit = CONSTANT("HOOD_UP_LIMIT");
-    m_HoodDownLimit = CONSTANT("HOOD_DOWN_LIMIT");
+    m_HoodUpLimit = CONSTANT("HOOD_DELTA");
+    m_HoodDownLimit = 0;
+    m_HoodZeroed = false;
+    m_ZeroingHood = false;
 }
 
 float Shooter::CalcShooterTolerance()
 {
     // min incase i forget to update constants on the robot
-    return std::min(m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE"), CONSTANT("SHOOTER_SPEED_UP"));
+    return m_Setpoint * CONSTANT("SHOOTER_SPEED_TOLERANCE");
 }
 
 float Shooter::GetSpeedF()
@@ -105,7 +137,7 @@ void Shooter::handle()
                               (double)GetSpeedF(),
                               m_MotorShooter1->GetInternalMotor()->GetClosedLoopError(),
                               m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
-                              m_MotorShooter1->GetInternalMotor()->GetErrorDerivative());
+                              m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
 
     if (m_MotorShooter1 && m_MotorShooter2)
     {

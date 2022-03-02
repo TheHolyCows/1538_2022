@@ -49,13 +49,14 @@ float Limelight::GetTargetYPos()
 
 int Limelight::CalcHoodPos()
 {
-    float tarArea = m_Limelight->GetNumber("ta", 0.0);
-    return std::min(CONSTANT("HOOD_UP") - (CONSTANT("HOOD_UP") * tarArea), CONSTANT("HOOD_DOWN"));
-}
+    // assuming bigger area = closer
+    // in the future this target area should be compared to a range of area min and area max in constants
+    float targArea = m_Limelight->GetNumber("ta", 0.0);
 
-float Limelight::CalcShooterSpeed()
-{
-    return 0.0;
+    targArea = targArea * CONSTANT("HOOD_DELTA");
+
+    // add this number to hood min to get position
+    return floorf(targArea);
 }
 
 float Limelight::CalcNewPid()
