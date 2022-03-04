@@ -47,7 +47,7 @@ void OperatorController::handle(CowRobot *bot)
             targetAcquired = bot->DoVisionTracking(m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
             //placeholder for hood adjustment
             int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
-            bot->GetShooter()->SetHoodPosition(autoHoodPos);
+            //bot->GetShooter()->SetHoodPosition(autoHoodPos);
         }
         m_TrackingCooldownTimer += 1.0;
     }
