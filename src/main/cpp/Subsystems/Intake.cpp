@@ -47,14 +47,8 @@ void Intake::handle()
     m_Solenoid->Set(m_IntakeExtended);
 
     // Intake
-    if (m_Solenoid->Get())
-    {
-        m_MotorIntake->Set(m_IntakeSpeed);
-    }
-    else
-    {
-        m_MotorIntake->Set(0);
-    }
+    m_MotorIntake->Set(m_IntakeSpeed);
+    
 
     // Indexer - because we may want to run this independently...
     m_MotorIndex->Set(m_IndexSpeed);

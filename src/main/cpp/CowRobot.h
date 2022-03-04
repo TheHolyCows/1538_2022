@@ -41,8 +41,8 @@ public:
     {
         INTAKE_OFF = 0,
         INTAKE_EXHAUST = 1,
-        INTAKE_INTAKE = 2,
-        INTAKE_SHOOT = 3
+        INTAKE_SHOOT = 2,
+        INTAKE_INTAKE = 3
     };
 
 private:
@@ -214,10 +214,10 @@ public:
         case INTAKE_EXHAUST:
             intake->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
             break;
-        case INTAKE_INTAKE:
-            intake->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
-            break;
         case INTAKE_SHOOT:
+            intake->SetSpeed(0, 0);
+            break;
+        case INTAKE_INTAKE:
             intake->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
             break;
         }

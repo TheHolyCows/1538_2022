@@ -159,15 +159,7 @@ void Shooter::handle()
 
     if (m_MotorHood)
     {
-        if (m_ZeroingHood && !m_HoodZeroed)
-        {
-            ZeroHoodPosition();
-        }
-        else
-        {
-            m_MotorHood->Set(m_HoodPosition);
-        }
-        
+        m_MotorHood->Set(m_HoodPosition);
     }
 }
 
