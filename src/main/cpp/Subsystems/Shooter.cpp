@@ -33,6 +33,15 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
 
 void Shooter::SetSpeed(float speedShooter)
 {
+    if (speedShooter != 0)
+    {
+        m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
+    }
+    else
+    {
+        m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    }
+
     m_Setpoint = speedShooter;
     speedShooter = (speedShooter * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
     m_SpeedShooter = speedShooter;
@@ -54,16 +63,31 @@ void Shooter::SetSpeedHoodRelative()
 void Shooter::SetHoodPosition(float position)
 {
     m_HoodPosition = m_HoodDownLimit + position;
+
+        if (m_MotorHood)
+    {
+        m_MotorHood->Set(m_HoodPosition);
+    }
 }
 
 void Shooter::SetHoodPositionUp()
 {
     m_HoodPosition = m_HoodUpLimit;
+
+    if (m_MotorHood)
+    {
+        m_MotorHood->Set(m_HoodPosition);
+    }
 }
 
 void Shooter::SetHoodPositionDown()
 {
     m_HoodPosition = m_HoodDownLimit;
+
+    if (m_MotorHood)
+    {
+        m_MotorHood->Set(m_HoodPosition);
+    }
 }
 
 void Shooter::ZeroHoodPosition()
@@ -77,7 +101,7 @@ void Shooter::ZeroHoodPosition()
     {
         m_ZeroingHood = true;
     }
-    
+
     float current = m_MotorHood->GetOutputCurrent();
     std::cout << "hood current: " << current << std::endl;
     if (current >= 0.25)
@@ -87,10 +111,10 @@ void Shooter::ZeroHoodPosition()
 
         float hoodDelta = CONSTANT("HOOD_DELTA");
 
-        m_HoodPosition = hoodDelta < 0? m_HoodPosition - 200 : m_HoodPosition + 200;
+        m_HoodPosition = hoodDelta < 0 ? m_HoodPosition - 200 : m_HoodPosition + 200;
         m_HoodDownLimit = m_HoodPosition;
         m_HoodUpLimit = m_HoodPosition + hoodDelta;
-        
+
         return;
     }
 
@@ -133,33 +157,20 @@ float Shooter::GetHoodPosition()
 
 void Shooter::handle()
 {
-    m_LogServer->PIDRemoteLog((double)m_Setpoint,
-                              (double)GetSpeedF(),
-                              m_MotorShooter1->GetInternalMotor()->GetClosedLoopError(),
-                              m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
-                              m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
+    if (CONSTANT("DEBUG_PID") == 1)
+    {
+        m_LogServer->PIDRemoteLog((double)m_Setpoint,
+                                  (double)GetSpeedF(),
+                                  m_MotorShooter1->GetInternalMotor()->GetClosedLoopError(),
+                                  m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
+                                  m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
+    }
 
     if (m_MotorShooter1 && m_MotorShooter2)
     {
-        if (m_SpeedShooter != 0)
-        {
-            m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
-            m_MotorShooter1->Set(m_SpeedShooter);
-            m_MotorShooter2->Set(m_Motor1ID);
-        }
-        else
-        {
-            m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
-
-            m_MotorShooter1->Set(m_SpeedShooter);
-            m_MotorShooter2->Set(m_Motor1ID);
-        }
-    }
-
-    if (m_MotorHood)
-    {
-        m_MotorHood->Set(m_HoodPosition);
+        m_MotorShooter1->Set(m_SpeedShooter);
+        m_MotorShooter2->Set(m_Motor1ID);
     }
 }
 

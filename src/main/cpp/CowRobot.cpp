@@ -148,7 +148,7 @@ void CowRobot::handle()
 bool CowRobot::DoVisionTracking(float speed, float threshold)
 {
     float pid = m_Limelight->CalcNewPid();
-    
+
     DriveSpeedTurn(speed, pid, true);
 
     if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
@@ -157,7 +157,7 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
     }
 
     return false;
-    
+
     // Limelight has valid targets
     // if (GetLimelight()->GetNumber("tv", 0) == 1)
     // {
