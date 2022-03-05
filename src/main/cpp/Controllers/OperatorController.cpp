@@ -17,13 +17,13 @@ void OperatorController::handle(CowRobot *bot)
     // b_color = fabs(b_color * 254);
     // bot->GetCanifier()->SetLEDColor(r_color, g_color, b_color);
 
-    bool doingTracking = true;
+    bool doingTracking = false;
     bool targetAcquired = false;
 
     if (m_CB->GetDriveButton(1))
     {
         // bot->DriveDistanceWithHeading(0, 12, 0.2);
-        //bot->TurnToHeading(90);
+        // bot->TurnToHeading(90);
 
         // doingTracking = true;
         // bool acquired = bot->DoVisionTracking(1,CONSTANT("TRACKING_THRESHOLD"));
@@ -42,12 +42,12 @@ void OperatorController::handle(CowRobot *bot)
         // let 0.5 seconds pass before attempting to move the robot
         // this allows the camera to adjust to the new contrast
         bool isValidTargets = bot->GetLimelight()->GetValidTargets();
-        if (m_TrackingCooldownTimer/25.0 > 0.5 && isValidTargets == true)
+        if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
         {
             targetAcquired = bot->DoVisionTracking(m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
-            //placeholder for hood adjustment
+            // placeholder for hood adjustment
             int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
-            //bot->GetShooter()->SetHoodPosition(autoHoodPos);
+            // bot->GetShooter()->SetHoodPosition(autoHoodPos);
         }
         m_TrackingCooldownTimer += 1.0;
     }

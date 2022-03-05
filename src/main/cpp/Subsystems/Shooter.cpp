@@ -14,8 +14,8 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
     m_MotorShooter1 = new CowLib::CowMotorController(shooterMotor1);
     m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
-    m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
-    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    // m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
+    // m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
     m_Motor1ID = shooterMotor1;
 
     // Variable Hood
@@ -77,7 +77,7 @@ void Shooter::ZeroHoodPosition()
     {
         m_ZeroingHood = true;
     }
-    
+
     float current = m_MotorHood->GetOutputCurrent();
     std::cout << "hood current: " << current << std::endl;
     if (current >= 0.25)
@@ -87,10 +87,10 @@ void Shooter::ZeroHoodPosition()
 
         float hoodDelta = CONSTANT("HOOD_DELTA");
 
-        m_HoodPosition = hoodDelta < 0? m_HoodPosition - 200 : m_HoodPosition + 200;
+        m_HoodPosition = hoodDelta < 0 ? m_HoodPosition - 200 : m_HoodPosition + 200;
         m_HoodDownLimit = m_HoodPosition;
         m_HoodUpLimit = m_HoodPosition + hoodDelta;
-        
+
         return;
     }
 
@@ -139,21 +139,22 @@ void Shooter::handle()
                               m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
                               m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
 
-    if (m_MotorShooter1 && m_MotorShooter2)
+    // if (m_MotorShooter1 && m_MotorShooter2)
+    if (m_MotorShooter1)
     {
         if (m_SpeedShooter != 0)
         {
             m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
             m_MotorShooter1->Set(m_SpeedShooter);
-            m_MotorShooter2->Set(m_Motor1ID);
+            // m_MotorShooter2->Set(m_Motor1ID);
         }
         else
         {
             m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 
             m_MotorShooter1->Set(m_SpeedShooter);
-            m_MotorShooter2->Set(m_Motor1ID);
+            // m_MotorShooter2->Set(m_Motor1ID);
         }
     }
 
@@ -166,6 +167,6 @@ void Shooter::handle()
 Shooter::~Shooter()
 {
     delete m_MotorShooter1;
-    delete m_MotorShooter2;
+    // delete m_MotorShooter2;
     delete m_MotorHood;
 }
