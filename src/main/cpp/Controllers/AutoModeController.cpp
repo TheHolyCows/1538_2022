@@ -35,7 +35,7 @@ void AutoModeController::handle(CowRobot *bot)
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
-	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
+	// bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
 
 	bot->ResetConveyorMode();
 	bot->ResetIntakeMode(false);
@@ -134,6 +134,7 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_DRIVE_DISTANCE:
 	{
 		float direction = 1;
+		std::cout << "OriginalEncoder: " << m_OriginalEncoder << "  EncoderCount: " << m_CurrentCommand.m_EncoderCount << std::endl;
 		if (m_OriginalEncoder > m_CurrentCommand.m_EncoderCount)
 		{
 			// We want to go backward

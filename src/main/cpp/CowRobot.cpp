@@ -25,7 +25,7 @@ CowRobot::CowRobot()
     // my b, added 2nd shooter after hood
     m_Shooter = new Shooter(11, 13, 12);
 
-    m_Limelight = new Limelight("limelight-front");
+    // m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -110,6 +110,7 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        std::cout << "Drive Distance" << GetDriveDistance() << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
@@ -172,11 +173,13 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
 
 double CowRobot::GetDriveDistance()
 {
+    float direction = -1.0;
     float position = 0;
     if (m_LeftDriveA)
     {
         position = m_LeftDriveA->GetPosition() / 13653.334;
         position *= 12.56636;
+        position *= direction;
     }
     return position;
 }
@@ -269,8 +272,8 @@ bool CowRobot::DriveWithHeading(double heading, double speed, double maxSpeed)
 // Allows skid steer robot to be driven using tank drive style inputs
 void CowRobot::DriveLeftRight(float leftDriveValue, float rightDriveValue)
 {
-    m_LeftDriveValue = leftDriveValue;
-    m_RightDriveValue = rightDriveValue;
+    m_LeftDriveValue = -leftDriveValue;
+    m_RightDriveValue = -rightDriveValue;
 }
 
 void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)

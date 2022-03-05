@@ -14,8 +14,8 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
     m_MotorShooter1 = new CowLib::CowMotorController(shooterMotor1);
     m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
-    m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
-    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    // m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
+    // m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
     m_Motor1ID = shooterMotor1;
 
     // Variable Hood
@@ -64,7 +64,7 @@ void Shooter::SetHoodPosition(float position)
 {
     m_HoodPosition = m_HoodDownLimit + position;
 
-        if (m_MotorHood)
+    if (m_MotorHood)
     {
         m_MotorHood->Set(m_HoodPosition);
     }
@@ -166,17 +166,17 @@ void Shooter::handle()
                                   m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
     }
 
-    if (m_MotorShooter1 && m_MotorShooter2)
+    // if (m_MotorShooter1 && m_MotorShooter2)
+    if (m_MotorShooter1)
     {
-
         m_MotorShooter1->Set(m_SpeedShooter);
-        m_MotorShooter2->Set(m_Motor1ID);
+        // m_MotorShooter2->Set(m_Motor1ID);
     }
 }
 
 Shooter::~Shooter()
 {
     delete m_MotorShooter1;
-    delete m_MotorShooter2;
+    // delete m_MotorShooter2;
     delete m_MotorHood;
 }
