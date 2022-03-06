@@ -19,9 +19,9 @@ AutoModes::AutoModes()
 
 	m_Modes["2 Ball"];
 	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -40, 0, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 2));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 0, 0.2, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 10));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 0, 0.2, false, false, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 4));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
 
 	m_Modes["Bad Idea (Testing)"];
 	// m_Modes["Bad Idea (Testing)"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 10, 0, 0.2, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 4));

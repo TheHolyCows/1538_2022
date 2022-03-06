@@ -48,9 +48,9 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
+		bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_UP"));
 		bot->GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
 		bot->GetIntakeR()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
-		bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_UP"));
 		// bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true, CONSTANT("INTAKE_PERCENT_AUTO"));
 		// bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
 	}
