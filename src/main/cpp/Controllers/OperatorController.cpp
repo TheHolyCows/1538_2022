@@ -36,7 +36,7 @@ void OperatorController::handle(CowRobot *bot)
     {
         doingTracking = true;
 
-        bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
+        // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
 
         // set cooldown timer before calling the vision tracking function
         // let 0.5 seconds pass before attempting to move the robot
@@ -57,13 +57,15 @@ void OperatorController::handle(CowRobot *bot)
         {
             m_TrackingCooldownTimer = 0.0;
             doingTracking = false;
-            bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
+            // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
 
             // is this necessary?
-            bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
-                                m_CB->GetSteeringX(),
-                                m_CB->GetSteeringButton(FAST_TURN));
         }
+
+        // TODO: Make this not dumb
+        bot->DriveSpeedTurn(-m_CB->GetDriveStickY(),
+                            -m_CB->GetSteeringX(),
+                            m_CB->GetSteeringButton(FAST_TURN));
     }
 
     // Intake Position Switches

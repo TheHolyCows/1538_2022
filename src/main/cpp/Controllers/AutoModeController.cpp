@@ -28,7 +28,7 @@ void AutoModeController::handle(CowRobot *bot)
 {
 	bool result = false;
 
-	// Caused crash when in Op Controller
+	// No Limelight yet
 	// bot->GetLimelight()->PutNumber("pipeline", 0);
 	// bot->GetLimelight()->PutNumber("ledMode", 1);
 

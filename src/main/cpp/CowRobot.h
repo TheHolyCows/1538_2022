@@ -106,7 +106,7 @@ public:
     void GyroFinalizeCalibration();
     void SetController(GenericController *controller);
     void PrintToDS();
-    bool DoVisionTracking(float speed, float threshold=5.0);
+    bool DoVisionTracking(float speed, float threshold = 5.0);
     double GetDriveDistance();
     bool DriveDistance(double distance);
     bool DriveDistanceWithHeading(double heading, double distance, double speed);

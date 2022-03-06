@@ -169,7 +169,10 @@ void Shooter::handle()
     // if (m_MotorShooter1 && m_MotorShooter2)
     if (m_MotorShooter1)
     {
-        m_MotorShooter1->Set(m_SpeedShooter);
+        // TODO: TEMPORARY FOR A BOT WHEN WE HAVE ONE MOTOR
+
+        m_MotorShooter1->Set(-m_SpeedShooter);
+        // m_MotorShooter1->Set(m_SpeedShooter);
         // m_MotorShooter2->Set(m_Motor1ID);
     }
 }
