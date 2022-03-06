@@ -66,7 +66,7 @@ void Shooter::SetHoodPosition(float position)
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(m_HoodPosition);
+        // m_MotorHood->Set(m_HoodPosition);
     }
 }
 
@@ -76,7 +76,7 @@ void Shooter::SetHoodPositionUp()
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(m_HoodPosition);
+        // m_MotorHood->Set(m_HoodPosition);
     }
 }
 
@@ -86,7 +86,7 @@ void Shooter::SetHoodPositionDown()
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(m_HoodPosition);
+        // m_MotorHood->Set(m_HoodPosition);
     }
 }
 

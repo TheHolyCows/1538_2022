@@ -27,11 +27,11 @@ CowRobot::CowRobot()
 
     // m_Limelight = new Limelight("limelight-front");
 
-    m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
-    m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
 
-    m_RightDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
-    m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_RightDriveA->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_RightDriveB->SetNeutralMode(CowLib::CowMotorController::BRAKE);
 
     m_MatchTime = 0;
     m_StartTime = 0;
@@ -110,7 +110,7 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        std::cout << "Drive Distance" << GetDriveDistance() << std::endl;
+        std::cout << "GetPosition: " << m_LeftDriveA->GetPosition() << "  Drive Distance: " << GetDriveDistance() << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
@@ -177,7 +177,8 @@ double CowRobot::GetDriveDistance()
     float position = 0;
     if (m_LeftDriveA)
     {
-        position = m_LeftDriveA->GetPosition() / 13653.334;
+        // position / falcon units per rev * gear ratio
+        position = m_LeftDriveA->GetPosition() / (2048 * (46 / 12));
         position *= 12.56636;
         position *= direction;
     }
@@ -229,7 +230,7 @@ bool CowRobot::TurnToHeading(double heading)
 
     // speed *= -speed;
 
-    DriveLeftRight(output, -output);
+    DriveLeftRight(-output, output);
 
     m_PreviousGyroError = error;
 
