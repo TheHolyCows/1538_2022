@@ -137,7 +137,7 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_DRIVE_DISTANCE:
 	{
 		float direction = 1;
-		std::cout << "OriginalEncoder: " << m_OriginalEncoder << "  EncoderCount: " << m_CurrentCommand.m_EncoderCount << std::endl;
+		// std::cout << "OriginalEncoder: " << m_OriginalEncoder << "  EncoderCount: " << m_CurrentCommand.m_EncoderCount << std::endl;
 		if (m_OriginalEncoder > m_CurrentCommand.m_EncoderCount)
 		{
 			// We want to go backward
@@ -174,8 +174,6 @@ void AutoModeController::handle(CowRobot *bot)
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
-		//		bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
-		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
 
 		if (direction == 1) // Going forward
 		{
