@@ -14,6 +14,11 @@ AutoModes *AutoModes::GetInstance()
 
 AutoModes::AutoModes()
 {
+	m_Modes["2 Ball"]; // Not tested yet
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -40, 0, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 0, 0, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 2));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0.4, false, false, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 4));
+
 	// m_Modes["testing_intakes"];
 	// m_Modes["testing_intakes"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
 	// m_Modes["testing_intakes"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0, false, false, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 10));
@@ -23,7 +28,7 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -23, 0, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -33, 0, 0.3, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 1));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -52, 0, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, .5));
-	
+
 	// shoot 2
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -10, 0, 0.3, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 1));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 5, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 1.5));
@@ -61,8 +66,6 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -60, 58, 0.35, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -25, 32, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
 
-	
-
 	// 10 and 20 clockwise
 	// -10 and 25 clockwise
 	//
@@ -80,11 +83,11 @@ AutoModes::AutoModes()
 	// m_Modes["5 Ball"].push_back(RobotCommand(CMD_TURN, 0, -20, 0.4, false, false, INTAKE_STOP, CONSTANT("HOOD_AUTO_3"), true, 3));
 	// m_Modes["5 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0.4, false, false, INTAKE_SHOOT, CONSTANT("HOOD_AUTO_3"), true, 3));
 
-	m_Modes["2 Ball"];
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -40, 0, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 5));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 1));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -20, 0, 0.2, false, false, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 3));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
+	// m_Modes["2 Ball"];
+	// m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -40, 0, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 5));
+	// m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 1));
+	// m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -20, 0, 0.2, false, false, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 3));
+	// m_Modes["2 Ball"].push_back(RobotCommand(CMD_WAIT, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
 
 	m_Modes["Bad Idea (Testing)"];
 	// m_Modes["Bad Idea (Testing)"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 10, 0, 0.2, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 4));
