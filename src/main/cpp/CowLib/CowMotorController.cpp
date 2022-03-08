@@ -1,4 +1,5 @@
 #include "CowMotorController.h"
+#include "ctre/phoenix/motorcontrol/StatorCurrentLimitConfiguration.h"
 
 namespace CowLib
 {
@@ -8,8 +9,7 @@ namespace CowLib
     {
         m_CowControlMode = CowMotorController::PERCENTVBUS;
         m_CowNeutralMode = CowMotorController::COAST;
-        m_MotorController = new TalonSRX(deviceNum);
-        m_MotorController->EnableCurrentLimit(false);
+        m_MotorController = new TalonFX(deviceNum);
     }
 
     CowMotorController::~CowMotorController()
@@ -113,10 +113,16 @@ namespace CowLib
 
     void CowMotorController::SetPeakCurrent(int amps, int ms)
     {
-        m_MotorController->ConfigContinuousCurrentLimit(0);
-        m_MotorController->ConfigPeakCurrentLimit(amps);
-        m_MotorController->ConfigPeakCurrentDuration(ms);
-        m_MotorController->EnableCurrentLimit(true);
+        // i'm pretty sure this is deprecated on the FX in favor of StatorLimiting
+        // m_MotorController->ConfigContinuousCurrentLimit(0);
+        // m_MotorController->ConfigPeakCurrentLimit(amps);
+        // m_MotorController->ConfigPeakCurrentDuration(ms);
+        // m_MotorController->EnableCurrentLimit(true);
+    }
+
+    void CowMotorController::SetStatorLimit(float limit, float threshold, float duration)
+    {
+        m_MotorController->ConfigStatorCurrentLimit(StatorCurrentLimitConfiguration(true,limit,threshold,duration));
     }
     
     double CowMotorController::GetOutputCurrent()
@@ -133,7 +139,7 @@ namespace CowLib
         m_MotorController->SetSensorPhase(Value);
         //m_MotorController->SetInverted(Value);
     }
-    TalonSRX *CowMotorController::GetInternalMotor()
+    TalonFX *CowMotorController::GetInternalMotor()
     {
     		return m_MotorController;
     }

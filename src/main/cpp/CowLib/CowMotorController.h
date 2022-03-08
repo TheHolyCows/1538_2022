@@ -46,11 +46,12 @@ namespace CowLib
         void Set(float);
         void SetInverted(bool Value);
         void SetPeakCurrent(int amps, int ms);
+        void SetStatorLimit(float limit, float threshold, float duration);
         double GetOutputCurrent();
-        TalonSRX *GetInternalMotor();
+        TalonFX *GetInternalMotor();
 
     private:
-        TalonSRX *m_MotorController;
+        TalonFX *m_MotorController;
         int m_DeviceNum;
         enum CowNeutralMode m_CowNeutralMode;
         enum CowControlMode m_CowControlMode;
