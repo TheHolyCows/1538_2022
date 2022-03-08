@@ -29,7 +29,7 @@ CowRobot::CowRobot()
     // my b, added 2nd shooter after hood
     m_Shooter = new Shooter(11, 13, 12);
 
-    m_Limelight = new Limelight("limelight-front");
+    // m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -114,6 +114,9 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
+        std::cout << "intake mode: " << m_IntakeModeR << std::endl;
+        std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
@@ -176,11 +179,14 @@ bool CowRobot::DoVisionTracking(float speed, float threshold)
 
 double CowRobot::GetDriveDistance()
 {
+    float direction = -1.0;
     float position = 0;
     if (m_LeftDriveA)
     {
-        position = m_LeftDriveA->GetPosition() / 13653.334;
+        // position / falcon units per rev * gear ratio
+        position = m_LeftDriveA->GetPosition() / (2048 * (46 / 12));
         position *= 12.56636;
+        position *= direction;
     }
     return position;
 }
@@ -230,7 +236,7 @@ bool CowRobot::TurnToHeading(double heading)
 
     // speed *= -speed;
 
-    DriveLeftRight(output, -output);
+    DriveLeftRight(-output, output);
 
     m_PreviousGyroError = error;
 
@@ -263,7 +269,7 @@ bool CowRobot::DriveWithHeading(double heading, double speed, double maxSpeed)
     double output = PID_P * error + PID_D * dError;
     output = CowLib::LimitMix(output, maxSpeed);
 
-    DriveLeftRight(speed - output, speed + output);
+    DriveLeftRight(speed + output, speed - output);
 
     m_PreviousGyroError = error;
 
@@ -273,8 +279,8 @@ bool CowRobot::DriveWithHeading(double heading, double speed, double maxSpeed)
 // Allows skid steer robot to be driven using tank drive style inputs
 void CowRobot::DriveLeftRight(float leftDriveValue, float rightDriveValue)
 {
-    m_LeftDriveValue = leftDriveValue;
-    m_RightDriveValue = rightDriveValue;
+    m_LeftDriveValue = -leftDriveValue;
+    m_RightDriveValue = -rightDriveValue;
 }
 
 void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)

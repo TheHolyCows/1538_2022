@@ -28,14 +28,14 @@ void AutoModeController::handle(CowRobot *bot)
 {
 	bool result = false;
 
-	// Caused crash when in Op Controller
+	// No Limelight yet
 	// bot->GetLimelight()->PutNumber("pipeline", 0);
 	// bot->GetLimelight()->PutNumber("ledMode", 1);
 
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
-	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
+	// bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
 
 	bot->ResetConveyorMode();
 	bot->ResetIntakeMode(false);
@@ -48,6 +48,9 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
+		// bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_UP"));
+		// bot->GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
+		// bot->GetIntakeR()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
 		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true, CONSTANT("INTAKE_PERCENT_AUTO"));
 		bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
 	}
@@ -106,8 +109,6 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_TURN_INTAKE: // Why does this exist?
 	{
 		result = bot->TurnToHeading(m_CurrentCommand.m_Heading);
-		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
-
 		break;
 	}
 	case CMD_VISION_ALIGN:
@@ -120,8 +121,6 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_HOLD_DISTANCE:
 	{
 		bot->DriveDistanceWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_EncoderCount, m_CurrentCommand.m_Speed);
-		// bot->GetArm()->SetIntakeSpeed(-0.2);
-
 		result = false;
 		break;
 	}
@@ -134,6 +133,7 @@ void AutoModeController::handle(CowRobot *bot)
 	case CMD_DRIVE_DISTANCE:
 	{
 		float direction = 1;
+		// std::cout << "OriginalEncoder: " << m_OriginalEncoder << "  EncoderCount: " << m_CurrentCommand.m_EncoderCount << std::endl;
 		if (m_OriginalEncoder > m_CurrentCommand.m_EncoderCount)
 		{
 			// We want to go backward
@@ -141,8 +141,7 @@ void AutoModeController::handle(CowRobot *bot)
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
-		// bot->GetArm()->SetIntakeSpeed(-0.2);
-
+		
 		if (direction == 1) // Going forward
 		{
 			if (bot->GetDriveDistance() > m_CurrentCommand.m_EncoderCount)
@@ -170,8 +169,6 @@ void AutoModeController::handle(CowRobot *bot)
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
-		//		bot->GetArm()->SetPosition(CONSTANT("ARM_DOWN"));
-		// bot->GetArm()->SetModulatedSpeed(CONSTANT("INTAKE_SPEED"));
 
 		if (direction == 1) // Going forward
 		{
