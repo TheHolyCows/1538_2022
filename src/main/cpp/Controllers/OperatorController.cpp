@@ -36,7 +36,7 @@ void OperatorController::handle(CowRobot *bot)
     {
         doingTracking = true;
 
-        // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
+        bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
 
         // set cooldown timer before calling the vision tracking function
         // let 0.5 seconds pass before attempting to move the robot
@@ -58,8 +58,6 @@ void OperatorController::handle(CowRobot *bot)
             m_TrackingCooldownTimer = 0.0;
             doingTracking = false;
             // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
-
-            // is this necessary?
         }
 
         // TODO: Make this not dumb

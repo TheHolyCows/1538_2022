@@ -14,8 +14,8 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor)
     m_MotorShooter1 = new CowLib::CowMotorController(shooterMotor1);
     m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
 
-    // m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
-    // m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
+    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
     m_Motor1ID = shooterMotor1;
 
     // Variable Hood
@@ -76,7 +76,7 @@ void Shooter::SetHoodPositionUp()
 
     if (m_MotorHood)
     {
-        // m_MotorHood->Set(CONSTANT("HOOD_UP"));
+        m_MotorHood->Set(CONSTANT("HOOD_UP"));
     }
 }
 
@@ -86,7 +86,7 @@ void Shooter::SetHoodPositionDown()
 
     if (m_MotorHood)
     {
-        // m_MotorHood->Set(CONSTANT("HOOD_DOWN"));
+        m_MotorHood->Set(CONSTANT("HOOD_DOWN"));
     }
 }
 
@@ -169,17 +169,14 @@ void Shooter::handle()
     // if (m_MotorShooter1 && m_MotorShooter2)
     if (m_MotorShooter1)
     {
-        // TODO: TEMPORARY FOR A BOT WHEN WE HAVE ONE MOTOR
-
-        m_MotorShooter1->Set(-m_SpeedShooter);
-        // m_MotorShooter1->Set(m_SpeedShooter);
-        // m_MotorShooter2->Set(m_Motor1ID);
+        m_MotorShooter1->Set(m_SpeedShooter);
+        m_MotorShooter2->Set(m_Motor1ID);
     }
 }
 
 Shooter::~Shooter()
 {
     delete m_MotorShooter1;
-    // delete m_MotorShooter2;
+    delete m_MotorShooter2;
     delete m_MotorHood;
 }

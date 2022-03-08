@@ -29,7 +29,7 @@ CowRobot::CowRobot()
     // my b, added 2nd shooter after hood
     m_Shooter = new Shooter(11, 13, 12);
 
-    // m_Limelight = new Limelight("limelight-front");
+    m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -114,9 +114,9 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
-        std::cout << "intake mode: " << m_IntakeModeR << std::endl;
-        std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
+        // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
+        // std::cout << "intake mode: " << m_IntakeModeR << std::endl;
+        // std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
