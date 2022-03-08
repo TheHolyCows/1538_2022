@@ -115,6 +115,8 @@ void CowRobot::handle()
     if (m_DSUpdateCount % 10 == 0)
     {
         std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
+        std::cout << "intake mode: " << m_IntakeModeR << std::endl;
+        std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
         // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
