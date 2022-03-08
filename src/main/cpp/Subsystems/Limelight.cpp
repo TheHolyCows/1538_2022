@@ -34,17 +34,17 @@ void Limelight::SetMode(LimelightMode mode)
 
 bool Limelight::GetValidTargets()
 {
-    return m_Limelight->GetNumber("tv",0);
+    return m_Limelight->GetNumber("tv", 0);
 }
 
 float Limelight::GetTargetXPos()
 {
-    return m_Limelight->GetNumber("tx",0.0);
+    return m_Limelight->GetNumber("tx", 0.0);
 }
 
 float Limelight::GetTargetYPos()
 {
-    return m_Limelight->GetNumber("ty",0.0);
+    return m_Limelight->GetNumber("ty", 0.0);
 }
 
 int Limelight::CalcHoodPos()

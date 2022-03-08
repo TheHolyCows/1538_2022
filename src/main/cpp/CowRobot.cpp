@@ -13,9 +13,13 @@ CowRobot::CowRobot()
     // Set up drive motors
     m_LeftDriveA = new CowLib::CowMotorController(DRIVE_LEFT_A);
     m_LeftDriveB = new CowLib::CowMotorController(DRIVE_LEFT_B);
+    m_LeftDriveA->SetStatorLimit(CONSTANT("STATOR_LIMIT"),CONSTANT("STATOR_THRESHOLD"),CONSTANT("STATOR_DURATION"));
+    m_LeftDriveB->SetStatorLimit(CONSTANT("STATOR_LIMIT"),CONSTANT("STATOR_THRESHOLD"),CONSTANT("STATOR_DURATION"));
 
     m_RightDriveA = new CowLib::CowMotorController(DRIVE_RIGHT_A);
     m_RightDriveB = new CowLib::CowMotorController(DRIVE_RIGHT_B);
+    m_RightDriveA->SetStatorLimit(CONSTANT("STATOR_LIMIT"),CONSTANT("STATOR_THRESHOLD"),CONSTANT("STATOR_DURATION"));
+    m_RightDriveB->SetStatorLimit(CONSTANT("STATOR_LIMIT"),CONSTANT("STATOR_THRESHOLD"),CONSTANT("STATOR_DURATION"));
 
     m_IntakeF = new Intake(7, 5, 1, -1);
     m_IntakeR = new Intake(8, 6, 0, 1);
