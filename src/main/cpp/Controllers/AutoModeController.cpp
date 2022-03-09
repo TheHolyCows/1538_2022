@@ -35,7 +35,7 @@ void AutoModeController::handle(CowRobot *bot)
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
-	// bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
+	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
 
 	bot->ResetConveyorMode();
 	bot->ResetIntakeMode(false);

@@ -62,11 +62,11 @@ void Shooter::SetSpeedHoodRelative()
  **/
 void Shooter::SetHoodPosition(float position)
 {
-    m_HoodPosition = m_HoodDownLimit + position;
+    m_HoodPosition = position;
 
     if (m_MotorHood)
     {
-        // m_MotorHood->Set(m_HoodPosition);
+        m_MotorHood->Set(m_HoodPosition);
     }
 }
 

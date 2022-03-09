@@ -18,7 +18,7 @@ AutoModes::AutoModes()
 	m_Modes["2 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -40, 0, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
 	m_Modes["2 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 0, 0, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 2));
 	m_Modes["2 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0.4, false, false, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 4));
-
+ 
 	// m_Modes["testing_intakes"];
 	// m_Modes["testing_intakes"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0, false, false, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
 	// m_Modes["testing_intakes"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 0, 0, 0, false, false, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 10));
