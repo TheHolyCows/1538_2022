@@ -309,12 +309,12 @@ void CowRobot::DriveSpeedTurn(float speed, float turn, bool quickTurn)
         }
         else
         {
-            sensitivity = 0.9;
+            sensitivity = CONSTANT("STEERING_QUICKTURN");
         }
     }
     else
     {
-        sensitivity = 0.13;
+        sensitivity = CONSTANT("STEERING_NOQUICKTURN");
     }
 
     turn *= sensitivity;
