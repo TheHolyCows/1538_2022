@@ -69,6 +69,7 @@ private:
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
     Limelight *m_Limelight;
+    CowLib::CowCanifier *m_Canifier;
 
     ConveyorMode m_ConveyorMode;
     IntakeMode m_IntakeModeF;
@@ -154,6 +155,10 @@ public:
     Limelight *GetLimelight()
     {
         return m_Limelight;
+    }
+    CowLib::CowCanifier *GetCanifier()
+    {
+        return m_Canifier;
     }
 
     // Sets the conveyor mode the new mode if the new mode is higher priority
@@ -247,11 +252,10 @@ public:
     {
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
-        
+
         SetConveyorMode(CONVEYOR_SHOOT);
         SetIntakeMode(INTAKE_SHOOT, false);
         SetIntakeMode(INTAKE_SHOOT, true);
-        
     }
 
     // Stops conveyor and intakes

@@ -47,6 +47,11 @@ float Limelight::GetTargetYPos()
     return m_Limelight->GetNumber("ty", 0.0);
 }
 
+bool Limelight::TargetCentered()
+{
+    return fabs(m_Limelight->GetNumber("tx", 27.0)) <= 2.0 && GetValidTargets();
+}
+
 int Limelight::CalcHoodPos()
 {
     // assuming bigger area = closer

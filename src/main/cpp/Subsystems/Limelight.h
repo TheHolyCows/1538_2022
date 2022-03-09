@@ -29,6 +29,8 @@ public:
     float GetTargetXPos(void);
     float GetTargetYPos(void);
 
+    bool TargetCentered(void);
+
     int CalcHoodPos(void);
     float CalcNewPid(void);
 

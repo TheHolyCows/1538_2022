@@ -20,6 +20,8 @@ private:
     OperatorController();
     CowControlBoard *m_CB;
 
+    int m_FlashCounter;
+
     enum OperatorButtonMap
     {
         SWITCH_FRONT_INTAKE = 8,

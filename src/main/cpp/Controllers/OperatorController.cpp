@@ -5,6 +5,7 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
     : m_CB(controlboard)
 {
     m_TrackingCooldownTimer = 0.0;
+    m_FlashCounter = 0;
 }
 
 void OperatorController::handle(CowRobot *bot)
@@ -19,6 +20,29 @@ void OperatorController::handle(CowRobot *bot)
 
     bool doingTracking = false;
     bool targetAcquired = false;
+
+    // No target = purple
+    // Hood down no target = blue
+    if ((bot->GetLimelight()->TargetCentered() || bot->GetShooter()->GetHoodPosition() == CONSTANT("HOOD_DOWN")) && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    {
+        if (m_FlashCounter++ > 25)
+        {
+            m_FlashCounter = -25;
+            bot->GetCanifier()->SetLEDColor(0, 0, 0);
+        }
+        else if (m_FlashCounter > 0)
+        {
+            bot->GetCanifier()->SetLEDColor(0, 0, 255);
+        }
+    }
+    else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    {
+        bot->GetCanifier()->SetLEDColor(255, 0, 255);
+    }
+    else
+    {
+        bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    }
 
     if (m_CB->GetDriveButton(1))
     {
