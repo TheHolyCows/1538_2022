@@ -44,7 +44,7 @@ void OperatorController::handle(CowRobot *bot)
         bool isValidTargets = bot->GetLimelight()->GetValidTargets();
         if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
         {
-            targetAcquired = bot->DoVisionTracking(m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
+            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
             // placeholder for hood adjustment
             int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
             // bot->GetShooter()->SetHoodPosition(autoHoodPos);

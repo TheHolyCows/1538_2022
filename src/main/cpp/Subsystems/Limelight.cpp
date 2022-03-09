@@ -61,7 +61,7 @@ int Limelight::CalcHoodPos()
 
 float Limelight::CalcNewPid()
 {
-    float tmp_limelight_P = m_Limelight->GetNumber("tx", 0.0);
+    float tmp_limelight_P = -m_Limelight->GetNumber("tx", 0.0);
     m_Limelight_PID_D = m_Limelight_PID_P - m_Limelight_PID_D;
     m_Limelight_PID_P = tmp_limelight_P;
 
