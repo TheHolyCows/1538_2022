@@ -141,10 +141,6 @@ void OperatorController::handle(CowRobot *bot)
             bot->ShootBalls();
         }
     }
-    else
-    {
-        bot->GetShooter()->SetHoodRollerSpeed(0);
-    }
 
     // If nothing ever changed the conveyor or intake modes, sets them to off
     bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
@@ -155,7 +151,6 @@ void OperatorController::handle(CowRobot *bot)
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
         bot->RunShooter();
-        // bot->GetShooter()->SetSpeedHoodRelative();
     }
     else
     {

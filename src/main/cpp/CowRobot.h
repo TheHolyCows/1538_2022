@@ -294,7 +294,6 @@ public:
         }
         else
         {
-            // GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DEFAULT"));
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
         }
     }
