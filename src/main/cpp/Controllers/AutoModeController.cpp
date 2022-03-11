@@ -28,9 +28,7 @@ void AutoModeController::handle(CowRobot *bot)
 {
 	bool result = false;
 
-	// No Limelight yet
-	// bot->GetLimelight()->PutNumber("pipeline", 0);
-	// bot->GetLimelight()->PutNumber("ledMode", 1);
+	// bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
 
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
@@ -141,7 +139,7 @@ void AutoModeController::handle(CowRobot *bot)
 		}
 
 		bot->DriveWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_Speed * direction);
-		
+
 		if (direction == 1) // Going forward
 		{
 			if (bot->GetDriveDistance() > m_CurrentCommand.m_EncoderCount)
