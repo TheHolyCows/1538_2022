@@ -256,7 +256,6 @@ public:
         SetConveyorMode(CONVEYOR_SHOOT);
         SetIntakeMode(INTAKE_SHOOT, false);
         SetIntakeMode(INTAKE_SHOOT, true);
-        GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
 
         // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
         // {
@@ -283,6 +282,8 @@ public:
     // Sets shooter speed based on hood position
     void RunShooter()
     {
+        GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+        
         if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
         {
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));

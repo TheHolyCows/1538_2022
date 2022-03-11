@@ -154,12 +154,13 @@ void OperatorController::handle(CowRobot *bot)
     // Sets speed according to hood position
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
-        // bot->RunShooter();
-        bot->GetShooter()->SetSpeedHoodRelative();
+        bot->RunShooter();
+        // bot->GetShooter()->SetSpeedHoodRelative();
     }
     else
     {
         bot->GetShooter()->SetSpeed(0);
+        bot->GetShooter()->SetHoodRollerSpeed(0);
     }
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
