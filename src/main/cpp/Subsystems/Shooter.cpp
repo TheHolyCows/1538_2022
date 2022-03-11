@@ -54,16 +54,16 @@ void Shooter::SetSpeed(float speedShooter)
 
 void Shooter::SetHoodRollerSpeed(float speed)
 {
-    if (speed != 0)
-    {
-        m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::SPEED);
-    }
-    else
-    {
-        m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
-    }
+    // if (speed != 0)
+    // {
+    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::SPEED);
+    // }
+    // else
+    // {
+    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    // }
 
-    m_HoodRollerSpeed = (speed * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
+    m_HoodRollerSpeed = speed; // (speed * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
 }
 
 void Shooter::SetSpeedHoodRelative()
@@ -152,7 +152,7 @@ void Shooter::ResetConstants()
     m_MotorHood->SetPIDGains(CONSTANT("HOOD_P"), CONSTANT("HOOD_I"), CONSTANT("HOOD_D"), 0, 1);
     m_MotorHood->SetMotionMagic(CONSTANT("HOOD_ACCEL"), CONSTANT("HOOD_VELOCITY"));
 
-    m_MotorHoodRoller->SetPIDGains(CONSTANT("HOOD_ROLLER_P"), CONSTANT("HOOD_ROLLER_I"), CONSTANT("HOOD_ROLLER_D"), CONSTANT("HOOD_ROLLER_F"), 1);
+    // m_MotorHoodRoller->SetPIDGains(CONSTANT("HOOD_ROLLER_P"), CONSTANT("HOOD_ROLLER_I"), CONSTANT("HOOD_ROLLER_D"), CONSTANT("HOOD_ROLLER_F"), 1);
 
     m_HoodUpLimit = CONSTANT("HOOD_DELTA");
     m_HoodDownLimit = 0;
