@@ -19,10 +19,11 @@
 class Shooter
 {
 public:
-    Shooter(int motorControllerS1, int motorControllerS2, int motorControllerH);
+    Shooter(int motorControllerS1, int motorControllerS2, int motorControllerH, int motorControllerR);
     bool AtTarget();
     void SetSpeed(float speedF);
     void SetSpeedHoodRelative(void);
+    void SetHoodRollerSpeed(float speed);
     void SetHoodPosition(float position);
     void SetHoodPositionUp(void);
     void SetHoodPositionDown(void);
@@ -49,6 +50,7 @@ public:
     float CalcShooterTolerance(void);
 
     float GetSpeedF();
+    float GetSpeedRoller();
     float GetHoodPosition();
 
     virtual ~Shooter();
@@ -57,12 +59,15 @@ private:
     CowLib::CowMotorController *m_MotorShooter1;
     CowLib::CowMotorController *m_MotorShooter2;
     CowLib::CowMotorController *m_MotorHood;
+    CowLib::CowMotorController *m_MotorHoodRoller;
     CowLib::CowLPF *m_RampLPF_F;
 
     int m_Motor1ID;
 
     float m_SpeedShooter;
     float m_Setpoint;
+
+    float m_HoodRollerSpeed;
 
     float m_HoodPosition;
     float m_HoodUpLimit;

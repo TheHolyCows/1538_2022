@@ -25,8 +25,9 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -47, 0, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 2));
 
 	// shoot 2
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 0, 0.3, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), true, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 6, 0.3, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
 	// m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, 0, 0, 0.4, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 1.5));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -20, 12, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -20, 12, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
 
 	// route to ball 3
@@ -40,29 +41,29 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -80, 110, 0.8, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -100, 120, 0.55, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -150, 130, 0.35, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -170, 130, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -170, 130, 0.2, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 1));
 
 	// route to shoot ball 3
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -130, 140, 0.35, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 4));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -110, 115, 0.5, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -90, 95, 0.8, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -70, 70, 0.4, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -30, 40, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -30, 40, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -70, 70, 0.3, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -15, 40, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -15, 40, 0.1, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
 
 	// route to balls 4 and 5
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -62, 50, 0.35, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -105, 70, 0.8, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -200, 90, 0.6, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -240, 90, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -278, 90, 0.15, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -79, 50, 0.35, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -110, 70, 0.8, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), false, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -205, 90, 0.6, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -245, 90, 0.4, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -292, 90, 0.15, false, true, INTAKE_R_IN, CONSTANT("HOOD_UP"), false, 2));
 
 	// shoot 4 and 5
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -100, 90, 0.8, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -80, 80, 0.4, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -65, 58, 0.35, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -15, 27, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -15, 27, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -65, 58, 0.3, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 4));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 5, 27, 0.1, false, true, INTAKE_STOP, CONSTANT("HOOD_UP"), true, 2));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 5, 27, 0.1, false, true, INTAKE_SHOOT, CONSTANT("HOOD_UP"), true, 2));
 
 	// 10 and 20 clockwise
 	// -10 and 25 clockwise

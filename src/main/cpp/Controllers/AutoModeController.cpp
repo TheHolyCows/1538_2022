@@ -68,6 +68,7 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else
 	{
+		bot->GetShooter()->SetHoodRollerSpeed(0);
 		bot->StopRollers();
 	}
 

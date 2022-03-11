@@ -26,8 +26,8 @@ CowRobot::CowRobot()
 
     m_Conveyor = new Conveyor(9, 10);
 
-    // my b, added 2nd shooter after hood
-    m_Shooter = new Shooter(11, 13, 12);
+    // 14 is the hood roller but not assigned yet irl
+    m_Shooter = new Shooter(11, 13, 12, 14);
 
     m_Limelight = new Limelight("limelight-front");
 

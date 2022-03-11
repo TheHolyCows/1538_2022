@@ -256,6 +256,19 @@ public:
         SetConveyorMode(CONVEYOR_SHOOT);
         SetIntakeMode(INTAKE_SHOOT, false);
         SetIntakeMode(INTAKE_SHOOT, true);
+
+        if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+        {
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
+        }
+        else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
+        {
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_UP"));
+        }
+        else
+        {
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_UP"));
+        }
     }
 
     // Stops conveyor and intakes
