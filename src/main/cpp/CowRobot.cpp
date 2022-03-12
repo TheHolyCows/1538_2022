@@ -29,7 +29,7 @@ CowRobot::CowRobot()
     // 14 is the hood roller but not assigned yet irl
     m_Shooter = new Shooter(11, 13, 12, 14);
 
-    m_Limelight = new Limelight("limelight-front");
+    // m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_LeftDriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -47,7 +47,7 @@ CowRobot::CowRobot()
     // m_Gyro->Reset();
     m_PowerDistributionPanel = new frc::PowerDistribution();
 
-    m_Canifier = new CowLib::CowCanifier(15);
+    // m_Canifier = new CowLib::CowCanifier(15);
 
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
@@ -147,34 +147,23 @@ void CowRobot::handle()
     m_IntakeR->handle();
     m_Conveyor->handle();
     m_Shooter->handle();
-    m_Canifier->Handle();
+    // m_Canifier->Handle();
 
     m_DSUpdateCount++;
 }
 
 bool CowRobot::DoVisionTracking(float speed, float threshold)
 {
-    float pid = m_Limelight->CalcNewPid();
+    // float pid = m_Limelight->CalcNewPid();
 
-    DriveSpeedTurn(speed, pid, true);
+    // DriveSpeedTurn(speed, pid, true);
 
-    if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
-    {
-        return true;
-    }
-
-    return false;
-
-    // Limelight has valid targets
-    // if (GetLimelight()->GetNumber("tv", 0) == 1)
+    // if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
     // {
-    //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
-    //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
-    //     {
-    //         return true;
-    //     }
-    //     return false;
+    //     return true;
     // }
+
+    // return false;
 }
 
 double CowRobot::GetDriveDistance()

@@ -68,8 +68,8 @@ private:
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
-    Limelight *m_Limelight;
-    CowLib::CowCanifier *m_Canifier;
+    // Limelight *m_Limelight;
+    // CowLib::CowCanifier *m_Canifier;
 
     ConveyorMode m_ConveyorMode;
     IntakeMode m_IntakeModeF;
@@ -152,14 +152,14 @@ public:
     {
         return m_Shooter;
     }
-    Limelight *GetLimelight()
-    {
-        return m_Limelight;
-    }
-    CowLib::CowCanifier *GetCanifier()
-    {
-        return m_Canifier;
-    }
+    // Limelight *GetLimelight()
+    // {
+    //     return m_Limelight;
+    // }
+    // CowLib::CowCanifier *GetCanifier()
+    // {
+    //     return m_Canifier;
+    // }
 
     // Sets the conveyor mode the new mode if the new mode is higher priority
     void SetConveyorMode(ConveyorMode newMode, double percentage = 1.0)
@@ -282,7 +282,7 @@ public:
     // Sets shooter speed based on hood position
     void RunShooter()
     {
-        GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+        // GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
         
         if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
         {

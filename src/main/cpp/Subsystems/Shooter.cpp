@@ -15,13 +15,13 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor, int hoodRo
     m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
     m_SpeedShooter = 0;
 
-    m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
-    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
-    m_Motor1ID = shooterMotor1;
+    // m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
+    // m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    // m_Motor1ID = shooterMotor1;
 
-    m_MotorHoodRoller = new CowLib::CowMotorController(hoodRollerMotor);
-    m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
-    m_HoodRollerSpeed = 0;
+    // m_MotorHoodRoller = new CowLib::CowMotorController(hoodRollerMotor);
+    // m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    // m_HoodRollerSpeed = 0;
 
     // Variable Hood
     m_MotorHood = new CowLib::CowMotorController(hoodMotor);
@@ -52,19 +52,10 @@ void Shooter::SetSpeed(float speedShooter)
     m_SpeedShooter = speedShooter;
 }
 
-void Shooter::SetHoodRollerSpeed(float speed)
-{
-    // if (speed != 0)
-    // {
-    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::SPEED);
-    // }
-    // else
-    // {
-    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
-    // }
-
-    m_HoodRollerSpeed = speed; // (speed * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
-}
+// void Shooter::SetHoodRollerSpeed(float speed)
+// {
+//     m_HoodRollerSpeed = speed;
+// }
 
 void Shooter::SetSpeedHoodRelative()
 {
@@ -174,10 +165,10 @@ float Shooter::GetSpeedF()
     return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
 }
 
-float Shooter::GetSpeedRoller()
-{
-    return (m_MotorHoodRoller->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60;
-}
+// float Shooter::GetSpeedRoller()
+// {
+//     return (m_MotorHoodRoller->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60;
+// }
 
 float Shooter::GetHoodPosition()
 {
@@ -199,13 +190,13 @@ void Shooter::handle()
     if (m_MotorShooter1)
     {
         m_MotorShooter1->Set(m_SpeedShooter);
-        m_MotorShooter2->Set(m_Motor1ID);
+        // m_MotorShooter2->Set(m_Motor1ID);
     }
 
-    if (m_MotorHoodRoller)
-    {
-        m_MotorHoodRoller->Set(m_HoodRollerSpeed);
-    }
+    // if (m_MotorHoodRoller)
+    // {
+    //     m_MotorHoodRoller->Set(m_HoodRollerSpeed);
+    // }
 }
 
 Shooter::~Shooter()
@@ -213,5 +204,5 @@ Shooter::~Shooter()
     delete m_MotorShooter1;
     delete m_MotorShooter2;
     delete m_MotorHood;
-    delete m_MotorHoodRoller;
+    // delete m_MotorHoodRoller;
 }

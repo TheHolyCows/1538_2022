@@ -21,28 +21,29 @@ void OperatorController::handle(CowRobot *bot)
     bool doingTracking = false;
     bool targetAcquired = false;
 
+    // canifier
     // No target = purple
     // Hood down no target = blue
-    if ((bot->GetLimelight()->TargetCentered() || bot->GetShooter()->GetHoodPosition() == CONSTANT("HOOD_DOWN")) && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
-    {
-        if (m_FlashCounter++ > 25)
-        {
-            m_FlashCounter = -25;
-            bot->GetCanifier()->SetLEDColor(0, 0, 0);
-        }
-        else if (m_FlashCounter > 0)
-        {
-            bot->GetCanifier()->SetLEDColor(0, 0, 255);
-        }
-    }
-    else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
-    {
-        bot->GetCanifier()->SetLEDColor(255, 0, 255);
-    }
-    else
-    {
-        bot->GetCanifier()->SetLEDColor(0, 0, 0);
-    }
+    // if ((bot->GetLimelight()->TargetCentered() || bot->GetShooter()->GetHoodPosition() == CONSTANT("HOOD_DOWN")) && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    // {
+    //     if (m_FlashCounter++ > 25)
+    //     {
+    //         m_FlashCounter = -25;
+    //         bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    //     }
+    //     else if (m_FlashCounter > 0)
+    //     {
+    //         bot->GetCanifier()->SetLEDColor(0, 0, 255);
+    //     }
+    // }
+    // else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    // {
+    //     bot->GetCanifier()->SetLEDColor(255, 0, 255);
+    // }
+    // else
+    // {
+    //     bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    // }
 
     if (m_CB->GetDriveButton(1))
     {
@@ -58,22 +59,22 @@ void OperatorController::handle(CowRobot *bot)
     }
     if (m_CB->GetSteeringButton(3))
     {
-        doingTracking = true;
+        // doingTracking = true;
 
-        bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
+        // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
 
-        // set cooldown timer before calling the vision tracking function
-        // let 0.5 seconds pass before attempting to move the robot
-        // this allows the camera to adjust to the new contrast
-        bool isValidTargets = bot->GetLimelight()->GetValidTargets();
-        if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
-        {
-            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
-            // placeholder for hood adjustment
-            int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
-            // bot->GetShooter()->SetHoodPosition(autoHoodPos);
-        }
-        m_TrackingCooldownTimer += 1.0;
+        // // set cooldown timer before calling the vision tracking function
+        // // let 0.5 seconds pass before attempting to move the robot
+        // // this allows the camera to adjust to the new contrast
+        // bool isValidTargets = bot->GetLimelight()->GetValidTargets();
+        // if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
+        // {
+        //     targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
+        //     // placeholder for hood adjustment
+        //     int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
+        //     // bot->GetShooter()->SetHoodPosition(autoHoodPos);
+        // }
+        // m_TrackingCooldownTimer += 1.0;
     }
     else
     {
@@ -155,7 +156,7 @@ void OperatorController::handle(CowRobot *bot)
     else
     {
         bot->GetShooter()->SetSpeed(0);
-        bot->GetShooter()->SetHoodRollerSpeed(0);
+        // bot->GetShooter()->SetHoodRollerSpeed(0);
     }
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
