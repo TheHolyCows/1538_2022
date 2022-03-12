@@ -91,21 +91,23 @@ void Shooter::SetHoodPosition(float position)
 
 void Shooter::SetHoodPositionUp()
 {
-    m_HoodPosition = m_HoodUpLimit;
+    // m_HoodPosition = m_HoodUpLimit;
+    m_HoodPosition = CONSTANT("HOOD_UP");
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(CONSTANT("HOOD_UP"));
+        m_MotorHood->Set(m_HoodPosition);
     }
 }
 
 void Shooter::SetHoodPositionDown()
 {
-    m_HoodPosition = m_HoodDownLimit;
+    // m_HoodPosition = m_HoodDownLimit;
+    m_HoodPosition = CONSTANT("HOOD_DOWN");
 
     if (m_MotorHood)
     {
-        m_MotorHood->Set(CONSTANT("HOOD_DOWN"));
+        m_MotorHood->Set(m_HoodPosition);
     }
 }
 
