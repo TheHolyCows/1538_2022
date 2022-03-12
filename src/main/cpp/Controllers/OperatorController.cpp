@@ -161,10 +161,10 @@ void OperatorController::handle(CowRobot *bot)
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
     {
-        bot->GetShooter()->SetHoodPositionUp();
+        // bot->GetShooter()->SetHoodPositionUp();
     }
     else if (m_CB->GetOperatorButton(BUTTON_HOOD_DOWN))
     {
-        bot->GetShooter()->SetHoodPositionDown();
+        // bot->GetShooter()->SetHoodPositionDown();
     }
 }
