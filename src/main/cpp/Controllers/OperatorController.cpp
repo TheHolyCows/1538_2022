@@ -124,6 +124,14 @@ void OperatorController::handle(CowRobot *bot)
         bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
     }
+    else if (m_CB->GetSteeringButton(4))
+    {
+        // special driver exhaust
+        if (bot->GetIntakeF()->GetExtended())
+        {
+            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST,false);
+        }
+    }
 
     // Rear Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
@@ -135,6 +143,14 @@ void OperatorController::handle(CowRobot *bot)
     {
         bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true);
+    }
+    else if (m_CB->GetSteeringButton(4))
+    {
+        // special driver exhaust
+        if (bot->GetIntakeR()->GetExtended())
+        {
+            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST,true);
+        }
     }
 
     // Shooting
