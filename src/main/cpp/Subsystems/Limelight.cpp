@@ -52,16 +52,33 @@ bool Limelight::TargetCentered()
     return fabs(m_Limelight->GetNumber("tx", 27.0)) <= 2.0 && GetValidTargets();
 }
 
-int Limelight::CalcHoodPos()
+// int Limelight::CalcHoodPos()
+// {
+//     // assuming bigger area = closer
+//     // in the future this target area should be compared to a range of area min and area max in constants
+//     float targArea = m_Limelight->GetNumber("ta", 0.0);
+
+//     targArea = targArea * CONSTANT("HOOD_DELTA");
+
+//     // add this number to hood min to get position
+//     return floorf(targArea);
+// }
+
+float Limelight::CalcHoodPosition()
 {
-    // assuming bigger area = closer
-    // in the future this target area should be compared to a range of area min and area max in constants
-    float targArea = m_Limelight->GetNumber("ta", 0.0);
+    if (!GetValidTargets())
+    {
+        return CONSTANT("HOOD_DOWN");
+    }
 
-    targArea = targArea * CONSTANT("HOOD_DELTA");
+    float targetY = m_Limelight->GetNumber("ty", 0.0);
 
-    // add this number to hood min to get position
-    return floorf(targArea);
+    float deltaY = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
+    float deltaHood = CONSTANT("HOOD_MAX") - CONSTANT("HOOD_MIN");
+
+    float percentY = (targetY - CONSTANT("TARGET_Y_CLOSE")) / deltaY;
+
+    return CONSTANT("HOOD_MIN") + (percentY * deltaHood);
 }
 
 float Limelight::CalcNewPid()

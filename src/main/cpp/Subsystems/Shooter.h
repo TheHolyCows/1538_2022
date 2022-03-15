@@ -15,6 +15,7 @@
 #include <wpi/deprecated.h>
 #include <frc/Timer.h>
 #include <string>
+#include <algorithm>
 
 class Shooter
 {

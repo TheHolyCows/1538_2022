@@ -82,7 +82,7 @@ void OperatorController::handle(CowRobot *bot)
         {
             targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
             // placeholder for hood adjustment
-            int autoHoodPos = bot->GetLimelight()->CalcHoodPos();
+            int autoHoodPos = bot->GetLimelight()->CalcHoodPosition();
             // bot->GetShooter()->SetHoodPosition(autoHoodPos);
         }
         m_TrackingCooldownTimer += 1.0;
@@ -129,7 +129,7 @@ void OperatorController::handle(CowRobot *bot)
         // special driver exhaust
         if (bot->GetIntakeF()->GetExtended())
         {
-            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST,false);
+            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
         }
     }
 
@@ -149,7 +149,7 @@ void OperatorController::handle(CowRobot *bot)
         // special driver exhaust
         if (bot->GetIntakeR()->GetExtended())
         {
-            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST,true);
+            bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true);
         }
     }
 

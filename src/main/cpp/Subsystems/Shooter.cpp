@@ -69,7 +69,8 @@ void Shooter::SetHoodRollerSpeed(float speed)
 void Shooter::SetSpeedHoodRelative()
 {
     // ranges from 0 -> 1.0
-    float percentOfHood = (m_HoodPosition - m_HoodDownLimit) / CONSTANT("HOOD_DELTA");
+    float percentOfHood = (m_HoodPosition - CONSTANT("HOOD_MIN")) / (CONSTANT("HOOD_MAX") - CONSTANT("HOOD_MIN"));
+    // float percentOfHood = (m_HoodPosition - m_HoodDownLimit) / CONSTANT("HOOD_DELTA");
 
     int speedDelta = CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN");
     SetSpeed((speedDelta * percentOfHood) + CONSTANT("SHOOTER_SPEED_DOWN"));
@@ -81,6 +82,12 @@ void Shooter::SetSpeedHoodRelative()
  **/
 void Shooter::SetHoodPosition(float position)
 {
+    float max = std::max(CONSTANT("HOOD_MAX"), CONSTANT("HOOD_MIN"));
+    float min = std::min(CONSTANT("HOOD_MAX"), CONSTANT("HOOD_MIN"));
+
+    position = CONSTANT("HOOD_MAX") < 0 ? std::max((float)CONSTANT("HOOD_MAX"), position) : std::min((float)CONSTANT("HOOD_MAX"), position);
+    position = CONSTANT("HOOD_MIN") > 0 ? std::max((float)CONSTANT("HOOD_MIN"), position) : std::min((float)CONSTANT("HOOD_MIN"), position);
+
     m_HoodPosition = position;
 
     if (m_MotorHood)
