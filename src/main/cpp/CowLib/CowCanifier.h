@@ -6,7 +6,7 @@
 #define __COWLIB_COWCANIFIER_H__
 
 #include <stdint.h>
-#include <wpi/deprecated.h>
+#include "../CowConstants.h"
 #include "ctre/Phoenix.h"
 
 namespace CowLib
@@ -18,6 +18,8 @@ namespace CowLib
         virtual ~CowCanifier();
 
         void SetLEDColor(int R, int G, int B);
+        void FlashColor(int, int, int);
+        void ColorWheelScroll(void);
         void Handle();
     private:
         CANifier* m_Canifier;
@@ -25,6 +27,8 @@ namespace CowLib
         int m_R;
         int m_G;
         int m_B;
+        int m_FlashTimer;
+        int m_ScrollIndex[3] = {0,0,0};
     };
 }
 

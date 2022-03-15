@@ -28,7 +28,7 @@ void AutoModeController::handle(CowRobot *bot)
 {
 	bool result = false;
 
-	// bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
+	bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_TRACKING);
 
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
@@ -84,6 +84,20 @@ void AutoModeController::handle(CowRobot *bot)
 	{
 		bot->GetShooter()->SetSpeed(0);
 		bot->GetShooter()->SetHoodRollerSpeed(0);
+	}
+
+	// LED feedback for autos
+	if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
+	{
+		bot->GetCanifier()->FlashColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
+	}
+	else if (m_CurrentCommand.m_Shooter)
+	{
+		bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
+	}
+	else
+	{
+		bot->GetCanifier()->SetLEDColor(0, 0, 0);
 	}
 
 	// Run the command
