@@ -21,6 +21,8 @@ private:
     CowControlBoard *m_CB;
 
     int m_FlashCounter;
+    float m_DriveTarget;
+    bool m_MoveBack;
 
     enum OperatorButtonMap
     {

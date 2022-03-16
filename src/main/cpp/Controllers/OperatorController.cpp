@@ -96,10 +96,24 @@ void OperatorController::handle(CowRobot *bot)
             // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
         }
 
-        // TODO: Make this not dumb
         bot->DriveSpeedTurn(-m_CB->GetDriveStickY(),
                             -m_CB->GetSteeringX(),
                             m_CB->GetSteeringButton(FAST_TURN));
+    }
+
+    if (m_CB->GetSteeringButton(2))
+    {
+        if (!m_MoveBack)
+        {
+            m_DriveTarget = bot->GetDriveDistance() - 20;
+            m_MoveBack = true;
+        }
+
+        bot->DriveDistanceWithHeading(bot->GetGyro()->GetAngle(), m_DriveTarget, 0.3);
+    }
+    else
+    {
+        m_MoveBack = false;
     }
 
     // Intake Position Switches
