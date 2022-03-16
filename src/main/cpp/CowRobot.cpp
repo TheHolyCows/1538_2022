@@ -153,29 +153,44 @@ void CowRobot::handle()
     m_DSUpdateCount++;
 }
 
-bool CowRobot::DoVisionTracking(float speed, float threshold)
+// bool CowRobot::DoVisionTracking(float speed, float threshold)
+// {
+//     float pid = m_Limelight->CalcNewPid();
+
+//     DriveSpeedTurn(speed, pid, true);
+
+//     if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
+//     {
+//         return true;
+//     }
+
+//     return false;
+
+//     // Limelight has valid targets
+//     // if (GetLimelight()->GetNumber("tv", 0) == 1)
+//     // {
+//     //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
+//     //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
+//     //     {
+//     //         return true;
+//     //     }
+//     //     return false;
+//     // }
+// }
+
+bool CowRobot::DoVisionTracking(float targetY, float threshold)
 {
     float pid = m_Limelight->CalcNewPid();
+    float pidY = m_Limelight->CalcYPid(targetY);
 
-    DriveSpeedTurn(speed, pid, true);
+    DriveSpeedTurn(pidY, pid, true);
 
-    if (fabs(m_Limelight->GetTargetXPos()) <= threshold)
+    if (fabs(m_Limelight->GetTargetXPos()) <= threshold && fabs(m_Limelight->GetTargetYPos() - targetY <= threshold))
     {
         return true;
     }
 
     return false;
-
-    // Limelight has valid targets
-    // if (GetLimelight()->GetNumber("tv", 0) == 1)
-    // {
-    //     // If the target area is larger than the threshold, we likely have the gamepiece or scored
-    //     if (GetLimelight()->GetNumber("ta", 0) >= threshold)
-    //     {
-    //         return true;
-    //     }
-    //     return false;
-    // }
 }
 
 double CowRobot::GetDriveDistance()

@@ -34,6 +34,7 @@ public:
     int CalcHoodPos(void);
     float CalcHoodPosition(void);
     float CalcNewPid(void);
+    float CalcYPid(float setpoint);
 
     void ResetPID(void);
 
@@ -41,6 +42,9 @@ private:
     std::shared_ptr<nt::NetworkTable> m_Limelight;
     float m_Limelight_PID_P;
     float m_Limelight_PID_D;
+
+    float m_Limelight_PID_Y_P;
+    float m_Limelight_PID_Y_D;
 };
 
 #endif /* __LIMELIGHT_H__ */

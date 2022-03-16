@@ -93,6 +93,18 @@ float Limelight::CalcNewPid()
     return pid;
 }
 
+float Limelight::CalcYPid(float setpoint)
+{
+    float tmp_limelight_P = setpoint - m_Limelight->GetNumber("ty", 0.0);
+    m_Limelight_PID_Y_D = m_Limelight_PID_Y_P - m_Limelight_PID_Y_D;
+    m_Limelight_PID_Y_P = tmp_limelight_P;
+
+    float pid = (m_Limelight_PID_Y_P * CONSTANT("LIMELIGHT_Y_KP"));
+    pid += (m_Limelight_PID_Y_D * CONSTANT("LIMELIGHT_Y_KD"));
+
+    return pid;
+}
+
 void Limelight::ResetPID()
 {
     m_Limelight_PID_P = 0;

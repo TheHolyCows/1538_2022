@@ -107,7 +107,7 @@ public:
     void GyroFinalizeCalibration();
     void SetController(GenericController *controller);
     void PrintToDS();
-    bool DoVisionTracking(float speed, float threshold = 5.0);
+    bool DoVisionTracking(float targetY, float threshold = 5.0);
     double GetDriveDistance();
     bool DriveDistance(double distance);
     bool DriveDistanceWithHeading(double heading, double distance, double speed);
@@ -188,6 +188,7 @@ public:
     }
 
     // Sets the intake mode the new mode if the new mode is higher priority
+    // TODO: move to intake subsystem
     void SetIntakeMode(IntakeMode newMode, bool rear, double percentage = 1.0)
     {
         // Creates pointers to the intake and intake mode coresponding to the selected side
