@@ -119,8 +119,9 @@ void CowRobot::handle()
         // std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
-        // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
-        // std::cout << "HOOD: Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
+        std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
+        std::cout << "ROLLER: Set speed: " << GetShooter()->GetSetpointR() << " Real speed: " << GetShooter()->GetSpeedRoller() << std::endl;
+        std::cout << "HOOD: Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 
         // 5 is drive
         // 4 s1

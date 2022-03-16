@@ -74,11 +74,11 @@ float Limelight::CalcHoodPosition()
     float targetY = m_Limelight->GetNumber("ty", 0.0);
 
     float deltaY = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
-    float deltaHood = CONSTANT("HOOD_MAX") - CONSTANT("HOOD_MIN");
+    float deltaHood = CONSTANT("HOOD_UP_LIMIT") - CONSTANT("HOOD_DOWN_LIMIT");
 
     float percentY = (targetY - CONSTANT("TARGET_Y_CLOSE")) / deltaY;
 
-    return CONSTANT("HOOD_MIN") + (percentY * deltaHood);
+    return CONSTANT("HOOD_DOWN_LIMIT") + (percentY * deltaHood);
 }
 
 float Limelight::CalcNewPid()

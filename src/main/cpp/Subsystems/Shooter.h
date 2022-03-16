@@ -33,6 +33,10 @@ public:
     {
         return m_Setpoint;
     }
+    float GetSetpointR()
+    {
+        return m_SetpointRoller;
+    }
     float GetSetpointH()
     {
         return m_HoodPosition;
@@ -69,6 +73,7 @@ private:
     float m_Setpoint;
 
     float m_HoodRollerSpeed;
+    float m_SetpointRoller;
 
     float m_HoodPosition;
     float m_HoodUpLimit;

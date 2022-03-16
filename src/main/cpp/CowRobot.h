@@ -282,19 +282,17 @@ public:
     // Sets shooter speed based on hood position
     void RunShooter()
     {
-        GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
-        
+
         if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
         {
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-        }
-        else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
-        {
-            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
         }
         else
         {
+
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
         }
     }
 

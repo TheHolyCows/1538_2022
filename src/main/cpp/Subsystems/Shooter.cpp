@@ -54,22 +54,24 @@ void Shooter::SetSpeed(float speedShooter)
 
 void Shooter::SetHoodRollerSpeed(float speed)
 {
-    // if (speed != 0)
-    // {
-    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::SPEED);
-    // }
-    // else
-    // {
-    //     m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
-    // }
+    if (speed != 0)
+    {
+        m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::SPEED);
+    }
+    else
+    {
+        m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    }
 
-    m_HoodRollerSpeed = speed; // (speed * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
+    m_SetpointRoller = speed;
+
+    m_HoodRollerSpeed = (speed * (1.0 / 60.0) * (1.0 / 10.0) * 2048);
 }
 
 void Shooter::SetSpeedHoodRelative()
 {
     // ranges from 0 -> 1.0
-    float percentOfHood = (m_HoodPosition - CONSTANT("HOOD_MIN")) / (CONSTANT("HOOD_MAX") - CONSTANT("HOOD_MIN"));
+    float percentOfHood = (m_HoodPosition - CONSTANT("HOOD_DOWN_LIMIT")) / (CONSTANT("HOOD_UP_LIMIT") - CONSTANT("HOOD_DOWN_LIMIT"));
     // float percentOfHood = (m_HoodPosition - m_HoodDownLimit) / CONSTANT("HOOD_DELTA");
 
     int speedDelta = CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN");
@@ -82,11 +84,11 @@ void Shooter::SetSpeedHoodRelative()
  **/
 void Shooter::SetHoodPosition(float position)
 {
-    float max = std::max(CONSTANT("HOOD_MAX"), CONSTANT("HOOD_MIN"));
-    float min = std::min(CONSTANT("HOOD_MAX"), CONSTANT("HOOD_MIN"));
+    float max = std::max(CONSTANT("HOOD_UP_LIMIT"), CONSTANT("HOOD_DOWN_LIMIT"));
+    float min = std::min(CONSTANT("HOOD_UP_LIMIT"), CONSTANT("HOOD_DOWN_LIMIT"));
 
-    position = CONSTANT("HOOD_MAX") < 0 ? std::max((float)CONSTANT("HOOD_MAX"), position) : std::min((float)CONSTANT("HOOD_MAX"), position);
-    position = CONSTANT("HOOD_MIN") > 0 ? std::max((float)CONSTANT("HOOD_MIN"), position) : std::min((float)CONSTANT("HOOD_MIN"), position);
+    position = CONSTANT("HOOD_UP_LIMIT") < CONSTANT("HOOD_DOWN_LIMIT") ? std::max((float)CONSTANT("HOOD_UP_LIMIT"), position) : std::min((float)CONSTANT("HOOD_UP_LIMIT"), position);
+    position = CONSTANT("HOOD_UP_LIMIT") > CONSTANT("HOOD_DOWN_LIMIT") ? std::max((float)CONSTANT("HOOD_DOWN_LIMIT"), position) : std::min((float)CONSTANT("HOOD_DOWN_LIMIT"), position);
 
     m_HoodPosition = position;
 
@@ -161,7 +163,7 @@ void Shooter::ResetConstants()
     m_MotorHood->SetPIDGains(CONSTANT("HOOD_P"), CONSTANT("HOOD_I"), CONSTANT("HOOD_D"), 0, 1);
     m_MotorHood->SetMotionMagic(CONSTANT("HOOD_ACCEL"), CONSTANT("HOOD_VELOCITY"));
 
-    // m_MotorHoodRoller->SetPIDGains(CONSTANT("HOOD_ROLLER_P"), CONSTANT("HOOD_ROLLER_I"), CONSTANT("HOOD_ROLLER_D"), CONSTANT("HOOD_ROLLER_F"), 1);
+    m_MotorHoodRoller->SetPIDGains(CONSTANT("HOOD_ROLLER_P"), CONSTANT("HOOD_ROLLER_I"), CONSTANT("HOOD_ROLLER_D"), CONSTANT("HOOD_ROLLER_F"), 1);
 
     m_HoodUpLimit = CONSTANT("HOOD_DELTA");
     m_HoodDownLimit = 0;
@@ -178,7 +180,7 @@ float Shooter::CalcShooterTolerance()
 float Shooter::GetSpeedF()
 {
     // *2 at the end of this statement for gear ratio on shooter
-    return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60 * 2;
+    return (m_MotorShooter1->GetInternalMotor()->GetSelectedSensorVelocity()) * (10.0 / 2048.0) * 60;
 }
 
 float Shooter::GetSpeedRoller()
@@ -200,6 +202,14 @@ void Shooter::handle()
                                   m_MotorShooter1->GetInternalMotor()->GetClosedLoopError(),
                                   m_MotorShooter1->GetInternalMotor()->GetIntegralAccumulator(),
                                   m_MotorShooter1->GetInternalMotor()->GetOutputCurrent());
+    }
+    else if (CONSTANT("DEBUG_PID") == 2)
+    {
+        m_LogServer->PIDRemoteLog((double)m_SetpointRoller,
+                                  (double)GetSpeedRoller(),
+                                  m_MotorHoodRoller->GetInternalMotor()->GetClosedLoopError(),
+                                  m_MotorHoodRoller->GetInternalMotor()->GetIntegralAccumulator(),
+                                  m_MotorHoodRoller->GetInternalMotor()->GetOutputCurrent());
     }
 
     // if (m_MotorShooter1 && m_MotorShooter2)

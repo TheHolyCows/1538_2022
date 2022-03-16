@@ -18,7 +18,7 @@ namespace CowLib
 
     CowLogger::CowLogger()
     {
-        if (CONSTANT("DEBUG_PID") == 1)
+        if (CONSTANT("DEBUG_PID") != 0)
         {
             m_LogSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -35,7 +35,6 @@ namespace CowLib
         {
             m_LogSocket = -1;
         }
-        
     }
 
     CowLogger::~CowLogger()
@@ -84,32 +83,32 @@ namespace CowLib
     }
 
     /**
- * CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
- * logs a variable amount of 32 bit data to our remote server
- **/
+     * CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
+     * logs a variable amount of 32 bit data to our remote server
+     **/
     void CowLogger::VarRemoteLog(uint32_t nArgs, void **args)
     {
         if (CONSTANT("DEBUG_PID") == 0)
         {
             return;
         }
-        
+
         // WIP
         return;
     }
 
     /**
- * CowLogger::StrLog(std::string logStr)
- * logs string to remote logging server for debugging
- * @arg logStr: string to log
- **/
+     * CowLogger::StrLog(std::string logStr)
+     * logs string to remote logging server for debugging
+     * @arg logStr: string to log
+     **/
     void CowLogger::StrRemoteLog(std::string logStr)
     {
         if (CONSTANT("DEBUG_PID") == 0)
         {
             return;
         }
-        
+
         CowLogger::CowLogHdr logHdr;
         logHdr.proto = CowLib::CowLogger::STR_LOG;
         logHdr.dataLen = logStr.length() + 1;
@@ -134,12 +133,12 @@ namespace CowLib
     }
 
     /**
- * CowLogger::PIDRemoteLog(double *pidArray)
- * logs PID values to remote logging server for graphing and testing
- * @arg pidArray:
- *  size 5
- *  [setPoint, processVar, P, I, D]
- **/
+     * CowLogger::PIDRemoteLog(double *pidArray)
+     * logs PID values to remote logging server for graphing and testing
+     * @arg pidArray:
+     *  size 5
+     *  [setPoint, processVar, P, I, D]
+     **/
     void CowLogger::PIDRemoteLog(double setPoint, double procVar, double P, double I, double D)
     {
         if (CONSTANT("DEBUG_PID") == 0)
