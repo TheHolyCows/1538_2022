@@ -16,11 +16,10 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor, int hoodRo
     m_SpeedShooter = 0;
 
     m_MotorShooter2 = new CowLib::CowMotorController(shooterMotor2);
-    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::FOLLOWER);
-    m_Motor1ID = shooterMotor1;
+    m_MotorShooter2->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 
     m_MotorHoodRoller = new CowLib::CowMotorController(hoodRollerMotor);
-    m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    m_MotorHoodRoller->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
     m_HoodRollerSpeed = 0;
 
     // Variable Hood
@@ -28,7 +27,7 @@ Shooter::Shooter(int shooterMotor1, int shooterMotor2, int hoodMotor, int hoodRo
     m_MotorHood->SetControlMode(CowLib::CowMotorController::MOTIONMAGIC);
     m_HoodPosition = 0;
     m_MotorHood->SetNeutralMode(CowLib::CowMotorController::BRAKE);
-    m_HoodZeroed = false;
+    // m_HoodZeroed = false;
 
     ResetConstants();
 
@@ -41,10 +40,13 @@ void Shooter::SetSpeed(float speedShooter)
     if (speedShooter != 0)
     {
         m_MotorShooter1->SetControlMode(CowLib::CowMotorController::SPEED);
+        m_MotorShooter2->SetControlMode(CowLib::CowMotorController::SPEED);
+        
     }
     else
     {
         m_MotorShooter1->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+        m_MotorShooter2->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
     }
 
     m_Setpoint = speedShooter;
@@ -158,6 +160,7 @@ void Shooter::ResetConstants()
     // Shooter
     printf("P: %lf\n I: %lf\n D: %lf\n F: %lf\n", CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
     m_MotorShooter1->SetPIDGains(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"), 1);
+    m_MotorShooter2->SetPIDGains(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"), 1);
 
     // Variable Hood
     m_MotorHood->SetPIDGains(CONSTANT("HOOD_P"), CONSTANT("HOOD_I"), CONSTANT("HOOD_D"), 0, 1);
@@ -212,11 +215,11 @@ void Shooter::handle()
                                   m_MotorHoodRoller->GetInternalMotor()->GetOutputCurrent());
     }
 
-    // if (m_MotorShooter1 && m_MotorShooter2)
-    if (m_MotorShooter1)
+    // redundancy
+    if (m_MotorShooter1 || m_MotorShooter2)
     {
-        m_MotorShooter1->Set(m_SpeedShooter);
-        m_MotorShooter2->Set(m_Motor1ID);
+        m_MotorShooter1->Set(-m_SpeedShooter);
+        m_MotorShooter2->Set(m_SpeedShooter);
     }
 
     if (m_MotorHoodRoller)
