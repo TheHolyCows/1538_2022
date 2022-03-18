@@ -24,7 +24,10 @@
 #include "Subsystems/Intake.h"
 #include "Subsystems/Conveyor.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Climber.h"
 #include "Subsystems/Limelight.h"
+
+#define CLIMBER_MOTOR_ID 15
 
 class CowRobot
 {
@@ -68,12 +71,15 @@ private:
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
+    Climber *m_Climber;
     Limelight *m_Limelight;
     CowLib::CowCanifier *m_Canifier;
 
     ConveyorMode m_ConveyorMode;
     IntakeMode m_IntakeModeF;
     IntakeMode m_IntakeModeR;
+
+    bool m_Climbing;
 
     float m_LeftDriveValue;
     float m_RightDriveValue;
@@ -151,6 +157,10 @@ public:
     Shooter *GetShooter()
     {
         return m_Shooter;
+    }
+    Climber *GetClimber()
+    {
+        return m_Climber;
     }
     Limelight *GetLimelight()
     {
@@ -294,6 +304,30 @@ public:
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
             GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
         }
+    }
+
+    void EngagePTO()
+    {
+        GetClimber()->SetPTOEngaged(true);
+
+        m_LeftDriveA->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+        m_LeftDriveB->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+        m_RightDriveA->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+        m_RightDriveB->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+
+        m_Climbing = true;
+    }
+
+    void DisengagePTO()
+    {
+        m_LeftDriveA->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+        m_LeftDriveB->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+        m_RightDriveA->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+        m_RightDriveB->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+
+        GetClimber()->SetPTOEngaged(false);
+
+        m_Climbing = false;
     }
 
     void UseLeftEncoder()

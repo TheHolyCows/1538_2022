@@ -22,6 +22,8 @@ private:
 
     int m_FlashCounter;
 
+    bool m_OffGround;
+
     enum OperatorButtonMap
     {
         SWITCH_FRONT_INTAKE = 8,

@@ -6,6 +6,7 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 {
     m_TrackingCooldownTimer = 0.0;
     m_FlashCounter = 0;
+    m_OffGround = false;
 }
 
 void OperatorController::handle(CowRobot *bot)
@@ -193,5 +194,51 @@ void OperatorController::handle(CowRobot *bot)
     else if (m_CB->GetOperatorButton(BUTTON_HOOD_DOWN))
     {
         bot->GetShooter()->SetHoodPositionDown();
+    }
+
+    // Process would be switch, drive forwards, hold button
+
+    // Raise the climber (switch???)
+    if (false)
+    {
+        bot->GetClimber()->SetLockState(false);
+        bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_STAGE_ONE"));
+    }
+    else
+    {
+        bot->GetClimber()->SetLockState(true);
+        bot->GetClimber()->SetPosition(0); // could change to CONSTANT("CLIMBER_MIN")
+    }
+
+    // Button you hold to go down
+    if (false)
+    {
+        // problem: if bot is not limed up and this runs it will just start running pto (bad)
+
+        // If not off ground, get there
+        if (bot->GetClimber()->GetDistance() < CONSTANT("CLIMBER_OFF_GROUND"))
+        {
+            bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_OFF_GROUND"));
+
+            if (bot->GetClimber()->AtTarget())
+            {
+                m_OffGround = true;
+                bot->EngagePTO();
+            }
+        }
+        else
+        {
+            // If bot is off ground, go to final position fast
+
+            bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_FINAL"));
+
+            if (bot->GetClimber()->AtTarget())
+            {
+                bot->DisengagePTO();
+                bot->GetClimber()->SetLockState(true);
+
+                // How do I stop it from trying to move
+            }
+        }
     }
 }

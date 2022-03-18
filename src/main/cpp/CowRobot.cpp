@@ -29,6 +29,9 @@ CowRobot::CowRobot()
     // 14 is the hood roller but not assigned yet irl
     m_Shooter = new Shooter(11, 13, 12, 14);
 
+    // Random numbers rn
+    m_Climber = new Climber(CLIMBER_MOTOR_ID, 2, 3);
+
     m_Limelight = new Limelight("limelight-front");
 
     m_LeftDriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
@@ -60,6 +63,8 @@ CowRobot::CowRobot()
     m_TipTime = 0;
     m_Tipping = false;
 
+    m_Climbing = false;
+
     std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 }
 
@@ -75,6 +80,7 @@ void CowRobot::Reset()
     m_MatchTime = 0;
     // m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     m_Shooter->ResetConstants();
+    m_Climber->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -105,12 +111,23 @@ void CowRobot::handle()
     // printf("Handling...\n");
     m_Controller->handle(this);
 
-    // Default drive
-    float tmpLeftMotor = m_LeftDriveValue;
-    float tmpRightMotor = m_RightDriveValue;
+    if (m_Climbing)
+    {
+        m_LeftDriveA->Set(CLIMBER_MOTOR_ID);
+        m_LeftDriveB->Set(CLIMBER_MOTOR_ID);
+        m_RightDriveA->Set(CLIMBER_MOTOR_ID);
+        m_RightDriveB->Set(CLIMBER_MOTOR_ID);
+    }
+    else
+    {
+        // Default drive
 
-    SetLeftMotors(tmpLeftMotor);
-    SetRightMotors(tmpRightMotor);
+        float tmpLeftMotor = m_LeftDriveValue;
+        float tmpRightMotor = m_RightDriveValue;
+
+        SetLeftMotors(tmpLeftMotor);
+        SetRightMotors(tmpRightMotor);
+    }
 
     if (m_DSUpdateCount % 10 == 0)
     {
