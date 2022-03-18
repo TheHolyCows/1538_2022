@@ -34,6 +34,8 @@ public:
     void SetLockState(bool locked);
     void SetPTOEngaged(bool engaged);
 
+    void SetEnabled(bool enabled);
+
     float GetSetpoint()
     {
         return m_Position;

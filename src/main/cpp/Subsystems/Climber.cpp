@@ -25,6 +25,8 @@ void Climber::SetPosition(float position)
     position = CONSTANT("CLIMBER_MAX") > CONSTANT("CLIMBER_MIN") ? std::max((float)CONSTANT("CLIMBER_MIN"), position) : std::min((float)CONSTANT("CLIMBER_MIN"), position);
 
     m_Position = position;
+
+    m_MotorController->Set(m_Position / m_EncoderInchPerTick);
 }
 
 void Climber::SetLockState(bool locked)
@@ -39,6 +41,20 @@ void Climber::SetPTOEngaged(bool engaged)
     if (!m_Locked) // there should be more logic than this
     {
         m_PTOEngaged = engaged;
+    }
+}
+
+void Climber::SetEnabled(bool enabled)
+{
+    if (enabled)
+    {
+        m_MotorController->SetControlMode(CowLib::CowMotorController::MOTIONMAGIC);
+        m_MotorController->Set(m_Position);
+    }
+    else
+    {
+        m_MotorController->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+        m_MotorController->Set(0);
     }
 }
 
@@ -62,7 +78,8 @@ bool Climber::AtTarget()
 
 void Climber::handle()
 {
-    m_MotorController->Set(m_Position / m_EncoderInchPerTick);
+    // Only called in set to minimize CAN usage
+    // m_MotorController->Set(m_Position / m_EncoderInchPerTick);
 
     m_SolenoidLock->Set(m_Locked);
     m_SolenoidPTO->Set(m_PTOEngaged);

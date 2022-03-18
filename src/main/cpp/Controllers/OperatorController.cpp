@@ -196,16 +196,19 @@ void OperatorController::handle(CowRobot *bot)
         bot->GetShooter()->SetHoodPositionDown();
     }
 
-    // Process would be switch, drive forwards, hold button
+    // Process would be switch, drive forwards, hold button until it locks
 
     // Raise the climber (switch???)
     if (false)
     {
+        // bot->GetClimber()->SetEnabled(true);
         bot->GetClimber()->SetLockState(false);
         bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_STAGE_ONE"));
     }
     else
     {
+        // bot->GetClimber()->SetEnabled(false);
+
         bot->GetClimber()->SetLockState(true);
         bot->GetClimber()->SetPosition(0); // could change to CONSTANT("CLIMBER_MIN")
     }
@@ -215,8 +218,8 @@ void OperatorController::handle(CowRobot *bot)
     {
         // problem: if bot is not limed up and this runs it will just start running pto (bad)
 
-        // If not off ground, get there
-        if (bot->GetClimber()->GetDistance() < CONSTANT("CLIMBER_OFF_GROUND"))
+        // If not off ground, get there (maybe if the logic works)
+        if ((CONSTANT("CLIMBER_MAX") > CONSTANT("CLIMBER_MIN")) ? bot->GetClimber()->GetDistance() < CONSTANT("CLIMBER_OFF_GROUND") : bot->GetClimber()->GetDistance() > CONSTANT("CLIMBER_OFF_GROUND"))
         {
             bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_OFF_GROUND"));
 
@@ -237,7 +240,8 @@ void OperatorController::handle(CowRobot *bot)
                 bot->DisengagePTO();
                 bot->GetClimber()->SetLockState(true);
 
-                // How do I stop it from trying to move
+                // this only gets called here so it never comes back to true, need to fix that
+                bot->GetClimber()->SetEnabled(false);
             }
         }
     }
