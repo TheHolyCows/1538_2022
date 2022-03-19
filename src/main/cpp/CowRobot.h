@@ -288,9 +288,13 @@ public:
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
             GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
         }
+        else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_BOTTOM"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
+        }
         else
         {
-
             GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
             GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
         }

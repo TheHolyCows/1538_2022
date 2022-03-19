@@ -122,6 +122,17 @@ void Shooter::SetHoodPositionDown()
     }
 }
 
+void Shooter::SetHoodPositionBottom()
+{
+    // m_HoodPosition = m_HoodDownLimit;
+    m_HoodPosition = CONSTANT("HOOD_BOTTOM");
+
+    if (m_MotorHood)
+    {
+        m_MotorHood->Set(m_HoodPosition);
+    }
+}
+
 void Shooter::ZeroHoodPosition()
 {
     if (m_HoodZeroed)

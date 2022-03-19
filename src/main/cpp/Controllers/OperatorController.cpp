@@ -194,4 +194,8 @@ void OperatorController::handle(CowRobot *bot)
     {
         bot->GetShooter()->SetHoodPositionDown();
     }
+    else if (m_CB->GetOperatorButton(11))
+    {
+        bot->GetShooter()->SetHoodPositionBottom();
+    }
 }

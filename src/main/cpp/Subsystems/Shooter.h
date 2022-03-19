@@ -28,6 +28,7 @@ public:
     void SetHoodPosition(float position);
     void SetHoodPositionUp(void);
     void SetHoodPositionDown(void);
+    void SetHoodPositionBottom(void);
     void ZeroHoodPosition(void);
     float GetSetpointF()
     {
