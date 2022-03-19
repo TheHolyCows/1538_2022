@@ -22,7 +22,7 @@ private:
 
     float m_EncoderInchPerTick;
 
-    float m_Position;
+    float m_Speed;
 
     bool m_Locked;
     bool m_PTOEngaged;
@@ -30,16 +30,21 @@ private:
 public:
     Climber(int motor, int solenoidLock, int solenoidPTO);
 
-    void SetPosition(float position);
+    void SetSpeed(float speed);
     void SetLockState(bool locked);
     void SetPTOEngaged(bool engaged);
 
     void SetEnabled(bool enabled);
 
-    float GetSetpoint()
+    // float GetSetpoint()
+    // {
+    //     return m_Position;
+    // };
+
+    float GetSpeed()
     {
-        return m_Position;
-    };
+        return m_Speed;
+    }
 
     bool GetLockState()
     {

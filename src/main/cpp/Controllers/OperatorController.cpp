@@ -115,7 +115,7 @@ void OperatorController::handle(CowRobot *bot)
     // Whenever SetConveyorMode or SetIntakeMode are called, only changes the mode if new value is higher priority
 
     // Front Intake / Exhaust
-    if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
+    if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE) && !m_CB->GetOperatorButton(12))
     {
         bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
         bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false);
@@ -196,53 +196,82 @@ void OperatorController::handle(CowRobot *bot)
         bot->GetShooter()->SetHoodPositionDown();
     }
 
-    // Process would be switch, drive forwards, hold button until it locks
-
-    // Raise the climber (switch???)
-    if (false)
+    // climb switch - releases the climber
+    // aka unlock solenoid
+    if (m_CB->GetOperatorButton(12))
     {
-        // bot->GetClimber()->SetEnabled(true);
-        bot->GetClimber()->SetLockState(false);
-        bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_STAGE_ONE"));
+        bot->GetClimber()->SetLockState(true);
     }
     else
     {
-        // bot->GetClimber()->SetEnabled(false);
-
-        bot->GetClimber()->SetLockState(true);
-        bot->GetClimber()->SetPosition(0); // could change to CONSTANT("CLIMBER_MIN")
+        bot->GetClimber()->SetLockState(false);
     }
 
-    // Button you hold to go down
-    if (false)
+    // climb button 1
+    if (m_CB->GetOperatorButton(12) && m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
     {
-        // problem: if bot is not limed up and this runs it will just start running pto (bad)
-
-        // If not off ground, get there (maybe if the logic works)
-        if ((CONSTANT("CLIMBER_MAX") > CONSTANT("CLIMBER_MIN")) ? bot->GetClimber()->GetDistance() < CONSTANT("CLIMBER_OFF_GROUND") : bot->GetClimber()->GetDistance() > CONSTANT("CLIMBER_OFF_GROUND"))
-        {
-            bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_OFF_GROUND"));
-
-            if (bot->GetClimber()->AtTarget())
-            {
-                m_OffGround = true;
-                bot->EngagePTO();
-            }
-        }
-        else
-        {
-            // If bot is off ground, go to final position fast
-
-            bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_FINAL"));
-
-            if (bot->GetClimber()->AtTarget())
-            {
-                bot->DisengagePTO();
-                bot->GetClimber()->SetLockState(true);
-
-                // this only gets called here so it never comes back to true, need to fix that
-                bot->GetClimber()->SetEnabled(false);
-            }
-        }
+        bot->GetClimber()->SetSpeed(CONSTANT("CLIMBER_SPOOL_SPEED"));
     }
+    else
+    {
+        bot->GetClimber()->SetSpeed(0);
+    }
+
+    // climb button 2 - engages PTO w/ PID
+    if (m_CB->GetOperatorButton(11) && m_CB->GetOperatorButton(12))
+    {
+        bot->EngagePTO();
+    }
+
+
+
+    // Process would be switch, drive forwards, hold button until it locks
+
+    // Raise the climber (switch???)
+    // if (false)
+    // {
+    //     bot->GetClimber()->SetEnabled(true);
+    //     bot->GetClimber()->SetLockState(false);
+    //     bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_STAGE_ONE"));
+    // }
+    // else
+    // {
+    //     bot->GetClimber()->SetEnabled(false);
+
+    //     bot->GetClimber()->SetLockState(true);
+    //     bot->GetClimber()->SetPosition(0); // could change to CONSTANT("CLIMBER_MIN")
+    // }
+
+    // // Button you hold to go down
+    // if (false)
+    // {
+    //     // problem: if bot is not limed up and this runs it will just start running pto (bad)
+
+    //     // If not off ground, get there (maybe if the logic works)
+    //     if ((CONSTANT("CLIMBER_MAX") > CONSTANT("CLIMBER_MIN")) ? bot->GetClimber()->GetDistance() < CONSTANT("CLIMBER_OFF_GROUND") : bot->GetClimber()->GetDistance() > CONSTANT("CLIMBER_OFF_GROUND"))
+    //     {
+    //         bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_OFF_GROUND"));
+
+    //         if (bot->GetClimber()->AtTarget())
+    //         {
+    //             m_OffGround = true;
+    //             bot->EngagePTO();
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // If bot is off ground, go to final position fast
+
+    //         bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_FINAL"));
+
+    //         if (bot->GetClimber()->AtTarget())
+    //         {
+    //             bot->DisengagePTO();
+    //             bot->GetClimber()->SetLockState(true);
+
+    //             // this only gets called here so it never comes back to true, need to fix that
+    //             bot->GetClimber()->SetEnabled(false);
+    //         }
+    //     }
+    // }
 }

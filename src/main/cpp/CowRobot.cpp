@@ -63,7 +63,7 @@ CowRobot::CowRobot()
     m_TipTime = 0;
     m_Tipping = false;
 
-    m_Climbing = false;
+    m_PTOEngaged = false;
 
     std::cout << "Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 }
@@ -111,12 +111,12 @@ void CowRobot::handle()
     // printf("Handling...\n");
     m_Controller->handle(this);
 
-    if (m_Climbing)
+    if (m_PTOEngaged)
     {
-        m_LeftDriveA->Set(CLIMBER_MOTOR_ID);
-        m_LeftDriveB->Set(CLIMBER_MOTOR_ID);
-        m_RightDriveA->Set(CLIMBER_MOTOR_ID);
-        m_RightDriveB->Set(CLIMBER_MOTOR_ID);
+        m_LeftDriveA->Set(CONSTANT("DRIVE_CLIMB_TARGET"));
+        m_LeftDriveB->Set(DRIVE_LEFT_A);
+        m_RightDriveA->Set(DRIVE_LEFT_A);
+        m_RightDriveB->Set(DRIVE_LEFT_A);
     }
     else
     {

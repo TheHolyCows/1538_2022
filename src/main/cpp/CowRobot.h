@@ -310,7 +310,9 @@ public:
     {
         GetClimber()->SetPTOEngaged(true);
 
-        m_LeftDriveA->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+        m_LeftDriveA->SetControlMode(CowLib::CowMotorController::MOTIONMAGIC);
+        m_LeftDriveA->SetPIDGains(CONSTANT("CLIMBER_P"), CONSTANT("CLIMBER_I"), CONSTANT("CLIMBER_D"), 0, 1);
+        m_LeftDriveA->SetMotionMagic(CONSTANT("CLIMBER_ACCEL"), CONSTANT("CLIMBER_VELOCITY"));
         m_LeftDriveB->SetControlMode(CowLib::CowMotorController::FOLLOWER);
         m_RightDriveA->SetControlMode(CowLib::CowMotorController::FOLLOWER);
         m_RightDriveB->SetControlMode(CowLib::CowMotorController::FOLLOWER);
