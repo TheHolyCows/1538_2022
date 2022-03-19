@@ -23,8 +23,8 @@ AutoModes::AutoModes()
 	// shoot 2
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 10, 0.4, false, true, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 6));
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -10, -20, 0.4, false, true, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 4));
-	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 6, -21, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 1.25));
-	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 6, -21, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_DOWN"), true, 1.25));
+	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 6, -21, 0.2, false, true, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 1.15));
+	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 6, -21, 0.2, false, true, INTAKE_SHOOT, CONSTANT("HOOD_DOWN"), true, 1.15));
 
 	// route to ball 3 and 4
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -10, -23, 0.3, false, true, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 6));
@@ -40,8 +40,8 @@ AutoModes::AutoModes()
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -100, 40, 0.45, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), false, 6));
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -57, 0, 0.5, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 6));
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -18, -13, 0.35, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 6));
-	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 14, -7, 0.3, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 1.75));
-	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 14, -7, 0.3, false, false, INTAKE_SHOOT, CONSTANT("HOOD_DOWN"), true, 1.5));
+	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 18, -2, 0.3, false, false, INTAKE_STOP, CONSTANT("HOOD_DOWN"), true, 1.75));
+	m_Modes["4 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 18, -2, 0.3, false, false, INTAKE_SHOOT, CONSTANT("HOOD_DOWN"), true, 1.5));
 
 	/** 2 Ball **/
 	m_Modes["2 Ball"];
