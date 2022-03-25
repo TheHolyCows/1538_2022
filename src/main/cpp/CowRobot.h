@@ -282,22 +282,36 @@ public:
     // Sets shooter speed based on hood position
     void RunShooter()
     {
+        // 1 is max speed, 0 is lowest
+        float hoodPercent = (GetShooter()->GetSetpointH() -  CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
 
-        if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+        float shooterSpeed = (CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN")) * hoodPercent + CONSTANT("SHOOTER_SPEED_DOWN");
+        float rollerSpeed = (CONSTANT("HOOD_ROLLER_SPEED") - CONSTANT("HOOD_ROLLER_SPEED_DOWN")) * hoodPercent + CONSTANT("HOOD_ROLLER_SPEED_DOWN");
+
+        if (hoodPercent >= CONSTANT("SHOOTER_C_MIN") && hoodPercent <= CONSTANT("SHOOTER_C_MAX"))
         {
-            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
+            shooterSpeed *= CONSTANT("SHOOTER_C");
+            rollerSpeed *= CONSTANT("SHOOTER_C");
         }
-        else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_BOTTOM"))
-        {
-            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
-            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
-        }
-        else
-        {
-            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
-            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
-        }
+
+        GetShooter()->SetSpeed(shooterSpeed);
+        GetShooter()->SetHoodRollerSpeed(rollerSpeed);
+        
+        // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+        // {
+        //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+        //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
+        // }
+        // else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_BOTTOM"))
+        // {
+        //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
+        //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
+        // }
+        // else
+        // {
+        //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+        //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+        // }
     }
 
     void UseLeftEncoder()

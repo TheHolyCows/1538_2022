@@ -64,21 +64,26 @@ bool Limelight::TargetCentered()
 //     return floorf(targArea);
 // }
 
-float Limelight::CalcHoodPosition()
+float Limelight::CalcYPercent()
 {
     if (!GetValidTargets())
     {
         return CONSTANT("HOOD_DOWN");
     }
 
-    float targetY = m_Limelight->GetNumber("ty", 0.0);
+    // yPercent: 0 is far 1 is close
+    float yTargetingVal = m_Limelight->GetNumber("ty", 28.0);
 
-    float deltaY = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
-    float deltaHood = CONSTANT("HOOD_UP_LIMIT") - CONSTANT("HOOD_DOWN_LIMIT");
+    // yPercent probably won't be close to 0 so
+    // Y_TARGETING_FLOOR is the lowest y value we expect the limelight to return
+    // yTargetingRange is the number of values possible
+    float yTargetingRange = 28.0 - CONSTANT("Y_TARGETING_FLOOR");
+    yTargetingVal = yTargetingVal < CONSTANT("Y_TARGETING_FLOOR")? CONSTANT("Y_TARGETING_FLOOR") : yTargetingVal;
+    
+    // y% = (value - floor) / total
+    float yPercent = (yTargetingVal - CONSTANT("Y_TARGETING_FLOOR")) / yTargetingRange;
 
-    float percentY = (targetY - CONSTANT("TARGET_Y_CLOSE")) / deltaY;
-
-    return CONSTANT("HOOD_DOWN_LIMIT") + (percentY * deltaHood);
+    return yPercent;
 }
 
 float Limelight::CalcNewPid()

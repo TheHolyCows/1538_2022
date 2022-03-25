@@ -81,9 +81,14 @@ void OperatorController::handle(CowRobot *bot)
         if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
         {
             targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
-            // placeholder for hood adjustment
-            int autoHoodPos = bot->GetLimelight()->CalcHoodPosition();
-            // bot->GetShooter()->SetHoodPosition(autoHoodPos);
+            
+            // hood adjustment
+            float yPercent = bot->GetLimelight()->CalcYPercent();
+
+            float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
+            float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
+
+            bot->GetShooter()->SetHoodPosition(autoHoodPos);
         }
         m_TrackingCooldownTimer += 1.0;
     }
@@ -156,18 +161,7 @@ void OperatorController::handle(CowRobot *bot)
     // Shooting
     if (m_CB->GetOperatorButton(BUTTON_SHOOT))
     {
-        // secondary check if driver is holding down tracking button
-        if (doingTracking)
-        {
-            if (targetAcquired)
-            {
-                bot->ShootBalls();
-            }
-        }
-        else
-        {
-            bot->ShootBalls();
-        }
+        bot->ShootBalls();
     }
 
     // If nothing ever changed the conveyor or intake modes, sets them to off

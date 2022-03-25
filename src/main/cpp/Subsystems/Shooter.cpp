@@ -73,7 +73,7 @@ void Shooter::SetHoodRollerSpeed(float speed)
 void Shooter::SetSpeedHoodRelative()
 {
     // ranges from 0 -> 1.0
-    float percentOfHood = (m_HoodPosition - CONSTANT("HOOD_DOWN_LIMIT")) / (CONSTANT("HOOD_UP_LIMIT") - CONSTANT("HOOD_DOWN_LIMIT"));
+    float percentOfHood = 0; //(m_HoodPosition - CONSTANT("HOOD_DOWN_LIMIT")) / (CONSTANT("HOOD_UP_LIMIT") - CONSTANT("HOOD_DOWN_LIMIT"));
     // float percentOfHood = (m_HoodPosition - m_HoodDownLimit) / CONSTANT("HOOD_DELTA");
 
     int speedDelta = CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN");
@@ -152,7 +152,7 @@ void Shooter::ZeroHoodPosition()
         m_ZeroingHood = false;
         m_HoodZeroed = true;
 
-        float hoodDelta = CONSTANT("HOOD_DELTA");
+        float hoodDelta = 0;
 
         m_HoodPosition = hoodDelta < 0 ? m_HoodPosition - 200 : m_HoodPosition + 200;
         m_HoodDownLimit = m_HoodPosition;
@@ -179,7 +179,7 @@ void Shooter::ResetConstants()
 
     m_MotorHoodRoller->SetPIDGains(CONSTANT("HOOD_ROLLER_P"), CONSTANT("HOOD_ROLLER_I"), CONSTANT("HOOD_ROLLER_D"), CONSTANT("HOOD_ROLLER_F"), 1);
 
-    m_HoodUpLimit = CONSTANT("HOOD_DELTA");
+    m_HoodUpLimit = CONSTANT("HOOD_UP");
     m_HoodDownLimit = 0;
     m_HoodZeroed = false;
     m_ZeroingHood = false;

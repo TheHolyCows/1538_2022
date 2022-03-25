@@ -32,7 +32,7 @@ public:
     bool TargetCentered(void);
 
     int CalcHoodPos(void);
-    float CalcHoodPosition(void);
+    float CalcYPercent(void);
     float CalcNewPid(void);
 
     void ResetPID(void);
