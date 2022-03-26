@@ -33,7 +33,14 @@ void AutoModeController::handle(CowRobot *bot)
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
-	bot->GetShooter()->SetHoodPosition(m_CurrentCommand.m_HoodPosition);
+	
+	// auto hood adjustments
+	float yPercent = bot->GetLimelight()->CalcYPercent();
+
+	float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
+	float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
+
+	bot->GetShooter()->SetHoodPosition(autoHoodPos);
 
 	bot->ResetConveyorMode();
 	bot->ResetIntakeMode(false);
@@ -68,7 +75,9 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else
 	{
-		bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+		// idk why this was here originally
+		// bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+		
 		bot->StopRollers();
 	}
 

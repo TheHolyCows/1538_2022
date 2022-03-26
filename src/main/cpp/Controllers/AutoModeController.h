@@ -64,17 +64,16 @@ public:
     RobotCommand(e_RobotCommand cmd,
                  double encoder, double heading, double speed,
                  bool frontIntakeExtended, bool rearIntakeExtended,
-                 e_IntakeMode intakeMode, double hoodPosition,
-                 bool shooterOn, double timeout) : m_Command(cmd),
-                                                   m_EncoderCount(encoder),
-                                                   m_Heading(heading),
-                                                   m_Speed(speed),
-                                                   m_FrontIntakeExtended(frontIntakeExtended),
-                                                   m_RearIntakeExtended(rearIntakeExtended),
-                                                   m_IntakeMode(intakeMode),
-                                                   m_HoodPosition(hoodPosition),
-                                                   m_Shooter(shooterOn),
-                                                   m_Timeout(timeout)
+                 e_IntakeMode intakeMode, bool shooterOn, double timeout): 
+                     m_Command(cmd),
+                                m_EncoderCount(encoder),
+                                m_Heading(heading),
+                                m_Speed(speed),
+                                m_FrontIntakeExtended(frontIntakeExtended),
+                                m_RearIntakeExtended(rearIntakeExtended),
+                                m_IntakeMode(intakeMode),
+                                m_Shooter(shooterOn),
+                                m_Timeout(timeout)
     {
     }
 };
