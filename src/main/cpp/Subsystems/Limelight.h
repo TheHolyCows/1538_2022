@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include "../CowConstants.h"
+#include <frc/filter/MedianFilter.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableInstance.h>
 
@@ -27,7 +28,9 @@ public:
     void SetMode(LimelightMode);
     bool GetValidTargets(void);
     float GetTargetXPos(void);
+    void ClearXFilter(void);
     float GetTargetYPos(void);
+    void ClearYFilter(void);
 
     bool TargetCentered(void);
 
@@ -41,6 +44,9 @@ private:
     std::shared_ptr<nt::NetworkTable> m_Limelight;
     float m_Limelight_PID_P;
     float m_Limelight_PID_D;
+
+    frc::MedianFilter<float> m_XFilter;
+    frc::MedianFilter<float> m_YFilter;
 };
 
 #endif /* __LIMELIGHT_H__ */

@@ -7,7 +7,9 @@
 
 #include "Limelight.h"
 
-Limelight::Limelight(std::string hostname)
+Limelight::Limelight(std::string hostname):
+m_XFilter(CONSTANT("X_FILTER_SIZE")),
+m_YFilter(CONSTANT("Y_FILTER_SIZE"))
 {
     m_Limelight = nt::NetworkTableInstance::GetDefault().GetTable(hostname);
 
@@ -39,12 +41,23 @@ bool Limelight::GetValidTargets()
 
 float Limelight::GetTargetXPos()
 {
-    return m_Limelight->GetNumber("tx", 0.0);
+    
+    return m_XFilter.Calculate(m_Limelight->GetNumber("tx", 0.0));
+}
+
+void Limelight::ClearXFilter()
+{
+    m_XFilter.Reset();
 }
 
 float Limelight::GetTargetYPos()
 {
     return m_Limelight->GetNumber("ty", 0.0);
+}
+
+void Limelight::ClearYFilter()
+{
+    m_YFilter.Reset();
 }
 
 bool Limelight::TargetCentered()
@@ -68,11 +81,11 @@ float Limelight::CalcYPercent()
 {
     if (!GetValidTargets())
     {
-        return CONSTANT("HOOD_DOWN");
+        return 1.0;
     }
 
     // yPercent: 0 is far 1 is close
-    float yTargetingVal = m_Limelight->GetNumber("ty", 28.0);
+    float yTargetingVal = m_YFilter.Calculate(m_Limelight->GetNumber("ty", 28.0));
 
     // yPercent probably won't be close to 0 so
     // Y_TARGETING_FLOOR is the lowest y value we expect the limelight to return

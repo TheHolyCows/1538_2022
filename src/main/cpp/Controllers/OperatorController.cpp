@@ -19,6 +19,7 @@ void OperatorController::handle(CowRobot *bot)
     // bot->GetCanifier()->SetLEDColor(r_color, g_color, b_color);
 
     bool doingTracking = false;
+    bool validTargets = bot->GetLimelight()->GetValidTargets();
     bool targetAcquired = false;
 
     // No target = purple
@@ -77,19 +78,15 @@ void OperatorController::handle(CowRobot *bot)
         // set cooldown timer before calling the vision tracking function
         // let 0.5 seconds pass before attempting to move the robot
         // this allows the camera to adjust to the new contrast
-        bool isValidTargets = bot->GetLimelight()->GetValidTargets();
-        if (m_TrackingCooldownTimer / 25.0 > 0.5 && isValidTargets == true)
+        if (m_TrackingCooldownTimer / 25.0 > 0.5 && validTargets == true)
         {
-            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
-            
-            // hood adjustment
-            float yPercent = bot->GetLimelight()->CalcYPercent();
-
-            float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
-            float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
-
-            bot->GetShooter()->SetHoodPosition(autoHoodPos);
+            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));   
         }
+        else
+        {
+            
+        }
+
         m_TrackingCooldownTimer += 1.0;
     }
     else
@@ -98,6 +95,7 @@ void OperatorController::handle(CowRobot *bot)
         {
             m_TrackingCooldownTimer = 0.0;
             doingTracking = false;
+            bot->GetLimelight()->ClearXFilter();
             // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
         }
 
@@ -172,12 +170,20 @@ void OperatorController::handle(CowRobot *bot)
     // Sets speed according to hood position
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
+        // hood adjustment
+        float yPercent = bot->GetLimelight()->CalcYPercent();
+        float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
+        float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
+
+        bot->GetShooter()->SetHoodPosition(autoHoodPos);
+
         bot->RunShooter();
     }
     else
     {
         bot->GetShooter()->SetSpeed(0);
         bot->GetShooter()->SetHoodRollerSpeed(0);
+        bot->GetLimelight()->ClearYFilter();
     }
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
