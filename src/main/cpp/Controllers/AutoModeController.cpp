@@ -136,9 +136,7 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	case CMD_VISION_ALIGN:
 	{
-		bot->DoVisionTracking(m_CurrentCommand.m_Speed, 4.5);
-
-		result = bot->DoVisionTracking(m_CurrentCommand.m_Speed);
+		bot->DoVisionTracking(0,CONSTANT("TRACKING_THRESHOLD"));
 		break;
 	}
 	case CMD_HOLD_DISTANCE:
