@@ -107,7 +107,7 @@ AutoModes::AutoModes()
 
 	// reverse to ball 3
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 0, 70, 0.5, false, true, INTAKE_R_IN , false, 6));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 95, 0.5, false, true, INTAKE_R_IN , false, 6));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -30, 90, 0.5, false, true, INTAKE_R_IN , false, 6));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -130, 105, 0.5, false, true, INTAKE_R_IN , false, 6));
 
 	// shoot 3
@@ -118,8 +118,9 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -60, 40, 0, false, false, INTAKE_STOP, true, 0.75));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -60, 40, 0, false, false, INTAKE_SHOOT, true, 1.25));
 
-
-
+	// route to 4 + 5
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -100, 80, 0.35, false, true, INTAKE_R_IN , false, 6));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -160, 105, 0.35, false, true, INTAKE_R_IN , false, 2));
 
 
 	// m_Modes["5 Ball - slow"];
