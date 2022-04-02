@@ -80,11 +80,10 @@ void OperatorController::handle(CowRobot *bot)
         // this allows the camera to adjust to the new contrast
         if (m_TrackingCooldownTimer / 25.0 > 0.5 && validTargets == true)
         {
-            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));   
+            targetAcquired = bot->DoVisionTracking(-m_CB->GetDriveStickY(), CONSTANT("TRACKING_THRESHOLD"));
         }
         else
         {
-            
         }
 
         m_TrackingCooldownTimer += 1.0;
@@ -119,8 +118,7 @@ void OperatorController::handle(CowRobot *bot)
     // Front Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
     {
-        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
-        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false);
+        bot->IntakeWithAutoExhaust(false);
     }
     else if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
     {
@@ -139,8 +137,10 @@ void OperatorController::handle(CowRobot *bot)
     // Rear Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
     {
-        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
-        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
+        bot->IntakeWithAutoExhaust(false);
+
+        // bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        // bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
     }
     else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
     {

@@ -6,6 +6,7 @@
 #define __COW_ROBOT_H__
 
 #include "CowLib/CowLogger.h"
+#include <frc/DriverStation.h>
 #include <frc/PowerDistribution.h>
 #include <frc/BuiltInAccelerometer.h>
 #include <cameraserver/CameraServer.h>
@@ -173,16 +174,17 @@ public:
         switch (m_ConveyorMode)
         {
         case CONVEYOR_OFF:
-            GetConveyor()->SetSpeed(0, 0);
+            GetConveyor()->SetSpeed(0, 0, 0);
             break;
         case CONVEYOR_EXHAUST:
-            GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_UP") * percentage);
+            GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_UP") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentage);
             break;
         case CONVEYOR_INTAKE:
-            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
+            // add auto exhaust
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage);
             break;
         case CONVEYOR_SHOOT:
-            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_LOW") * percentage, CONSTANT("CONVEYOR_SHOOT_UP") * percentage);
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_UP") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage);
             break;
         }
     }
@@ -247,6 +249,34 @@ public:
         }
     }
 
+    void IntakeWithAutoExhaust(bool rear)
+    {
+        bool red = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kRed;
+
+        SetIntakeMode(IntakeMode::INTAKE_INTAKE, rear);
+
+        // If correct color
+        // if (/* sensor (red = true, blue = false) */ == red)
+        if (true)
+        {
+            SetIntakeMode(IntakeMode::INTAKE_OFF, !rear);
+            SetConveyorMode(ConveyorMode::CONVEYOR_INTAKE);
+        }
+        else
+        {
+            SetIntakeMode(IntakeMode::INTAKE_EXHAUST, !rear);
+
+            if (rear)
+            {
+                GetConveyor()->SetSpeed(0, CONSTANT("CONVEYOR_OUT_LOW"), CONSTANT("CONVEYOR_IN_LOW"));
+            }
+            else
+            {
+                GetConveyor()->SetSpeed(0, CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_OUT_LOW"));
+            }
+        }
+    }
+
     // Waits for shooter speed tolerance, then sets conveyor and intake to shoot
     void ShootBalls()
     {
@@ -274,7 +304,7 @@ public:
     // Stops conveyor and intakes
     void StopRollers()
     {
-        GetConveyor()->SetSpeed(0, 0);
+        GetConveyor()->SetSpeed(0, 0, 0);
         GetIntakeF()->SetSpeed(0, 0);
         GetIntakeR()->SetSpeed(0, 0);
     }
@@ -283,7 +313,7 @@ public:
     void RunShooter()
     {
         // 1 is max speed, 0 is lowest
-        float hoodPercent = (GetShooter()->GetSetpointH() -  CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
+        float hoodPercent = (GetShooter()->GetSetpointH() - CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
 
         float shooterSpeed = (CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN")) * hoodPercent + CONSTANT("SHOOTER_SPEED_DOWN");
         float rollerSpeed = (CONSTANT("HOOD_ROLLER_SPEED") - CONSTANT("HOOD_ROLLER_SPEED_DOWN")) * hoodPercent + CONSTANT("HOOD_ROLLER_SPEED_DOWN");
@@ -296,7 +326,7 @@ public:
 
         GetShooter()->SetSpeed(shooterSpeed);
         GetShooter()->SetHoodRollerSpeed(rollerSpeed);
-        
+
         // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
         // {
         //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));

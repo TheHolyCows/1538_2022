@@ -33,7 +33,7 @@ void AutoModeController::handle(CowRobot *bot)
 	// Set intake and hood positions
 	bot->GetIntakeF()->SetExtended(m_CurrentCommand.m_FrontIntakeExtended);
 	bot->GetIntakeR()->SetExtended(m_CurrentCommand.m_RearIntakeExtended);
-	
+
 	// auto hood adjustments
 	float yPercent = bot->GetLimelight()->CalcYPercent();
 
@@ -53,7 +53,7 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
-		// bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_UP"));
+		// bot->GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP"), CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_LOW"), CONSTANT("CONVEYOR_IN_LOW"));
 		// bot->GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
 		// bot->GetIntakeR()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
 		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true, CONSTANT("INTAKE_PERCENT_AUTO"));
@@ -77,7 +77,7 @@ void AutoModeController::handle(CowRobot *bot)
 	{
 		// idk why this was here originally
 		// bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
-		
+
 		bot->StopRollers();
 	}
 
@@ -136,7 +136,7 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	case CMD_VISION_ALIGN:
 	{
-		bot->DoVisionTracking(0,CONSTANT("TRACKING_THRESHOLD"));
+		bot->DoVisionTracking(0, CONSTANT("TRACKING_THRESHOLD"));
 		break;
 	}
 	case CMD_HOLD_DISTANCE:

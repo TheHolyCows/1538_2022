@@ -18,20 +18,17 @@ class Conveyor
 {
 private:
     CowLib::CowMotorController *m_MotorUpper;
-    CowLib::CowMotorController *m_MotorLower;
-    float m_SpeedLower;
+    CowLib::CowMotorController *m_MotorFront;
+    CowLib::CowMotorController *m_MotorRear;
     float m_SpeedUpper;
+    float m_SpeedFront;
+    float m_SpeedRear;
 
 public:
-    Conveyor(int upperMotor, int lowerMotor);
-    void SetSpeed(float speedLower, float speedUpper);
+    Conveyor(int upperMotor, int frontMotor, int rearMotor);
+    void SetSpeed(float speedUpper, float speedFront, float speedRear);
     void handle();
     virtual ~Conveyor();
-
-    float GetLowerSpeed()
-    {
-        return -m_SpeedLower;
-    }
 };
 
 #endif /* SRC_SUSBSYTEMS_CONVEYOR_H_ */

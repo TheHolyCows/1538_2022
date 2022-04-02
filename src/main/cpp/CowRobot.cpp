@@ -24,9 +24,9 @@ CowRobot::CowRobot()
     m_IntakeF = new Intake(7, 5, 1, -1);
     m_IntakeR = new Intake(8, 6, 0, 1);
 
-    m_Conveyor = new Conveyor(9, 10);
+    // Not sure about second two ids
+    m_Conveyor = new Conveyor(9, 10, 15);
 
-    // 14 is the hood roller but not assigned yet irl
     m_Shooter = new Shooter(11, 13, 12, 14);
 
     m_Limelight = new Limelight("limelight-front");

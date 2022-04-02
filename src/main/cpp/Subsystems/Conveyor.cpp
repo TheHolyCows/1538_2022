@@ -9,16 +9,19 @@
 #include <iostream>
 #include <frc/Timer.h>
 
-Conveyor::Conveyor(int upperMotor, int lowerMotor)
+Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor)
 {
     m_MotorUpper = new CowLib::CowMotorController(upperMotor);
-    m_MotorLower = new CowLib::CowMotorController(lowerMotor);
+    m_MotorFront = new CowLib::CowMotorController(frontMotor);
+    m_MotorRear = new CowLib::CowMotorController(rearMotor);
 
     m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::BRAKE);
-    m_MotorLower->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_MotorFront->SetNeutralMode(CowLib::CowMotorController::COAST);
+    m_MotorRear->SetNeutralMode(CowLib::CowMotorController::COAST);
 
     m_SpeedUpper = 0;
-    m_SpeedLower = 0;
+    m_SpeedFront = 0;
+    m_SpeedRear = 0;
 
     // voltage compensation
     m_MotorUpper->GetInternalMotor()->EnableVoltageCompensation(true);
@@ -29,10 +32,12 @@ Conveyor::Conveyor(int upperMotor, int lowerMotor)
     // m_MotorB->GetInternalMotor()->SetInverted(changeDirectionB);
 }
 
-void Conveyor::SetSpeed(float speedUpper, float speedLower)
+void Conveyor::SetSpeed(float speedUpper, float speedFront, float speedRear)
 {
+    // Unsure which need to be inverted, + should be going in
     m_SpeedUpper = -speedUpper;
-    m_SpeedLower = -speedLower;
+    m_SpeedFront = -speedFront;
+    m_SpeedRear = speedFront;
 }
 
 void Conveyor::handle()
@@ -41,11 +46,13 @@ void Conveyor::handle()
     m_MotorUpper->Set(m_SpeedUpper);
 
     // Lower
-    m_MotorLower->Set(m_SpeedLower);
+    m_MotorFront->Set(m_SpeedFront);
+    m_MotorRear->Set(m_SpeedRear);
 }
 
 Conveyor::~Conveyor()
 {
     delete m_MotorUpper;
-    delete m_MotorLower;
+    delete m_MotorFront;
+    delete m_MotorRear;
 }
