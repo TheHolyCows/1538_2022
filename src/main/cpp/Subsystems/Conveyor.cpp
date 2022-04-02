@@ -9,7 +9,8 @@
 #include <iostream>
 #include <frc/Timer.h>
 
-Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor)
+Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSensorPinNum)
+    : m_ColorSensor(colorSensorPinNum)
 {
     m_MotorUpper = new CowLib::CowMotorController(upperMotor);
     m_MotorFront = new CowLib::CowMotorController(frontMotor);
@@ -18,6 +19,8 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor)
     m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_MotorFront->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_MotorRear->SetNeutralMode(CowLib::CowMotorController::COAST);
+
+    m_DutyCycle = new frc::DutyCycle(m_ColorSensor);
 
     m_SpeedUpper = 0;
     m_SpeedFront = 0;
@@ -38,6 +41,11 @@ void Conveyor::SetSpeed(float speedUpper, float speedFront, float speedRear)
     m_SpeedUpper = -speedUpper;
     m_SpeedFront = -speedFront;
     m_SpeedRear = speedFront;
+}
+
+frc::DutyCycle* Conveyor::GetColorSensor()
+{
+    return m_DutyCycle;
 }
 
 void Conveyor::handle()

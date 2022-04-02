@@ -253,10 +253,13 @@ public:
     {
         bool red = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kRed;
 
+        // not sure why the function returns an int
+        int freq = m_Conveyor->GetColorSensor()->GetFrequency();
+
         SetIntakeMode(IntakeMode::INTAKE_INTAKE, rear);
 
         // If correct color
-        // if (/* sensor (red = true, blue = false) */ == red)
+        // if (freq in red range)
         if (true)
         {
             SetIntakeMode(IntakeMode::INTAKE_OFF, !rear);
