@@ -175,7 +175,7 @@ void OperatorController::handle(CowRobot *bot)
         float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
         float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
 
-        bot->GetShooter()->SetHoodPosition(autoHoodPos);
+        // bot->GetShooter()->SetHoodPosition(autoHoodPos);
 
         bot->RunShooter();
     }
