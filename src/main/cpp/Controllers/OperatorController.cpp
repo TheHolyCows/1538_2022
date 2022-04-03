@@ -98,7 +98,6 @@ void OperatorController::handle(CowRobot *bot)
             // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
         }
 
-        // TODO: Make this not dumb
         bot->DriveSpeedTurn(-m_CB->GetDriveStickY(),
                             -m_CB->GetSteeringX(),
                             m_CB->GetSteeringButton(FAST_TURN));
@@ -137,7 +136,7 @@ void OperatorController::handle(CowRobot *bot)
     // Rear Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
     {
-        bot->IntakeWithAutoExhaust(false);
+        bot->IntakeWithAutoExhaust(true);
 
         // bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
         // bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
