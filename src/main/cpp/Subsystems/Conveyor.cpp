@@ -31,15 +31,15 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
     m_MotorUpper->GetInternalMotor()->ConfigVoltageCompSaturation(CONSTANT("CONVEYOR_VOLT_COMP"));
 }
 
+// Positive is going into the bot
 void Conveyor::SetSpeed(float speedUpper, float speedFront, float speedRear)
 {
-    // Unsure which need to be inverted, + should be going in
     m_SpeedUpper = -speedUpper;
     m_SpeedFront = -speedFront;
-    m_SpeedRear = speedFront;
+    m_SpeedRear = speedRear;
 }
 
-frc::DutyCycle* Conveyor::GetColorSensor()
+frc::DutyCycle *Conveyor::GetColorSensor()
 {
     return m_DutyCycle;
 }
