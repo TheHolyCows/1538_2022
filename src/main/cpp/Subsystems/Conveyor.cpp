@@ -29,10 +29,6 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
     // voltage compensation
     m_MotorUpper->GetInternalMotor()->EnableVoltageCompensation(true);
     m_MotorUpper->GetInternalMotor()->ConfigVoltageCompSaturation(CONSTANT("CONVEYOR_VOLT_COMP"));
-
-    // removed - if we need to invert at creation we should hardcode it -jbassi
-    // m_MotorA->GetInternalMotor()->SetInverted(changeDirectionA);
-    // m_MotorB->GetInternalMotor()->SetInverted(changeDirectionB);
 }
 
 void Conveyor::SetSpeed(float speedUpper, float speedFront, float speedRear)
