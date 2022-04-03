@@ -117,7 +117,9 @@ void OperatorController::handle(CowRobot *bot)
     // Front Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
     {
-        bot->IntakeWithAutoExhaust(false);
+        // bot->IntakeWithAutoExhaust(false);
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false);
     }
     else if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
     {
@@ -136,10 +138,10 @@ void OperatorController::handle(CowRobot *bot)
     // Rear Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_REAR_INTAKE))
     {
-        bot->IntakeWithAutoExhaust(true);
+        // bot->IntakeWithAutoExhaust(true);
 
-        // bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
-        // bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
     }
     else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
     {
@@ -174,7 +176,7 @@ void OperatorController::handle(CowRobot *bot)
         float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
         float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
 
-        // bot->GetShooter()->SetHoodPosition(autoHoodPos);
+        bot->GetShooter()->SetHoodPosition(autoHoodPos);
 
         bot->RunShooter();
     }

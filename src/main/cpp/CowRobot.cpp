@@ -25,7 +25,7 @@ CowRobot::CowRobot()
     m_IntakeR = new Intake(8, 6, 0, 1);
 
     // Not sure about second two ids
-    m_Conveyor = new Conveyor(9, 10, 15, MXP_QEI_1_A);
+    m_Conveyor = new Conveyor(9, 10, 16, MXP_QEI_1_A);
 
     m_Shooter = new Shooter(11, 13, 12, 14);
 
