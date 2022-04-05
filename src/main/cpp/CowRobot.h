@@ -254,7 +254,7 @@ public:
         bool red = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kRed;
 
         // not sure why the function returns an int
-        int freq = m_Conveyor->GetColorSensor()->GetFrequency();
+        // int freq = m_Conveyor->GetColorSensor()->GetFrequency();
 
         SetIntakeMode(IntakeMode::INTAKE_INTAKE, rear);
 
