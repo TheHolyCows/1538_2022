@@ -87,7 +87,7 @@ void CowBase::DisabledPeriodic()
     {
         m_Constants->RestoreData();
 
-        if (m_ControlBoard->GetDriveButton(1))
+        if (m_ControlBoard->GetSteeringButton(7))
         {
             m_Bot->Reset();
 

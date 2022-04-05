@@ -16,7 +16,7 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
     m_MotorFront = new CowLib::CowMotorController(frontMotor);
     m_MotorRear = new CowLib::CowMotorController(rearMotor);
 
-    m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_MotorFront->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_MotorRear->SetNeutralMode(CowLib::CowMotorController::COAST);
 

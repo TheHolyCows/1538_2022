@@ -20,12 +20,12 @@ float CowControlBoard::GetDriveAxis(unsigned int axis)
 // Returns state of autonomous select button
 bool CowControlBoard::GetAutoSelectButton()
 {
-    if (GetDriveButton(AUTON_BUTTON) && !m_PreviousAuto)
+    if (GetSteeringButton(7) && !m_PreviousAuto)
     {
-        m_PreviousAuto = GetDriveButton(AUTON_BUTTON);
+        m_PreviousAuto = GetSteeringButton(7);
         return true;
     }
-    m_PreviousAuto = GetDriveButton(AUTON_BUTTON);
+    m_PreviousAuto = GetSteeringButton(7);
     return false;
 }
 

@@ -181,7 +181,7 @@ public:
             break;
         case CONVEYOR_INTAKE:
             // add auto exhaust
-            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_UP") * percentage);
+            GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage);
             break;
         case CONVEYOR_SHOOT:
             GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_UP") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage);
