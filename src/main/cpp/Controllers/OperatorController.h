@@ -21,6 +21,7 @@ private:
     CowControlBoard *m_CB;
 
     int m_FlashCounter;
+    bool m_HoodOverride = false;
 
     int m_ClimberStage;
 
@@ -36,6 +37,7 @@ private:
         SWITCH_SHOOTER = 3,
         BUTTON_HOOD_UP = 1,
         BUTTON_HOOD_DOWN = 2,
+        BUTTON_HOOD_BOTTOM = 11,
     };
     //    float time;
     //    float previousTime;

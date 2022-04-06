@@ -321,6 +321,13 @@ public:
     // Sets shooter speed based on hood position
     void RunShooter()
     {
+        if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_FENDER"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_FENDER"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_FENDER"));
+            return;
+        }
+        
         // 1 is max speed, 0 is lowest
         float hoodPercent = (GetShooter()->GetSetpointH() - CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
 
