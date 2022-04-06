@@ -163,25 +163,31 @@ void OperatorController::handle(CowRobot *bot)
         bot->ShootBalls();
     }
 
-    // If nothing ever changed the conveyor or intake modes, sets them to off
-    bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
-    bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
-    bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
-
     // Sets speed according to hood position
     if (m_CB->GetOperatorButton(SWITCH_SHOOTER))
     {
-        // hood adjustment
-        float yPercent = bot->GetLimelight()->CalcYPercent();
-        float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
-        float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
+        if (!m_HoodOverride)
+        {
+            // hood adjustment
+            float yPercent = bot->GetLimelight()->CalcYPercent();
+            float hoodDelta = CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE");
+            float autoHoodPos = CONSTANT("TARGET_Y_FAR") - (hoodDelta * yPercent);
 
-        bot->GetShooter()->SetHoodPosition(autoHoodPos);
-
+            bot->GetShooter()->SetHoodPosition(autoHoodPos);
+        }
         bot->RunShooter();
+    }
+    else if (m_CB->GetOperatorButton(BUTTON_HOOD_BOTTOM))
+    {
+        // because of the weird speeds here this is special
+        bot->GetShooter()->SetHoodPositionBottom();
+        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
+        bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
+        bot->ShootBalls();
     }
     else
     {
+        m_HoodOverride = false;
         bot->GetShooter()->SetSpeed(0);
         bot->GetShooter()->SetHoodRollerSpeed(0);
         bot->GetLimelight()->ClearYFilter();
@@ -189,14 +195,18 @@ void OperatorController::handle(CowRobot *bot)
 
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
     {
+        m_HoodOverride = true;
         bot->GetShooter()->SetHoodPositionUp();
     }
     else if (m_CB->GetOperatorButton(BUTTON_HOOD_DOWN))
     {
+        m_HoodOverride = true;
         bot->GetShooter()->SetHoodPositionDown();
     }
-    else if (m_CB->GetOperatorButton(11))
-    {
-        bot->GetShooter()->SetHoodPositionBottom();
-    }
+
+    // If nothing ever changed the conveyor or intake modes, sets them to off
+    bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
+    bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
+    bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
+       
 }

@@ -114,7 +114,7 @@ void Shooter::SetHoodPositionUp()
 void Shooter::SetHoodPositionDown()
 {
     // m_HoodPosition = m_HoodDownLimit;
-    m_HoodPosition = CONSTANT("HOOD_DOWN");
+    m_HoodPosition = CONSTANT("HOOD_FENDER");
 
     if (m_MotorHood)
     {
