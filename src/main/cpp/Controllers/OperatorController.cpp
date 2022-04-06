@@ -6,6 +6,7 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 {
     m_TrackingCooldownTimer = 0.0;
     m_FlashCounter = 0;
+    m_ClimberStage = 0;
 }
 
 void OperatorController::handle(CowRobot *bot)
@@ -199,4 +200,80 @@ void OperatorController::handle(CowRobot *bot)
     {
         bot->GetShooter()->SetHoodPositionBottom();
     }
+
+    // Climber
+
+    // For testing
+    // if (m_CB->GetOperatorButton(12) && m_CB->GetOperatorButton(11))
+    // {
+    //     bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+    //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+
+    //     // if (bot->GetClimber()->AtTarget())
+    //     // {
+    //     //     bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
+    //     //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+    //     // }
+    // }
+
+    // // if (m_CB->GetOperatorButton(12) && m_CB->GetOperatorButton(11))
+    // if (false)
+    // {
+    //     // swap left and right depending on which side has 2 sided hook
+
+    //     if (m_ClimberStage == 0)
+    //     {
+    //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+
+    //         if (bot->GetClimber()->RightAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    //     else if (m_ClimberStage == 1)
+    //     {
+    //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+
+    //         if (bot->GetClimber()->RightAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    //     else if (m_ClimberStage == 2)
+    //     {
+    //         bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+
+    //         if (bot->GetClimber()->LeftAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    //     else if (m_ClimberStage == 3)
+    //     {
+    //         bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
+
+    //         if (bot->GetClimber()->LeftAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    //     else if (m_ClimberStage == 4)
+    //     {
+    //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+
+    //         if (bot->GetClimber()->RightAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    //     else if (m_ClimberStage == 5)
+    //     {
+    //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+
+    //         if (bot->GetClimber()->RightAtTarget())
+    //         {
+    //             m_ClimberStage++;
+    //         }
+    //     }
+    // }
 }

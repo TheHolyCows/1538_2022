@@ -25,6 +25,7 @@
 #include "Subsystems/Intake.h"
 #include "Subsystems/Conveyor.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Climber.h"
 #include "Subsystems/Limelight.h"
 
 class CowRobot
@@ -69,6 +70,7 @@ private:
     Intake *m_IntakeR;
     Conveyor *m_Conveyor;
     Shooter *m_Shooter;
+    Climber *m_Climber;
     Limelight *m_Limelight;
     CowLib::CowCanifier *m_Canifier;
 
@@ -152,6 +154,10 @@ public:
     Shooter *GetShooter()
     {
         return m_Shooter;
+    }
+    Climber *GetClimber()
+    {
+        return m_Climber;
     }
     Limelight *GetLimelight()
     {

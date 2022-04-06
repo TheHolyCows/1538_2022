@@ -24,10 +24,12 @@ CowRobot::CowRobot()
     m_IntakeF = new Intake(7, 5, 1, -1);
     m_IntakeR = new Intake(8, 6, 0, 1);
 
-    // Not sure about second two ids
     m_Conveyor = new Conveyor(9, 10, 16, MXP_QEI_1_A);
 
     m_Shooter = new Shooter(11, 13, 12, 14);
+
+    // not final IDs
+    // m_Climber = new Climber(17, 18);
 
     m_Limelight = new Limelight("limelight-front");
 
@@ -75,6 +77,7 @@ void CowRobot::Reset()
     m_MatchTime = 0;
     // m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     m_Shooter->ResetConstants();
+    // m_Climber->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -114,14 +117,15 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        // std::cout << "Left Climber: " << GetClimber()->GetLeftPosition() << " Right Climber: " << GetClimber()->GetRightPosition() << std::endl;
         // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
         // std::cout << "intake mode: " << m_IntakeModeR << std::endl;
         // std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
-        std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
-        std::cout << "ROLLER: Set speed: " << GetShooter()->GetSetpointR() << " Real speed: " << GetShooter()->GetSpeedRoller() << std::endl;
-        std::cout << "HOOD: Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
+        // std::cout << "SHOOTER: Set speed: " << GetShooter()->GetSetpointF() << " Real speed: " << GetShooter()->GetSpeedF() << std::endl;
+        // std::cout << "ROLLER: Set speed: " << GetShooter()->GetSetpointR() << " Real speed: " << GetShooter()->GetSpeedRoller() << std::endl;
+        // std::cout << "HOOD: Set position: " << GetShooter()->GetSetpointH() << " Hood position: " << GetShooter()->GetHoodPosition() << std::endl;
 
         // 5 is drive
         // 4 s1
@@ -148,6 +152,7 @@ void CowRobot::handle()
     m_IntakeR->handle();
     m_Conveyor->handle();
     m_Shooter->handle();
+    // m_Climber->handle();
     m_Canifier->Handle();
 
     m_DSUpdateCount++;

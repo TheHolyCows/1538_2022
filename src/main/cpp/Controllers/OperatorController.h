@@ -22,6 +22,8 @@ private:
 
     int m_FlashCounter;
 
+    int m_ClimberStage;
+
     enum OperatorButtonMap
     {
         SWITCH_FRONT_INTAKE = 8,
