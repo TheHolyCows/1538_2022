@@ -35,18 +35,18 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -145, 120, 0.6, false, true, INTAKE_R_IN , false, 6));
 
 	// shoot 3
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 120, 0.45, false, true, INTAKE_R_IN , false, 1));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -200, 35, 0.45, false, false, INTAKE_R_IN , false, 1));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_R_IN, true, 0.5));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 120, 0.45, false, true, INTAKE_R_IN , false, 1.25));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -200, 40, 0.4, false, false, INTAKE_R_IN , false, 0.5));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_R_IN, true, 0.3));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_SHOOT, true, 0.5));
 
 	// route to 4 + 5
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -253, 65, 0.6, false, true, INTAKE_STOP , false, 6));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -345, 45, 0.3, false, true, INTAKE_R_IN , false, 1.6));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -268, 65, 0.6, false, true, INTAKE_STOP , false, 6));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -335, 45, 0.3, false, true, INTAKE_R_IN , false, 1.6));
 
 	// shoot 4 + 5
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -280, 90, 0.8, false, false, INTAKE_R_IN , false, 6));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -280, 40, 0.3, false, false, INTAKE_STOP , false, 0.5));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -280, 40, 0.4, false, false, INTAKE_STOP , false, 0.65));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -280, 0, 0, false, false, INTAKE_STOP, true, 0.80));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -280, 0, 0, false, false, INTAKE_SHOOT, true, 1.0));
 
