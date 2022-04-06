@@ -22,7 +22,7 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -47, 0, 0.2, false, true, INTAKE_R_IN, true, 0.6));
 
 	// shoot 1+2
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_STOP, true, 0.80));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_STOP, true, 0.3));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_SHOOT, true, 0.80));
 
 	// prepare to reverse for ball 3
@@ -35,14 +35,14 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -145, 120, 0.6, false, true, INTAKE_R_IN , false, 6));
 
 	// shoot 3
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 120, 0.45, false, true, INTAKE_R_IN , false, 0.75));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -200, 35, 0.45, false, false, INTAKE_R_IN , false, 0.75));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_R_IN, true, 1));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 120, 0.45, false, true, INTAKE_R_IN , false, 1));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -200, 35, 0.45, false, false, INTAKE_R_IN , false, 1));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_R_IN, true, 0.5));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -200, 40, 0, false, false, INTAKE_SHOOT, true, 0.5));
 
 	// route to 4 + 5
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -253, 65, 0.6, false, true, INTAKE_STOP , false, 6));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -348, 45, 0.3, false, true, INTAKE_R_IN , false, 1.6));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -345, 45, 0.3, false, true, INTAKE_R_IN , false, 1.6));
 
 	// shoot 4 + 5
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -280, 90, 0.8, false, false, INTAKE_R_IN , false, 6));

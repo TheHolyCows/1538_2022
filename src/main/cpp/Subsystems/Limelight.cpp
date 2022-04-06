@@ -102,7 +102,7 @@ float Limelight::CalcYPercent()
 float Limelight::CalcNewPid()
 {
     float tmp_limelight_P = -m_Limelight->GetNumber("tx", 0.0);
-    m_Limelight_PID_D = m_Limelight_PID_P - m_Limelight_PID_D;
+    m_Limelight_PID_D = tmp_limelight_P - m_Limelight_PID_P;
     m_Limelight_PID_P = tmp_limelight_P;
 
     float pid = (m_Limelight_PID_P * CONSTANT("LIMELIGHT_X_KP"));
