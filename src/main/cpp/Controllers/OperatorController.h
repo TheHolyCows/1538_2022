@@ -22,13 +22,13 @@ private:
 
     int m_FlashCounter;
     bool m_HoodOverride = false;
-
-    int m_ClimberStage;
+    bool m_PrevClimberSwitch = false;
 
     enum OperatorButtonMap
     {
         SWITCH_FRONT_INTAKE = 8,
         SWITCH_REAR_INTAKE = 10,
+        SWITCH_CLIMBER = 12,
         BUTTON_FRONT_EXHAUST = 4,
         BUTTON_REAR_EXHAUST = 6,
         BUTTON_FRONT_INTAKE = 7,

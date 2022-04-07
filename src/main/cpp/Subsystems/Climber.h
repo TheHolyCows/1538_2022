@@ -30,12 +30,21 @@ public:
     float GetLeftPosition();
     float GetRightPosition();
 
-    bool LeftAtTarget();
-    bool RightAtTarget();
-    bool AtTarget()
+    float GetLeftSetpoint()
     {
-        return LeftAtTarget() && RightAtTarget();
+        return m_LeftPosition;
     }
+    float GetRightSetpoint()
+    {
+        return m_RightPosition;
+    }
+
+    // bool LeftAtTarget();
+    // bool RightAtTarget();
+    // bool AtTarget()
+    // {
+    //     return LeftAtTarget() && RightAtTarget();
+    // }
 
     void ResetConstants();
 

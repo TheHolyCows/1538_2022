@@ -12,6 +12,15 @@ Climber::Climber(int leftMotor, int rightMotor)
     m_LeftMotor = new CowLib::CowMotorController(leftMotor);
     m_RightMotor = new CowLib::CowMotorController(rightMotor);
 
+    m_LeftMotor->SetControlMode(CowLib::CowMotorController::POSITION);
+    m_RightMotor->SetControlMode(CowLib::CowMotorController::POSITION);
+
+    m_LeftMotor->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+    m_RightMotor->SetNeutralMode(CowLib::CowMotorController::BRAKE);
+
+    m_RightMotor->GetInternalMotor()->SetSensorPhase(true);
+    m_LeftMotor->GetInternalMotor()->SetInverted(true);
+
     m_LeftPosition = 0;
     m_RightPosition = 0;
 
@@ -38,15 +47,15 @@ float Climber::GetRightPosition()
     return m_RightMotor->GetPosition();
 }
 
-bool Climber::LeftAtTarget()
-{
-    return (fabs(GetLeftPosition() - m_LeftPosition) < CONSTANT("CLIMBER_TOLERANCE"));
-}
+// bool Climber::LeftAtTarget()
+// {
+//     return (fabs(GetLeftPosition() - m_LeftPosition) < CONSTANT("CLIMBER_TOLERANCE"));
+// }
 
-bool Climber::RightAtTarget()
-{
-    return (fabs(GetRightPosition() - m_RightPosition) < CONSTANT("CLIMBER_TOLERANCE"));
-}
+// bool Climber::RightAtTarget()
+// {
+//     return (fabs(GetRightPosition() - m_RightPosition) < CONSTANT("CLIMBER_TOLERANCE"));
+// }
 
 void Climber::ResetConstants()
 {
@@ -56,8 +65,14 @@ void Climber::ResetConstants()
 
 void Climber::handle()
 {
-    m_LeftMotor->Set(m_LeftPosition);
-    m_RightMotor->Set(m_RightPosition);
+    if (m_LeftMotor)
+    {
+        m_LeftMotor->Set(m_LeftPosition);
+    }
+    if (m_RightMotor)
+    {
+        m_RightMotor->Set(m_RightPosition);
+    }
 }
 
 Climber::~Climber()

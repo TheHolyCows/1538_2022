@@ -29,7 +29,7 @@ CowRobot::CowRobot()
     m_Shooter = new Shooter(11, 13, 12, 14);
 
     // not final IDs
-    // m_Climber = new Climber(17, 18);
+    m_Climber = new Climber(18, 17);
 
     m_Limelight = new Limelight("limelight-front");
 
@@ -77,7 +77,7 @@ void CowRobot::Reset()
     m_MatchTime = 0;
     // m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     m_Shooter->ResetConstants();
-    // m_Climber->ResetConstants();
+    m_Climber->ResetConstants();
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -117,7 +117,8 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        // std::cout << "Left Climber: " << GetClimber()->GetLeftPosition() << " Right Climber: " << GetClimber()->GetRightPosition() << std::endl;
+        std::cout << "LEFT    Setpoint: " << GetClimber()->GetLeftSetpoint() << "  Position: " << GetClimber()->GetLeftPosition() << "\n";
+        std::cout << "RIGHT   Setpoint: " << GetClimber()->GetRightSetpoint() << "  Position: " << GetClimber()->GetRightPosition() << "\n\n";
         // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
         // std::cout << "intake mode: " << m_IntakeModeR << std::endl;
         // std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
@@ -152,7 +153,7 @@ void CowRobot::handle()
     m_IntakeR->handle();
     m_Conveyor->handle();
     m_Shooter->handle();
-    // m_Climber->handle();
+    m_Climber->handle();
     m_Canifier->Handle();
 
     m_DSUpdateCount++;
