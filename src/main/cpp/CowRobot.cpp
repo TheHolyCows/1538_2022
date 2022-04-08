@@ -117,8 +117,8 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
-        std::cout << "LEFT    Setpoint: " << GetClimber()->GetLeftSetpoint() << "  Position: " << GetClimber()->GetLeftPosition() << "\n";
-        std::cout << "RIGHT   Setpoint: " << GetClimber()->GetRightSetpoint() << "  Position: " << GetClimber()->GetRightPosition() << "\n\n";
+        // std::cout << "LEFT    Setpoint: " << GetClimber()->GetLeftSetpoint() << "  Position: " << GetClimber()->GetLeftPosition() << "\n";
+        // std::cout << "RIGHT   Setpoint: " << GetClimber()->GetRightSetpoint() << "  Position: " << GetClimber()->GetRightPosition() << "\n\n";
         // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
         // std::cout << "intake mode: " << m_IntakeModeR << std::endl;
         // std::cout << "conveyor mode: " << m_ConveyorMode << std::endl;
