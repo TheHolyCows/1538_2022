@@ -212,18 +212,24 @@ void OperatorController::handle(CowRobot *bot)
     {
         if (!m_PrevClimberSwitch)
         {
-            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID_RUNG"));
         }
 
         if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
         {
-            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
             bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+            if (bot->GetClimber()->GetRightPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_1"))
+            {
+                bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+            }
         }
         else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
         {
             bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
-            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+            if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_2"))
+            {
+                bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+            }
         }
         else if (m_CB->GetOperatorButton(BUTTON_SHOOT))
         {
