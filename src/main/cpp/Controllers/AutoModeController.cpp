@@ -96,18 +96,18 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 
 	// LED feedback for autos
-	if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
-	{
-		bot->GetCanifier()->FlashColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
-	}
-	else if (m_CurrentCommand.m_Shooter)
-	{
-		bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
-	}
-	else
-	{
-		bot->GetCanifier()->SetLEDColor(0, 0, 0);
-	}
+	// if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
+	// {
+	// 	bot->GetCanifier()->FlashColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
+	// }
+	// else if (m_CurrentCommand.m_Shooter)
+	// {
+	// 	bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
+	// }
+	// else
+	// {
+	// 	bot->GetCanifier()->SetLEDColor(0, 0, 0);
+	// }
 
 	// Run the command
 	switch (m_CurrentCommand.m_Command)

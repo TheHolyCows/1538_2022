@@ -49,7 +49,7 @@ CowRobot::CowRobot()
     // m_Gyro->Reset();
     m_PowerDistributionPanel = new frc::PowerDistribution();
 
-    m_Canifier = new CowLib::CowCanifier(15);
+    // m_Canifier = new CowLib::CowCanifier(15);
 
     m_LeftDriveValue = 0;
     m_RightDriveValue = 0;
@@ -154,7 +154,7 @@ void CowRobot::handle()
     m_Conveyor->handle();
     m_Shooter->handle();
     m_Climber->handle();
-    m_Canifier->Handle();
+    // m_Canifier->Handle();
 
     m_DSUpdateCount++;
 }

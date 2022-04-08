@@ -29,6 +29,12 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
     // voltage compensation
     m_MotorUpper->GetInternalMotor()->EnableVoltageCompensation(true);
     m_MotorUpper->GetInternalMotor()->ConfigVoltageCompSaturation(CONSTANT("CONVEYOR_VOLT_COMP"));
+
+    // status frames
+    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,20);
+    m_MotorRear->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,20);
+    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,40);
+    m_MotorRear->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,40);
 }
 
 // Positive is going into the bot

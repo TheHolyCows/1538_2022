@@ -20,6 +20,12 @@ Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scal
     m_Solenoid = new frc::Solenoid(frc::PneumaticsModuleType::CTREPCM, solenoidChannelA);
     m_IntakeSpeed = 0;
     m_IndexSpeed = 0;
+
+    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,20);
+    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,40);
+
+    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,20);
+    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,40);
 }
 
 void Intake::SetSpeed(float intakeSpeed, float indexSpeed)

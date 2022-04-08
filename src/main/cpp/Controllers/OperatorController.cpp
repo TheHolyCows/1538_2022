@@ -29,11 +29,11 @@ void OperatorController::handle(CowRobot *bot)
         if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
         {
             m_FlashCounter = -CONSTANT("BLINK_SPEED");
-            bot->GetCanifier()->SetLEDColor(0, 0, 0);
+            // bot->GetCanifier()->SetLEDColor(0, 0, 0);
         }
         else if (m_FlashCounter > 0)
         {
-            bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_HOOD_DOWN_R"), CONSTANT("COLOR_HOOD_DOWN_G"), CONSTANT("COLOR_HOOD_DOWN_B"));
+            // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_HOOD_DOWN_R"), CONSTANT("COLOR_HOOD_DOWN_G"), CONSTANT("COLOR_HOOD_DOWN_B"));
         }
     }
     else if (bot->GetLimelight()->TargetCentered() && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
@@ -41,20 +41,20 @@ void OperatorController::handle(CowRobot *bot)
         if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
         {
             m_FlashCounter = -CONSTANT("BLINK_SPEED");
-            bot->GetCanifier()->SetLEDColor(0, 0, 0);
+            // bot->GetCanifier()->SetLEDColor(0, 0, 0);
         }
         else if (m_FlashCounter > 0)
         {
-            bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
+            // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
         }
     }
     else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
     {
-        bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
+        // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
     }
     else
     {
-        bot->GetCanifier()->SetLEDColor(0, 0, 0);
+        // bot->GetCanifier()->SetLEDColor(0, 0, 0);
     }
 
     if (m_CB->GetDriveButton(1))
@@ -241,19 +241,6 @@ void OperatorController::handle(CowRobot *bot)
         bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
     }
-
-    // if (m_CB->GetOperatorButton(SWITCH_CLIMBER))
-    // {
-    //     if (!m_PrevClimberSwitch)
-    //     {
-    //         bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_OUT"));
-    //     }
-
-    //     if (m_CB->GetOperatorButton(BUTTON_SHOOT))
-    //     {
-    //         bot->GetClimber()->SetPosition(CONSTANT("CLIMBER_IN"));
-    //     }
-    // }
 
     m_PrevClimberSwitch = m_CB->GetOperatorButton(SWITCH_CLIMBER);
 
