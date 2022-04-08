@@ -27,6 +27,7 @@ private:
     float m_SpeedUpper;
     float m_SpeedFront;
     float m_SpeedRear;
+    int m_MotorRearID;
 
     frc::DigitalInput m_ColorSensor;
     frc::DutyCycle *m_DutyCycle;
