@@ -36,6 +36,9 @@ public:
     Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSensorPinNum);
     void SetSpeed(float speedUpper, float speedFront, float speedRear);
     frc::DutyCycle* GetColorSensor(void);
+
+    void SetStatusFramePeriod(void);
+
     void handle();
     virtual ~Conveyor();
 };

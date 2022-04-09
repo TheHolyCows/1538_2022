@@ -36,7 +36,7 @@ AutoModes::AutoModes()
 
 	// shoot 3
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -168, 122, 0.45, false, true, INTAKE_R_IN, false, 2));
-	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 50, 0.4, false, false, INTAKE_R_IN, false, 1.5));
+	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -175, 50, 0.4, false, false, INTAKE_R_IN, false, 1.75));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -175, 50, 0, false, false, INTAKE_R_IN, true, 0.5));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -175, 50, 0, false, false, INTAKE_SHOOT, true, 0.5));
 
@@ -49,6 +49,11 @@ AutoModes::AutoModes()
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -300, 40, 0.4, false, false, INTAKE_STOP, false, 0.65));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -300, 0, 0, false, false, INTAKE_STOP, true, 0.80));
 	m_Modes["5 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -300, 0, 0, false, false, INTAKE_SHOOT, true, 1.0));
+
+
+
+
+
 
 	/** 4 Ball **/
 	m_Modes["4 Ball"];

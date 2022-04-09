@@ -35,6 +35,9 @@ public:
     {
         return m_IntakeExtended;
     }
+
+    void SetStatusFramePeriod(void);
+
     void handle();
     virtual ~Intake();
 };

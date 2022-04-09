@@ -102,6 +102,13 @@ void CowBase::DisabledPeriodic()
     {
         //m_Bot->GetArm()->DisabledCalibration();
     }
+
+    if (m_DisabledCount++ % 50 == 0)
+    {
+        m_Bot->GetConveyor()->SetStatusFramePeriod();
+        m_Bot->GetIntakeF()->SetStatusFramePeriod();
+        m_DisabledCount = 1;
+    }
     //    m_Bot->PrintToDS();
 }
 

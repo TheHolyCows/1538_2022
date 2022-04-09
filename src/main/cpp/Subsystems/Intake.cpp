@@ -21,11 +21,7 @@ Intake::Intake(int intakeMotor, int indexMotor, int solenoidChannelA, float scal
     m_IntakeSpeed = 0;
     m_IndexSpeed = 0;
 
-    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
-    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
-
-    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
-    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
+    SetStatusFramePeriod();
 }
 
 void Intake::SetSpeed(float intakeSpeed, float indexSpeed)
@@ -45,6 +41,15 @@ void Intake::SetIndexSpeed(float speed)
 void Intake::SetExtended(bool extended)
 {
     m_IntakeExtended = extended;
+}
+
+void Intake::SetStatusFramePeriod()
+{
+    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
+    m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
+
+    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
+    m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
 }
 
 void Intake::handle()

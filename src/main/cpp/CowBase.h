@@ -24,6 +24,8 @@ private:
     CowConstants *m_Constants;
     CowDisplay *m_Display;
 
+    int m_DisabledCount = 0;
+
 public:
     CowBase();
     ~CowBase();
