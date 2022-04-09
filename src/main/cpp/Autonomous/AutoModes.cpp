@@ -115,7 +115,10 @@ AutoModes::AutoModes()
 
 	// shoot 1+2
 	m_Modes["2 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_STOP, true, 1.5));
-	m_Modes["2 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_SHOOT, true, 1.0));
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_VISION_ALIGN, -47, 0, 0, false, false, INTAKE_SHOOT, true, 2.5));
+
+	// taxi
+	m_Modes["2 Ball"].push_back(RobotCommand(CMD_HOLD_DISTANCE, -60, 0, 0, false, false, INTAKE_STOP, false, 6));
 
 	// m_Modes["5 Ball - slow"];
 	// // ball 1

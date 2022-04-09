@@ -212,8 +212,10 @@ void OperatorController::handle(CowRobot *bot)
     {
         if (!m_PrevClimberSwitch)
         {
+            
             bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID_RUNG"));
             bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG")-2000);
+            bot->GetShooter()->SetHoodPositionDown();
         }
 
         // if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
