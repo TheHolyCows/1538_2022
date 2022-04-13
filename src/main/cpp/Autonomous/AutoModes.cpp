@@ -53,8 +53,6 @@ AutoModes::AutoModes()
 
 
 
-
-
 	/** 4 Ball **/
 	m_Modes["4 Ball"];
 	m_Modes["4 Ball"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, -28, 0, 0.4, false, true, INTAKE_R_IN, false, 6));
