@@ -49,7 +49,7 @@ void AutoModeController::handle(CowRobot *bot)
 	if (m_CurrentCommand.m_IntakeMode == INTAKE_F_IN)
 	{
 		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE, false);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_IN)
 	{
@@ -57,17 +57,17 @@ void AutoModeController::handle(CowRobot *bot)
 		// bot->GetIntakeR()->SetIndexSpeed(CONSTANT("INDEXER_ON"));
 		// bot->GetIntakeR()->SetIntakeSpeed(CONSTANT("INTAKE_ON"));
 		bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE, false);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_F_OUT)
 	{
 		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, false);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_OUT)
 	{
 		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, false);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
 	{
@@ -81,7 +81,7 @@ void AutoModeController::handle(CowRobot *bot)
 		bot->StopRollers();
 	}
 
-	bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
+	bot->SetConveyorMode(CowRobot::CONVEYOR_OFF, false);
 	bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
 	bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
 

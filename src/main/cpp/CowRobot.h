@@ -6,6 +6,7 @@
 #define __COW_ROBOT_H__
 
 #include "CowLib/CowLogger.h"
+#include "CowLib/CowCircularBuffer.h"
 #include <frc/DriverStation.h>
 #include <frc/PowerDistribution.h>
 #include <frc/BuiltInAccelerometer.h>
@@ -103,6 +104,11 @@ private:
     // logging
     CowLib::CowLogger *m_LogServer;
 
+    // velocity
+    int m_DistIdx = 0;
+    double m_DistDeltaBuff[20];
+    double m_PrevDist;
+
 public:
     CowRobot();
     void Reset();
@@ -111,7 +117,9 @@ public:
     void SetController(GenericController *controller);
     void PrintToDS();
     bool DoVisionTracking(float speed, float threshold = 5.0);
+    void DriveSpeedPushDistance();
     double GetDriveDistance();
+    double GetDriveSpeed();
     bool DriveDistance(double distance);
     bool DriveDistanceWithHeading(double heading, double distance, double speed);
     bool DriveWithHeading(double heading, double speed);
@@ -169,13 +177,28 @@ public:
     }
 
     // Sets the conveyor mode the new mode if the new mode is higher priority
-    void SetConveyorMode(ConveyorMode newMode, double percentage = 1.0)
-    {
+    void SetConveyorMode(ConveyorMode newMode, bool rear, double percentage = 1.0)
+    {   
         // Only changes the conveyor mode if the new mode is higher priority
         if (m_ConveyorMode < newMode)
         {
             m_ConveyorMode = newMode;
         }
+
+        double percentFront, percentRear;
+        percentFront  = percentage;
+        percentRear = percentage;
+
+        if (rear)
+        {
+            percentFront = 0.25;
+        }
+        else
+        {
+            percentRear = 0.25;
+        }
+
+        // int freq = m_Conveyor->GetColorSensor()->GetFrequency();
 
         switch (m_ConveyorMode)
         {
@@ -183,10 +206,10 @@ public:
             GetConveyor()->SetSpeed(0, 0, 0);
             break;
         case CONVEYOR_EXHAUST:
-            GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_UP") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentage);
+            // std::cout << "exhaust, percentFront: " << percentFront << "  precentRear: " << percentRear << std::endl;
+            GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_UP") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentFront, -CONSTANT("CONVEYOR_OUT_LOW") * percentRear);
             break;
         case CONVEYOR_INTAKE:
-            // add auto exhaust
             GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage);
             break;
         case CONVEYOR_SHOOT:
@@ -269,7 +292,7 @@ public:
         if (true)
         {
             SetIntakeMode(IntakeMode::INTAKE_OFF, !rear);
-            SetConveyorMode(ConveyorMode::CONVEYOR_INTAKE);
+            SetConveyorMode(ConveyorMode::CONVEYOR_INTAKE, false);
         }
         else
         {
@@ -286,13 +309,12 @@ public:
         }
     }
 
-    // Waits for shooter speed tolerance, then sets conveyor and intake to shoot
     void ShootBalls()
     {
         // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
         // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
 
-        SetConveyorMode(CONVEYOR_SHOOT);
+        SetConveyorMode(CONVEYOR_SHOOT, false);
         SetIntakeMode(INTAKE_SHOOT, false);
         SetIntakeMode(INTAKE_SHOOT, true);
 

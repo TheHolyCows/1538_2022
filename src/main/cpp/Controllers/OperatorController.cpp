@@ -24,51 +24,51 @@ void OperatorController::handle(CowRobot *bot)
 
     // No target = purple
     // Hood down no target = blue
-    if (bot->GetShooter()->GetHoodPosition() == CONSTANT("HOOD_DOWN") && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
-    {
-        if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
-        {
-            m_FlashCounter = -CONSTANT("BLINK_SPEED");
-            // bot->GetCanifier()->SetLEDColor(0, 0, 0);
-        }
-        else if (m_FlashCounter > 0)
-        {
-            // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_HOOD_DOWN_R"), CONSTANT("COLOR_HOOD_DOWN_G"), CONSTANT("COLOR_HOOD_DOWN_B"));
-        }
-    }
-    else if (bot->GetLimelight()->TargetCentered() && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
-    {
-        if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
-        {
-            m_FlashCounter = -CONSTANT("BLINK_SPEED");
-            // bot->GetCanifier()->SetLEDColor(0, 0, 0);
-        }
-        else if (m_FlashCounter > 0)
-        {
-            // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
-        }
-    }
-    else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
-    {
-        // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
-    }
-    else
-    {
-        // bot->GetCanifier()->SetLEDColor(0, 0, 0);
-    }
+    // if (bot->GetShooter()->GetHoodPosition() == CONSTANT("HOOD_DOWN") && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    // {
+    //     if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
+    //     {
+    //         m_FlashCounter = -CONSTANT("BLINK_SPEED");
+    //         // bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    //     }
+    //     else if (m_FlashCounter > 0)
+    //     {
+    //         // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_HOOD_DOWN_R"), CONSTANT("COLOR_HOOD_DOWN_G"), CONSTANT("COLOR_HOOD_DOWN_B"));
+    //     }
+    // }
+    // else if (bot->GetLimelight()->TargetCentered() && bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    // {
+    //     if (m_FlashCounter++ > CONSTANT("BLINK_SPEED"))
+    //     {
+    //         m_FlashCounter = -CONSTANT("BLINK_SPEED");
+    //         // bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    //     }
+    //     else if (m_FlashCounter > 0)
+    //     {
+    //         // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_ALIGNED_R"), CONSTANT("COLOR_ALIGNED_G"), CONSTANT("COLOR_ALIGNED_B"));
+    //     }
+    // }
+    // else if (bot->GetShooter()->GetSpeedF() > bot->GetShooter()->CalcShooterTolerance() && bot->GetShooter()->GetSetpointF() != 0)
+    // {
+    //     // bot->GetCanifier()->SetLEDColor(CONSTANT("COLOR_SPEED_R"), CONSTANT("COLOR_SPEED_G"), CONSTANT("COLOR_SPEED_B"));
+    // }
+    // else
+    // {
+    //     // bot->GetCanifier()->SetLEDColor(0, 0, 0);
+    // }
 
-    if (m_CB->GetDriveButton(1))
-    {
-        // bot->DriveDistanceWithHeading(0, 12, 0.2);
-        // bot->TurnToHeading(90);
+    // if (m_CB->GetDriveButton(1))
+    // {
+    //     // bot->DriveDistanceWithHeading(0, 12, 0.2);
+    //     // bot->TurnToHeading(90);
 
-        // doingTracking = true;
-        // bool acquired = bot->DoVisionTracking(1,CONSTANT("TRACKING_THRESHOLD"));
-        // if(acquired)
-        // {
-        // }
-        // bot->GetShooter()->ZeroHoodPosition();
-    }
+    //     // doingTracking = true;
+    //     // bool acquired = bot->DoVisionTracking(1,CONSTANT("TRACKING_THRESHOLD"));
+    //     // if(acquired)
+    //     // {
+    //     // }
+    //     // bot->GetShooter()->ZeroHoodPosition();
+    // }
     if (m_CB->GetSteeringButton(3))
     {
         doingTracking = true;
@@ -117,18 +117,19 @@ void OperatorController::handle(CowRobot *bot)
     // Front Intake / Exhaust
     if (m_CB->GetOperatorButton(BUTTON_FRONT_INTAKE))
     {
-        // bot->IntakeWithAutoExhaust(false);
-        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE, m_ExhaustMode);
         bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, false);
     }
     else if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST) && !m_CB->GetOperatorButton(SWITCH_CLIMBER))
     {
-        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+        m_ExhaustMode = false;
+        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, m_ExhaustMode);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
     }
     else if (m_CB->GetSteeringButton(4))
     {
         // special driver exhaust
+        // TODO: this
         if (bot->GetIntakeF()->GetExtended())
         {
             bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false);
@@ -140,12 +141,13 @@ void OperatorController::handle(CowRobot *bot)
     {
         // bot->IntakeWithAutoExhaust(true);
 
-        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE);
+        bot->SetConveyorMode(CowRobot::CONVEYOR_INTAKE,m_ExhaustMode);
         bot->SetIntakeMode(CowRobot::INTAKE_INTAKE, true);
     }
     else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST) && !m_CB->GetOperatorButton(SWITCH_CLIMBER))
     {
-        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST);
+        m_ExhaustMode = true;
+        bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, m_ExhaustMode);
         bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true);
     }
     else if (m_CB->GetSteeringButton(4))
@@ -214,30 +216,30 @@ void OperatorController::handle(CowRobot *bot)
         {
             
             bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID_RUNG"));
-            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG")-2000);
+            // bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG")-2000);
             bot->GetShooter()->SetHoodPositionDown();
         }
 
-        // if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
-        // {
-        //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
-        //     if (bot->GetClimber()->GetRightPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_1"))
-        //     {
-        //         bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
-        //     }
-        // }
-        // else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
-        // {
-        //     bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
-        //     if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_2"))
-        //     {
-        //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
-        //     }
-        // }
+        if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
+        {
+            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+            if (bot->GetClimber()->GetRightPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_1"))
+            {
+                bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+            }
+        }
+        else if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
+        {
+            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
+            if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_2"))
+            {
+                bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+            }
+        }
         else if (m_CB->GetOperatorButton(BUTTON_SHOOT))
         {
             bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID"));
-            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID")-2000);
+            // bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID")-2000);
         }
     }
     else if (m_PrevClimberSwitch)
@@ -249,7 +251,7 @@ void OperatorController::handle(CowRobot *bot)
     m_PrevClimberSwitch = m_CB->GetOperatorButton(SWITCH_CLIMBER);
 
     // If nothing ever changed the conveyor or intake modes, sets them to off
-    bot->SetConveyorMode(CowRobot::CONVEYOR_OFF);
+    bot->SetConveyorMode(CowRobot::CONVEYOR_OFF, m_ExhaustMode);
     bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
     bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
 }

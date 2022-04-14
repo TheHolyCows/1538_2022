@@ -24,6 +24,8 @@ private:
     bool m_HoodOverride = false;
     bool m_PrevClimberSwitch = false;
 
+    bool m_ExhaustMode = false;
+
     enum OperatorButtonMap
     {
         SWITCH_FRONT_INTAKE = 8,

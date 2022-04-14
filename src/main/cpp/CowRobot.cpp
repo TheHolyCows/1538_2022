@@ -3,6 +3,7 @@
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/RobotController.h>
+#include <frc/filter/LinearFilter.h>
 
 CowRobot::CowRobot()
 {
@@ -117,6 +118,7 @@ void CowRobot::handle()
 
     if (m_DSUpdateCount % 10 == 0)
     {
+        std::cout << "gyro angle: " << m_Gyro->GetAngle() << std::endl;
         // std::cout << "LEFT    Setpoint: " << GetClimber()->GetLeftSetpoint() << "  Position: " << GetClimber()->GetLeftPosition() << "\n";
         // std::cout << "RIGHT   Setpoint: " << GetClimber()->GetRightSetpoint() << "  Position: " << GetClimber()->GetRightPosition() << "\n\n";
         // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;
@@ -197,6 +199,28 @@ double CowRobot::GetDriveDistance()
     }
     return position;
 }
+
+// void CowRobot::DriveSpeedPushDistance()
+// {
+//     double distDelta = GetDriveDistance() - m_PrevDist;
+//     m_PrevDist = distDelta + m_PrevDist;
+
+//     m_DistDeltaBuff[m_DistIdx++] = distDelta;
+// }
+
+// double CowRobot::GetDriveSpeed()
+// {
+//     // make sure to change this if we increase number of values in buffer
+//     int buffSize = 20;
+
+//     double sum = 0.0;
+//     for (int i = 0; i < buffSize; i++)
+//     {
+//         sum += m_DistDeltaBuff[i];
+//     }
+
+//     return sum / buffSize;
+// }
 
 bool CowRobot::DriveDistance(double distance)
 {

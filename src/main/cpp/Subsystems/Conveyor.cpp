@@ -20,7 +20,7 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
 
     m_MotorUpper->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_MotorRear->SetNeutralMode(CowLib::CowMotorController::COAST);
-    m_MotorFront->SetControlMode(CowLib::CowMotorController::FOLLOWER);
+    m_MotorFront->SetNeutralMode(CowLib::CowMotorController::COAST);
     m_MotorFront->GetInternalMotor()->SetInverted(true);
 
     // m_DutyCycle = new frc::DutyCycle(m_ColorSensor);
@@ -40,7 +40,7 @@ Conveyor::Conveyor(int upperMotor, int frontMotor, int rearMotor, int colorSenso
 void Conveyor::SetSpeed(float speedUpper, float speedFront, float speedRear)
 {
     m_SpeedUpper = -speedUpper;
-    // m_SpeedFront = -speedFront;
+    m_SpeedFront = speedFront;
     m_SpeedRear = speedRear;
 }
 
@@ -51,9 +51,9 @@ frc::DutyCycle *Conveyor::GetColorSensor()
 
 void Conveyor::SetStatusFramePeriod()
 {
-    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,255);
+    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
     m_MotorRear->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
-    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,255);
+    m_MotorFront->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
     m_MotorRear->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
 }
 
@@ -63,8 +63,8 @@ void Conveyor::handle()
     m_MotorUpper->Set(m_SpeedUpper);
 
     // Lower
+    m_MotorFront->Set(m_SpeedFront);
     m_MotorRear->Set(m_SpeedRear);
-    m_MotorFront->Set(m_MotorRearID);
 }
 
 Conveyor::~Conveyor()
