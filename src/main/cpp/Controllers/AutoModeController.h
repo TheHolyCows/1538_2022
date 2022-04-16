@@ -31,7 +31,8 @@ typedef enum
     INTAKE_R_IN,
     INTAKE_F_OUT,
     INTAKE_R_OUT,
-    INTAKE_SHOOT
+    INTAKE_SHOOT,
+    INTAKE_TOP_OUT
 } e_IntakeMode;
 
 class RobotCommand
@@ -47,6 +48,7 @@ public:
     double m_HoodPosition;
     bool m_Shooter;
     double m_Timeout;
+
 
     RobotCommand() : m_Command(CMD_NULL),
                      m_IntakeMode(INTAKE_STOP),
@@ -87,6 +89,8 @@ private:
     CowLib::CowTimer *m_Timer; // TODO: standardize timing
     std::deque<RobotCommand> m_CommandList;
     RobotCommand m_CurrentCommand;
+
+    bool m_ExhaustMode = false;
 
     void doNothing(CowRobot *bot);
     float m_OriginalEncoder;

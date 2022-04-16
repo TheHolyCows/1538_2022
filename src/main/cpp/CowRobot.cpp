@@ -161,6 +161,151 @@ void CowRobot::handle()
     m_DSUpdateCount++;
 }
 
+void CowRobot::SetConveyorMode(ConveyorMode newMode, bool rear, double percentage)
+{   
+    // Only changes the conveyor mode if the new mode is higher priority
+    if (m_ConveyorMode < newMode)
+    {
+        m_ConveyorMode = newMode;
+    }
+
+    double percentFront, percentRear;
+    percentFront  = percentage;
+    percentRear = percentage;
+
+    if (rear)
+    {
+        percentFront = 0.25;
+    }
+    else
+    {
+        percentRear = 0.25;
+    }
+
+    // int freq = m_Conveyor->GetColorSensor()->GetFrequency();
+
+    switch (m_ConveyorMode)
+    {
+    case CONVEYOR_OFF:
+        GetConveyor()->SetSpeed(0, 0, 0);
+        break;
+    case CONVEYOR_EXHAUST:
+        // std::cout << "exhaust, percentFront: " << percentFront << "  precentRear: " << percentRear << std::endl;
+        GetConveyor()->SetSpeed(-CONSTANT("CONVEYOR_OUT_UP") * percentage, -CONSTANT("CONVEYOR_OUT_LOW") * percentFront, -CONSTANT("CONVEYOR_OUT_LOW") * percentRear);
+        break;
+    case CONVEYOR_INTAKE:
+        GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_IN_UP") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage, CONSTANT("CONVEYOR_IN_LOW") * percentage);
+        break;
+    case CONVEYOR_SHOOT:
+        GetConveyor()->SetSpeed(CONSTANT("CONVEYOR_SHOOT_UP") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage, CONSTANT("CONVEYOR_SHOOT_LOW") * percentage);
+        break;
+    }
+}
+
+void CowRobot::SetIntakeMode(IntakeMode newMode, bool rear, double percentage)
+{
+    // Creates pointers to the intake and intake mode coresponding to the selected side
+    Intake *intake = NULL;
+    IntakeMode *intakeMode = NULL;
+
+    if (rear)
+    {
+        intake = GetIntakeR();
+        intakeMode = &m_IntakeModeR;
+    }
+    else
+    {
+        intake = GetIntakeF();
+        intakeMode = &m_IntakeModeF;
+    }
+
+    // Only changes the intake mode if the new mode is higher priority
+    if (*intakeMode < newMode)
+    {
+        *intakeMode = newMode;
+    }
+
+    switch (*intakeMode)
+    {
+    case INTAKE_OFF:
+        intake->SetSpeed(0, 0);
+        break;
+    case INTAKE_EXHAUST:
+        intake->SetSpeed(-CONSTANT("INTAKE_ON") * percentage, -CONSTANT("INDEXER_ON") * percentage);
+        break;
+    case INTAKE_SHOOT:
+        intake->SetSpeed(0, 0);
+        break;
+    case INTAKE_INTAKE:
+        intake->SetSpeed(CONSTANT("INTAKE_ON") * percentage, CONSTANT("INDEXER_ON") * percentage);
+        break;
+    }
+}
+
+void CowRobot::ShootBalls()
+{
+    // std::cout << "shooter F: " << GetShooter()->GetSpeedF() << std::endl;
+    // std::cout << "comparator: " << fabs(GetShooter()->GetSpeedF() - GetShooter()->GetSetpointF()) << std::endl;
+
+    SetConveyorMode(CONVEYOR_SHOOT, false);
+    SetIntakeMode(INTAKE_SHOOT, false);
+    SetIntakeMode(INTAKE_SHOOT, true);
+
+    // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+    // {
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
+    // }
+    // else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_UP"))
+    // {
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_UP"));
+    // }
+    // else
+    // {
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_UP"));
+    // }
+}
+
+void CowRobot::RunShooter()
+{
+    if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_FENDER"))
+    {
+        GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_FENDER"));
+        GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_FENDER"));
+        return;
+    }
+    
+    // 1 is max speed, 0 is lowest
+    float hoodPercent = (GetShooter()->GetSetpointH() - CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
+
+    float shooterSpeed = (CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN")) * hoodPercent + CONSTANT("SHOOTER_SPEED_DOWN");
+    float rollerSpeed = (CONSTANT("HOOD_ROLLER_SPEED") - CONSTANT("HOOD_ROLLER_SPEED_DOWN")) * hoodPercent + CONSTANT("HOOD_ROLLER_SPEED_DOWN");
+
+    if (hoodPercent >= CONSTANT("SHOOTER_C_MIN") && hoodPercent <= CONSTANT("SHOOTER_C_MAX"))
+    {
+        shooterSpeed *= CONSTANT("SHOOTER_C");
+        rollerSpeed *= CONSTANT("SHOOTER_C");
+    }
+
+    GetShooter()->SetSpeed(shooterSpeed);
+    GetShooter()->SetHoodRollerSpeed(rollerSpeed);
+
+    // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
+    // {
+    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
+    // }
+    // else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_BOTTOM"))
+    // {
+    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
+    // }
+    // else
+    // {
+    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
+    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
+    // }
+}
+
 bool CowRobot::DoVisionTracking(float speed, float threshold)
 {
     float pid = m_Limelight->CalcNewPid();

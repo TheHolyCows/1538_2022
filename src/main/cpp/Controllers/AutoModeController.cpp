@@ -61,27 +61,35 @@ void AutoModeController::handle(CowRobot *bot)
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_F_OUT)
 	{
+		
+		m_ExhaustMode = false;
 		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, false, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, false);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, m_ExhaustMode);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_R_OUT)
 	{
+		m_ExhaustMode = true;
 		bot->SetIntakeMode(CowRobot::INTAKE_EXHAUST, true, CONSTANT("INTAKE_PERCENT_AUTO"));
-		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, false);
+		bot->SetConveyorMode(CowRobot::CONVEYOR_EXHAUST, m_ExhaustMode);
 	}
 	else if (m_CurrentCommand.m_IntakeMode == INTAKE_SHOOT)
 	{
 		bot->ShootBalls();
 	}
+	else if (m_CurrentCommand.m_IntakeMode == INTAKE_TOP_OUT)
+	{
+		// because of the weird speeds here this is special
+        bot->GetShooter()->SetHoodPositionBottom();
+        bot->GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
+        bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
+        bot->ShootBalls();
+	}
 	else
 	{
-		// idk why this was here originally
-		// bot->GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
-
 		bot->StopRollers();
 	}
 
-	bot->SetConveyorMode(CowRobot::CONVEYOR_OFF, false);
+	bot->SetConveyorMode(CowRobot::CONVEYOR_OFF, m_ExhaustMode);
 	bot->SetIntakeMode(CowRobot::INTAKE_OFF, false);
 	bot->SetIntakeMode(CowRobot::INTAKE_OFF, true);
 
@@ -89,7 +97,7 @@ void AutoModeController::handle(CowRobot *bot)
 	{
 		bot->RunShooter();
 	}
-	else
+	else if (m_CurrentCommand.m_IntakeMode != INTAKE_TOP_OUT)
 	{
 		bot->GetShooter()->SetSpeed(0);
 		bot->GetShooter()->SetHoodRollerSpeed(0);

@@ -12,8 +12,8 @@ Climber::Climber(int leftMotor, int rightMotor)
     m_LeftMotor = new CowLib::CowMotorController(leftMotor);
     m_RightMotor = new CowLib::CowMotorController(rightMotor);
 
-    m_LeftMotor->SetControlMode(CowLib::CowMotorController::POSITION);
-    m_RightMotor->SetControlMode(CowLib::CowMotorController::POSITION);
+    m_LeftMotor->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
+    m_RightMotor->SetControlMode(CowLib::CowMotorController::PERCENTVBUS);
 
     m_LeftMotor->SetNeutralMode(CowLib::CowMotorController::BRAKE);
     m_RightMotor->SetNeutralMode(CowLib::CowMotorController::BRAKE);
