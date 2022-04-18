@@ -59,6 +59,7 @@ CowRobot::CowRobot()
     m_PreviousDriveError = 0;
 
     m_Accelerometer = new frc::BuiltInAccelerometer(frc::Accelerometer::kRange_4G);
+
     m_AccelY_LPF = new CowLib::CowLPF(CONSTANT("TIP_LPF"));
     m_TipTime = 0;
     m_Tipping = false;
@@ -79,6 +80,9 @@ void CowRobot::Reset()
     // m_AccelY_LPF->UpdateBeta(CONSTANT("TIP_LPF"));
     m_Shooter->ResetConstants();
     m_Climber->ResetConstants();
+
+    m_ZFilter.Reset();
+    m_PrevZ = 0;
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -116,9 +120,26 @@ void CowRobot::handle()
     SetLeftMotors(tmpLeftMotor);
     SetRightMotors(tmpRightMotor);
 
+    // accelerometers
+    double zVal = m_ZFilter.Calculate(m_Accelerometer->GetZ());
+    
+    // positive is true, negative is false
+    bool direction = (zVal - m_PrevZ) > 0? true : false;
+
+    m_PrevZ = zVal;
+
     if (m_DSUpdateCount % 10 == 0)
     {
-        std::cout << "gyro angle: " << m_Gyro->GetAngle() << std::endl;
+        // std::cout << "acc X: " << m_Accelerometer->GetX() << "\t\tacc Y: " << m_Accelerometer->GetY() << "\t\tacc Z: " << m_Accelerometer->GetZ() << std::endl;
+        std::cout << "angle: " << 90 - (zVal * 90) << std::endl;
+        if (direction)
+        {
+            std::cout << "moving positive" << std::endl;
+        }
+        else
+        {
+            std::cout << "moving negative" << std::endl;
+        }
         // std::cout << "LEFT    Setpoint: " << GetClimber()->GetLeftSetpoint() << "  Position: " << GetClimber()->GetLeftPosition() << "\n";
         // std::cout << "RIGHT   Setpoint: " << GetClimber()->GetRightSetpoint() << "  Position: " << GetClimber()->GetRightPosition() << "\n\n";
         // std::cout << "Heading: " << m_Gyro->GetAngle() << "  Drive Distance: " << GetDriveDistance() << std::endl;

@@ -97,17 +97,20 @@ void OperatorController::handle(CowRobot *bot)
             bot->GetLimelight()->ClearXFilter();
             // bot->GetLimelight()->SetMode(Limelight::LIMELIGHT_VISUAL);
         }
-        if (!m_CB->GetOperatorButton(SWITCH_CLIMBER))
-        {
-            bot->DriveSpeedTurn(-m_CB->GetDriveStickY(),
+        // if (!m_CB->GetOperatorButton(SWITCH_CLIMBER))
+        // {
+        bot->DriveSpeedTurn(-m_CB->GetDriveStickY(),
                                 -m_CB->GetSteeringX(),
                                 m_CB->GetSteeringButton(FAST_TURN));
-        }
+        // }
     }
 
     // Intake Position Switches
-    bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(SWITCH_FRONT_INTAKE));
-    bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(SWITCH_REAR_INTAKE));
+    if (!m_CB->GetOperatorButton(SWITCH_CLIMBER))
+    {
+        bot->GetIntakeF()->SetExtended(m_CB->GetOperatorButton(SWITCH_FRONT_INTAKE));
+        bot->GetIntakeR()->SetExtended(m_CB->GetOperatorButton(SWITCH_REAR_INTAKE));
+    }
 
     // Resets variables to off but doesn't actually turn them off
     bot->ResetConveyorMode();
@@ -210,42 +213,44 @@ void OperatorController::handle(CowRobot *bot)
 
     // Climber
 
-    // switch -> rear -> front -> shoot
+    // switch -> front -> rear -> shoot
 
     if (m_CB->GetOperatorButton(SWITCH_CLIMBER))
-    {
-        bot->GetClimber()->SetLeftPosition(m_CB->GetDriveStickY());
-        bot->GetClimber()->SetRightPosition(m_CB->GetOperatorGamepadAxis(1));
-        
-        // if (!m_PrevClimberSwitch)
-        // {
+    {        
+        if (!m_PrevClimberSwitch)
+        {
             
-        //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG"));
-        //     // bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG")-2000);
-        //     bot->GetShooter()->SetHoodPositionDown();
-        // }
-
-        // if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
-        // {
-        //     bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
-        //     if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_1"))
-        //     {
-        //         bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
-        //     }
-        // }
-        // else if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
-        // {
-        //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
-        //     if (bot->GetClimber()->GetRightPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_2"))
-        //     {
-        //         bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
-        //     }
-        // }
-        // else if (m_CB->GetOperatorButton(BUTTON_SHOOT))
-        // {
-        //     bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID"));
-        //     // bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID")-2000);
-        // }
+            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG"));
+            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID_RUNG"));
+            bot->GetShooter()->SetHoodPositionDown();
+            bot->GetIntakeR()->SetExtended(true);
+        }
+        if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))
+        {
+            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_IN"));
+            if (bot->GetClimber()->GetRightPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_1"))
+            {
+                bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_OUT"));
+            }
+        }
+        else if (m_CB->GetOperatorButton(BUTTON_REAR_EXHAUST))
+        {
+            bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_IN"));
+            if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_2"))
+            {
+                bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OUT"));
+                bot->GetIntakeF()->SetExtended(true);
+            }
+            else if (bot->GetClimber()->GetLeftPosition() < CONSTANT("CLIMBER_OUT") * CONSTANT("CLIMB_DELAY_3"))
+            {
+                bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_OFF_BAR"));
+                bot->GetIntakeR()->SetExtended(false);
+            }
+        } 
+        else if (m_CB->GetOperatorButton(BUTTON_SHOOT))
+        {
+            bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID"));
+        }
     }
     else if (m_PrevClimberSwitch)
     {

@@ -11,6 +11,7 @@
 #include <iostream>
 #include "../CowLib/CowMotorController.h"
 #include "../CowConstants.h"
+#include "../CowLib/CowTimer.h"
 
 class Climber
 {
@@ -20,6 +21,21 @@ private:
 
     float m_LeftPosition;
     float m_RightPosition;
+
+    int m_State = 0;
+    void ClimberSM(void);
+
+    enum CLIMB_STATE
+    {
+        NONE = 0,
+        EXT_BOTH,
+        CLIMB_MID,
+        EXT_LEFT_MID,
+        CLIMB_HIGH,
+        EXT_RIGHT_HIGH,
+        EXT_RIGHT_TRAV,
+        CLIMB_TRAV,
+    };
 
 public:
     Climber(int leftMotor, int rightMotor);
@@ -38,6 +54,9 @@ public:
     {
         return m_RightPosition;
     }
+
+    void NextState(void);
+    void PrevState(void);
 
     // bool LeftAtTarget();
     // bool RightAtTarget();

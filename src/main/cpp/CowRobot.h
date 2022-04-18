@@ -5,6 +5,7 @@
 #ifndef __COW_ROBOT_H__
 #define __COW_ROBOT_H__
 
+#include <math.h>
 #include "CowLib/CowLogger.h"
 #include "CowLib/CowCircularBuffer.h"
 #include <frc/DriverStation.h>
@@ -28,6 +29,7 @@
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Climber.h"
 #include "Subsystems/Limelight.h"
+#include "frc/filter/LinearFilter.h"
 
 class CowRobot
 {
@@ -92,6 +94,9 @@ private:
     void SetRightMotors(float val);
 
     frc::Accelerometer *m_Accelerometer;
+
+    frc::LinearFilter<double> m_ZFilter = frc::LinearFilter<double>::MovingAverage(12);
+    double m_PrevZ = 0;
 
     CowLib::CowLPF *m_AccelY_LPF;
     CowLib::CowLPF *m_LoadDetect_LPF;
