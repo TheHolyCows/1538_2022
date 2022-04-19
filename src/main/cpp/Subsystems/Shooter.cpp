@@ -103,7 +103,7 @@ void Shooter::SetHoodPosition(float position)
 void Shooter::SetHoodPositionUp()
 {
     // m_HoodPosition = m_HoodUpLimit;
-    m_HoodPosition = CONSTANT("HOOD_UP");
+    m_HoodPosition = CONSTANT("HOOD_LAUNCHPAD");
 
     if (m_MotorHood)
     {

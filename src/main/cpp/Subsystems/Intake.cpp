@@ -40,16 +40,21 @@ void Intake::SetIndexSpeed(float speed)
 
 void Intake::SetExtended(bool extended)
 {
-    m_IntakeExtended = extended;
+    if (m_IntakeExtended != extended)
+    {
+        m_IntakeExtended = extended;
+    }
 }
 
 void Intake::SetStatusFramePeriod()
 {
     m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
     m_MotorIntake->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
+    m_MotorIntake->GetInternalMotor()->SetControlFramePeriod(Control_3_General,40);
 
     m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_1_General,40);
     m_MotorIndex->GetInternalMotor()->SetStatusFramePeriod(Status_2_Feedback0,80);
+    m_MotorIndex->GetInternalMotor()->SetControlFramePeriod(Control_3_General,40);
 }
 
 void Intake::handle()

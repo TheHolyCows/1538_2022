@@ -83,6 +83,8 @@ void CowRobot::Reset()
 
     m_ZFilter.Reset();
     m_PrevZ = 0;
+
+    m_OverrideShooter = false;
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -288,15 +290,33 @@ void CowRobot::ShootBalls()
 
 void CowRobot::RunShooter()
 {
-    if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_FENDER"))
+    float setpoint = GetShooter()->GetSetpointH();
+    
+    // this is here twice because having no target will use this case
+    if (setpoint == CONSTANT("HOOD_FENDER"))
     {
         GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_FENDER"));
         GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_FENDER"));
         return;
     }
+
+    if (m_OverrideShooter)
+    {
+        if (setpoint == CONSTANT("HOOD_LAUNCHPAD"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_LAUNCHPAD"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_LAUNCHPAD"));
+        }
+        else if (setpoint == CONSTANT("HOOD_FENDER"))
+        {
+            GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_FENDER"));
+            GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_FENDER"));
+        }
+        return;
+    }
     
     // 1 is max speed, 0 is lowest
-    float hoodPercent = (GetShooter()->GetSetpointH() - CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
+    float hoodPercent = (setpoint - CONSTANT("TARGET_Y_CLOSE")) / (CONSTANT("TARGET_Y_FAR") - CONSTANT("TARGET_Y_CLOSE"));
 
     float shooterSpeed = (CONSTANT("SHOOTER_SPEED_UP") - CONSTANT("SHOOTER_SPEED_DOWN")) * hoodPercent + CONSTANT("SHOOTER_SPEED_DOWN");
     float rollerSpeed = (CONSTANT("HOOD_ROLLER_SPEED") - CONSTANT("HOOD_ROLLER_SPEED_DOWN")) * hoodPercent + CONSTANT("HOOD_ROLLER_SPEED_DOWN");
@@ -309,22 +329,11 @@ void CowRobot::RunShooter()
 
     GetShooter()->SetSpeed(shooterSpeed);
     GetShooter()->SetHoodRollerSpeed(rollerSpeed);
+}
 
-    // if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_DOWN"))
-    // {
-    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_DOWN"));
-    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_DOWN"));
-    // }
-    // else if (GetShooter()->GetSetpointH() == CONSTANT("HOOD_BOTTOM"))
-    // {
-    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_BOTTOM"));
-    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED_BOTTOM"));
-    // }
-    // else
-    // {
-    //     GetShooter()->SetSpeed(CONSTANT("SHOOTER_SPEED_UP"));
-    //     GetShooter()->SetHoodRollerSpeed(CONSTANT("HOOD_ROLLER_SPEED"));
-    // }
+void CowRobot::ShooterOverride(bool override)
+{
+    m_OverrideShooter = override;
 }
 
 bool CowRobot::DoVisionTracking(float speed, float threshold)

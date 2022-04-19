@@ -12,6 +12,7 @@
 #include "../CowLib/CowLPF.h"
 #include "../CowConstants.h"
 #include "../CowLib/CowPID.h"
+#include "../CowLib/CowTimer.h"
 #include "../Declarations.h"
 #include <frc/DutyCycle.h>
 #include <frc/DigitalSource.h>

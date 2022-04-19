@@ -195,20 +195,25 @@ void OperatorController::handle(CowRobot *bot)
     else
     {
         m_HoodOverride = false;
+        bot->ShooterOverride(false);
         bot->GetShooter()->SetSpeed(0);
         bot->GetShooter()->SetHoodRollerSpeed(0);
         bot->GetLimelight()->ClearYFilter();
     }
 
+    // launchpad
     if (m_CB->GetOperatorButton(BUTTON_HOOD_UP))
     {
         m_HoodOverride = true;
         bot->GetShooter()->SetHoodPositionUp();
+        bot->ShooterOverride(true);
     }
+    // fender
     else if (m_CB->GetOperatorButton(BUTTON_HOOD_DOWN))
     {
         m_HoodOverride = true;
         bot->GetShooter()->SetHoodPositionDown();
+        bot->ShooterOverride(true);
     }
 
     // Climber
@@ -223,6 +228,7 @@ void OperatorController::handle(CowRobot *bot)
             bot->GetClimber()->SetRightPosition(CONSTANT("CLIMBER_MID_RUNG"));
             bot->GetClimber()->SetLeftPosition(CONSTANT("CLIMBER_MID_RUNG"));
             bot->GetShooter()->SetHoodPositionDown();
+            bot->GetIntakeF()->SetExtended(false);
             bot->GetIntakeR()->SetExtended(true);
         }
         if (m_CB->GetOperatorButton(BUTTON_FRONT_EXHAUST))

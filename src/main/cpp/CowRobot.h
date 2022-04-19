@@ -114,6 +114,8 @@ private:
     double m_DistDeltaBuff[20];
     double m_PrevDist;
 
+    bool m_OverrideShooter = false;
+
 public:
     CowRobot();
     void Reset();
@@ -247,6 +249,7 @@ public:
 
     void ShootBalls(void);
     void RunShooter(void);
+    void ShooterOverride(bool);
 
     void UseLeftEncoder()
     {
