@@ -5,20 +5,29 @@
 #ifndef __GENERIC_DRIVE_H__
 #define __GENERIC_DRIVE_H__
 
+#include "../CowLib/CowMotorController.h"
 
 class GenericDrive
 {
 public:
-    virtual double GetDriveDistance(void);
+    // initializations
+    virtual void InitMotorIds(int, int, int, int) = 0;
+    virtual void InitMotorInversion(bool, bool, bool, bool) = 0;
+    virtual void InitMotorPhase(bool, bool, bool, bool) = 0;
+    virtual void InitMotorNeutralMode(CowLib::CowMotorController::CowNeutralMode) = 0;
 
-    virtual bool TurnToHeading(double heading);
-    virtual bool DriveWithHeading(double heading, double speed=1.0);
-    virtual bool DriveDistanceWithHeading(double distance,double heading,double speed=1.0);
-    virtual bool DriveTeleop(...);
+    // movement
+    virtual double GetDriveDistance(void) = 0;
 
-    virtual void ResetDriveEncoders(void);
+    virtual bool TurnToHeading(double heading) = 0;
+    virtual bool DriveWithHeading(double heading, double speed=1.0) = 0;
+    virtual bool DriveDistanceWithHeading(double distance,double heading,double speed=1.0) = 0;
+    virtual bool DriveTeleop(...) = 0;
 
-    virtual void handle(void);
+    virtual void ResetDriveEncoders(void) = 0;
+
+    // standard
+    virtual void handle(void) = 0;
 };
 
 #endif /* __GENERIC_DRIVE_H__ */

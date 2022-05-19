@@ -33,7 +33,7 @@ private:
     GenericController *m_Controller;
 
     // Drivetrain
-    WCDrive *m_Drivetrain;
+    GenericDrive *m_Drivetrain;
 
     CowLib::CowGyro *m_Gyro;
 

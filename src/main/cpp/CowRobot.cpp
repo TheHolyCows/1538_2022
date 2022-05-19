@@ -12,10 +12,13 @@ CowRobot::CowRobot()
     m_Controller = NULL;
 
     // Set up drive - make a singleton
-    m_Drivetrain = new WCDrive();
-    m_Drivetrain->InitLeftDrive(DRIVE_LEFT_A, false, DRIVE_LEFT_B, false);
-    m_Drivetrain->InitRightDrive(DRIVE_RIGHT_A, true, DRIVE_RIGHT_B, true);
-    m_Drivetrain->SetDriveConversionParams(12, 46, 4, 2048);
+    m_Drivetrain = WCDrive::GetInstance();
+    m_Drivetrain->InitMotorIds(DRIVE_LEFT_A, DRIVE_LEFT_B, DRIVE_RIGHT_A, DRIVE_RIGHT_B);
+    m_Drivetrain->InitMotorInversion(false, false, true, true);
+    m_Drivetrain->InitMotorNeutralMode(CowLib::CowMotorController::COAST);
+
+    // is this generic? would make it prettier if so :)
+    ((WCDrive*) m_Drivetrain)->SetDriveConversionParams(12, 46, 4, 2048);
 
     m_MatchTime = 0;
     m_StartTime = 0;

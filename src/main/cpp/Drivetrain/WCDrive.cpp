@@ -1,83 +1,78 @@
 #include "WCDrive.h"
 
+/* singleton implementation */
+WCDrive* WCDrive::GetInstance()
+{
+    if (m_Instance == NULL)
+    {
+        m_Instance = new WCDrive();
+    }
 
+    return m_Instance;
+}
 
 /* private */
 
 WCDrive::WCDrive()
 {
-    // TODO
+    m_LeftDriveValue = 0;
+    m_RightDriveValue = 0;
 }
 
 /* public */
 
-void WCDrive::InitLeftDrive(int motorA, bool invertA, int motorB, bool invertB)
+void WCDrive::InitMotorIds(int motorLeftA, int motorLeftB, int motorRightA, int motorRightB)
 {
-    // Set up drive motors
-    m_Drive.m_DriveLeft.m_DriveA = new CowLib::CowMotorController(motorA);
-    m_Drive.m_DriveLeft.m_DriveB = new CowLib::CowMotorController(motorB);
-
-    m_Drive.m_DriveLeft.m_DriveA->SetInverted(invertA);
-    m_Drive.m_DriveLeft.m_DriveB->SetInverted(invertB);
+    m_Drive.m_DriveLeft.m_DriveA = new CowLib::CowMotorController(motorLeftA);
+    m_Drive.m_DriveLeft.m_DriveB = new CowLib::CowMotorController(motorLeftB);
+    m_Drive.m_DriveRight.m_DriveA = new CowLib::CowMotorController(motorRightA);
+    m_Drive.m_DriveRight.m_DriveB = new CowLib::CowMotorController(motorRightB);
 
     m_Drive.m_DriveLeft.m_DriveA->SetStatorLimit(CONSTANT("STATOR_LIMIT"), CONSTANT("STATOR_THRESHOLD"), CONSTANT("STATOR_DURATION"));
     m_Drive.m_DriveLeft.m_DriveB->SetStatorLimit(CONSTANT("STATOR_LIMIT"), CONSTANT("STATOR_THRESHOLD"), CONSTANT("STATOR_DURATION"));
-
-    m_Drive.m_DriveLeft.m_DriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
-    m_Drive.m_DriveLeft.m_DriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
-
-    m_LeftDriveValue = 0;
-}
-
-void WCDrive::InitRightDrive(int motorA, bool invertA, int motorB, bool invertB)
-{
-    // Set up drive motors
-    m_Drive.m_DriveRight.m_DriveA = new CowLib::CowMotorController(motorA);
-    m_Drive.m_DriveRight.m_DriveB = new CowLib::CowMotorController(motorB);
-
-    m_Drive.m_DriveRight.m_DriveA->SetInverted(invertA);
-    m_Drive.m_DriveRight.m_DriveB->SetInverted(invertB);
-
     m_Drive.m_DriveRight.m_DriveA->SetStatorLimit(CONSTANT("STATOR_LIMIT"), CONSTANT("STATOR_THRESHOLD"), CONSTANT("STATOR_DURATION"));
     m_Drive.m_DriveRight.m_DriveB->SetStatorLimit(CONSTANT("STATOR_LIMIT"), CONSTANT("STATOR_THRESHOLD"), CONSTANT("STATOR_DURATION"));
-
-    m_Drive.m_DriveRight.m_DriveA->SetNeutralMode(CowLib::CowMotorController::COAST);
-    m_Drive.m_DriveRight.m_DriveB->SetNeutralMode(CowLib::CowMotorController::COAST);
-
-    m_RightDriveValue = 0;
 }
 
-// void WCDrive::SetDriveConversionParams(float drivingGearTC, float drivenGearTC, float wheelDiameter, float falconUnitsPerRev)
-// {
-//     m_drivingGearTC = drivingGearTC;
-//     m_drivenGearTC = drivenGearTC;
+void WCDrive::InitMotorInversion(bool invertLeftA, bool invertLeftB, bool invertRightA, bool invertRightB)
+{
+    m_Drive.m_DriveLeft.m_DriveA->SetInverted(invertLeftA);
+    m_Drive.m_DriveLeft.m_DriveB->SetInverted(invertLeftB);
+    m_Drive.m_DriveRight.m_DriveA->SetInverted(invertRightA);
+    m_Drive.m_DriveRight.m_DriveB->SetInverted(invertRightB);
+}
 
-//     m_WheelDia = wheelDiameter;
+void WCDrive::InitMotorPhase(bool phaseLeftA, bool phaseLeftB, bool phaseRightA, bool phaseRightB)
+{
+    // TODO
+}
 
-//     m_falconUnitsPer = falconUnitsPerRev;
+void WCDrive::InitMotorNeutralMode(CowLib::CowMotorController::CowNeutralMode mode)
+{
+    m_Drive.m_DriveLeft.m_DriveA->SetNeutralMode(mode);
+    m_Drive.m_DriveLeft.m_DriveB->SetNeutralMode(mode);
+    m_Drive.m_DriveRight.m_DriveA->SetNeutralMode(mode);
+    m_Drive.m_DriveRight.m_DriveB->SetNeutralMode(mode);
 
-//     m_EncoderToDistRatio = m_WheelDia (m_falconUnitsPer * (m_drivenGearTC / m_drivingGearTC));
-// }
+}
+
+void WCDrive::SetDriveConversionParams(float drivingGearTC, float drivenGearTC, float wheelDiameter, float falconUnitsPerRev)
+{
+    m_drivingGearTC = drivingGearTC;
+    m_drivenGearTC = drivenGearTC;
+
+    m_WheelDia = wheelDiameter;
+
+    m_falconUnitsPer = falconUnitsPerRev;
+
+    m_EncoderToDistRatio = m_WheelDia * (m_falconUnitsPer * (m_drivenGearTC / m_drivingGearTC));
+}
 
 // void WCDrive::DriveLeftRight(float leftDriveValue, float rightDriveValue)
 // {
 //     m_LeftDriveValue = leftDriveValue;
 //     m_RightDriveValue = rightDriveValue;
 // }
-
-// // double CowRobot::GetDriveVelocity()
-// // {
-// //     // use moving average filter from frc
-// //     int buffSize = 20;
-
-// //     double sum = 0.0;
-// //     for (int i = 0; i < buffSize; i++)
-// //     {
-// //         sum += m_DistDeltaBuff[i];
-// //     }
-
-// //     return sum / buffSize;
-// // }
 
 // void WCDrive::Reset()
 // {
@@ -87,22 +82,22 @@ void WCDrive::InitRightDrive(int motorA, bool invertA, int motorB, bool invertB)
 //     ResetEncoders();
 // }
 
-// void WCDrive::ResetEncoders()
-// {
-//     m_LeftDrive[0]->SetSensorPosition(0);
-//     m_LeftDrive[1]->SetSensorPosition(0);
-//     m_RightDrive[0]->SetSensorPosition(0);
-//     m_RightDrive[1]->SetSensorPosition(0);
-// }
+void WCDrive::ResetDriveEncoders()
+{
+    m_Drive.m_DriveLeft.m_DriveA->SetSensorPosition(0);
+    m_Drive.m_DriveLeft.m_DriveB->SetSensorPosition(0);
+    m_Drive.m_DriveRight.m_DriveA->SetSensorPosition(0);
+    m_Drive.m_DriveRight.m_DriveB->SetSensorPosition(0);
+}
 
 void WCDrive::handle()
 {
     float leftDrive = CowLib::LimitMix(m_LeftDriveValue);
     float rightDrive = CowLib::LimitMix(m_RightDriveValue);
 
-    m_Drive.m_DriveLeft.m_DriveA->Set(m_LeftDriveValue);
-    m_Drive.m_DriveLeft.m_DriveB->Set(m_RightDriveValue);
+    m_Drive.m_DriveLeft.m_DriveA->Set(leftDrive);
+    m_Drive.m_DriveLeft.m_DriveB->Set(leftDrive);
 
-    m_Drive.m_DriveRight.m_DriveA->Set(m_RightDriveValue);
-    m_Drive.m_DriveRight.m_DriveA->Set(m_RightDriveValue);
+    m_Drive.m_DriveRight.m_DriveA->Set(rightDrive);
+    m_Drive.m_DriveRight.m_DriveA->Set(rightDrive);
 }
