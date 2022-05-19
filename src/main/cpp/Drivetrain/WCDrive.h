@@ -1,48 +1,48 @@
 //==================================================
-// Copyright (C) 2018 Team 1538 / The Holy Cows
+// Copyright (C) 2022 Team 1538 / The Holy Cows
 //==================================================
 
-#ifndef __COW_DRIVE_H__
-#define __COW_DRIVE_H__
+#ifndef __WC_DRIVE_H__
+#define __WC_DRIVE_H__
 
-class __COW_DRIVE_H__
-
+#include "../CowConstants.h"
 #include "../CowLib/Utility.h"
+#include "../CowLib/CowMotorController.h"
 
 
+class WCDrive : public GenericDrive
 {
-public:
-
-    void InitLeftDrive(int,bool,int,bool);
-    void InitRightDrive(int,bool,int,bool);
-    void SetGearRatio(float,float,float falconUnitsPerRev = 2048,)
-    
-    bool DriveDistance(double distance);
-    bool DriveDistanceWithHeading(double heading, double distance, double speed);
-    bool DriveWithHeading(double heading, double speed);
-    bool DriveWithHeading(double heading, double speed, double maxSpeed);
-    void DriveSpeedTurn(float speed, float turn, bool quickTurn);
-    void DriveLeftRight(float leftDriveValue, float rightDriveValue);
-    bool TurnToHeading(double heading);
-
-    void QuickTurn(float turn);
-
-    void ResetEncoders(void);
-
 private:
-    CowLib::CowMotorController m_leftDrive[2];
-    CowLib::CowMotorController m_rightDrive[2];
+    static WCDrive *m_Instance = NULL;
+    
+    double m_LeftDriveValue;
+    double m_RightDriveValue;
 
-    float m_LeftDriveValue;
-    float m_RightDriveValue;
+    struct DriveSingle
+    {
+        CowLib::CowMotorController *m_DriveA;
+        CowLib::CowMotorController *m_DriveB;
+    };
+
+    struct DriveLR
+    {
+        DriveSingle m_DriveLeft;
+        DriveSingle m_DriveRight;
+    };
+
+    DriveLR m_Drive;
+
+public:
+    WCDrive();
+
+    void InitLeftDrive(int motorA, bool invertA, int motorB, bool invertB);
+    void InitRightDrive(int motorA, bool invertA, int motorB, bool invertB);
+
+    void handle(void);
 }
 
 
 
 
 
-
-
-
-
-#endif /* __COW_DRIVE_H__ */
+#endif /* __WC_DRIVE_H__ */

@@ -12,10 +12,10 @@ CowRobot::CowRobot()
     m_Controller = NULL;
 
     // Set up drive - make a singleton
-    m_Drivetrain = new WCDrive::WCDrive();
-    WCDrive::InitLeftDrive(DRIVE_LEFT_A, false, DRIVE_LEFT_B, false);
-    WCDrive::InitRightDrive(DRIVE_RIGHT_A, true, DRIVE_RIGHT_B, true);
-    WCDrive::SetDriveConversionParams(12, 46, 4, 2048);
+    m_Drivetrain = new WCDrive();
+    m_Drivetrain->InitLeftDrive(DRIVE_LEFT_A, false, DRIVE_LEFT_B, false);
+    m_Drivetrain->InitRightDrive(DRIVE_RIGHT_A, true, DRIVE_RIGHT_B, true);
+    m_Drivetrain->SetDriveConversionParams(12, 46, 4, 2048);
 
     m_MatchTime = 0;
     m_StartTime = 0;

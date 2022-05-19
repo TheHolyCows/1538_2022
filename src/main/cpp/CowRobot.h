@@ -23,7 +23,6 @@
 #include "CowLib/CowLPF.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/filter/LinearFilter.h>
-#include "Drivetrain/GenericDrive.h"
 #include "Drivetrain/WCDrive.h"
 
 class CowRobot
@@ -34,7 +33,7 @@ private:
     GenericController *m_Controller;
 
     // Drivetrain
-    GenericDrive *m_Drivetrain;
+    WCDrive *m_Drivetrain;
 
     CowLib::CowGyro *m_Gyro;
 
@@ -56,8 +55,8 @@ private:
 
     frc::Accelerometer *m_Accelerometer;
 
-    frc::CameraServer *m_CameraServer;
-    cs::UsbCamera *m_UsbCamera;
+    // frc::CameraServer *m_CameraServer;
+    // cs::UsbCamera *m_UsbCamera;
 
     // logging
     CowLib::CowLogger *m_LogServer;
