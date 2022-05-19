@@ -6,6 +6,7 @@
 #define __COWLIB_COWMOTORCONTROLLER_H__
 
 #include "ctre/Phoenix.h"
+#include "CowTimer.h"
 
 namespace CowLib
 {

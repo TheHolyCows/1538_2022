@@ -5,14 +5,11 @@
 #ifndef __OPERATOR_CONTROLLER_H__
 #define __OPERATOR_CONTROLLER_H__
 
-#include <math.h>
 #include "../CowRobot.h"
 #include "../CowControlBoard.h"
 #include "../CowLib/CowLib.h"
-#include "../Declarations.h"
 #include "../CowConstants.h"
 #include "../CowLib/CowLatch.h"
-#include "../Subsystems/Limelight.h"
 
 class OperatorController : public GenericController
 {
@@ -20,36 +17,31 @@ private:
     OperatorController();
     CowControlBoard *m_CB;
 
-    int m_FlashCounter;
-    bool m_HoodOverride = false;
-    bool m_PrevClimberSwitch = false;
-
-    bool m_ExhaustMode = false;
-
     enum OperatorButtonMap
     {
-        SWITCH_FRONT_INTAKE = 8,
-        SWITCH_REAR_INTAKE = 10,
-        SWITCH_CLIMBER = 12,
-        BUTTON_FRONT_EXHAUST = 4,
-        BUTTON_REAR_EXHAUST = 6,
-        BUTTON_FRONT_INTAKE = 7,
-        BUTTON_REAR_INTAKE = 9,
-        BUTTON_SHOOT = 5,
-        SWITCH_SHOOTER = 3,
-        BUTTON_HOOD_UP = 1,
-        BUTTON_HOOD_DOWN = 2,
-        BUTTON_HOOD_BOTTOM = 11,
+        OP_BUTTON_1 = 1,
+        OP_BUTTON_2 = 2,
+        OP_BUTTON_3 = 3,
+        OP_BUTTON_4 = 4,
+        OP_BUTTON_5 = 5,
+        OP_BUTTON_6 = 6,
+        OP_BUTTON_7 = 7,
+        OP_BUTTON_8 = 8,
+        OP_BUTTON_9 = 9,
+        OP_BUTTON_10 = 10,
+        OP_BUTTON_11 = 11,
+        OP_BUTTON_12 = 12,
+        OP_BUTTON_13 = 13,
+        OP_BUTTON_14 = 14,
+        OP_BUTTON_15 = 15,
+        OP_BUTTON_16 = 16,
+        OP_BUTTON_17 = 17,
+        OP_BUTTON_18 = 18
     };
-    //    float time;
-    //    float previousTime;
-    //    float speed;
 
 public:
     OperatorController(CowControlBoard *controlboard);
     void handle(CowRobot *bot);
-
-    double m_TrackingCooldownTimer;
 };
 
 #endif /* __OPERATOR_CONTROLLER_H__ */

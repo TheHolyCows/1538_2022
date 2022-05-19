@@ -91,6 +91,26 @@ double CowLib::LimitMix(double value)
     return limited_value;
 }
 
+float CowLib::LimitMix(float value)
+{
+    float limited_value = 0;
+    
+    if(value < -1.0)
+    {
+        limited_value = -1.0;
+    }
+    else if(value > 1.0)
+    {
+        limited_value = 1.0;
+    }
+    else
+    {
+        limited_value = value;
+    }
+    
+    return limited_value;
+}
+
 double CowLib::UnitsPerSecond(double value)
 {
     return value * ROBOT_HZ;

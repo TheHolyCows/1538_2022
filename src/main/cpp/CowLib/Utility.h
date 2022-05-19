@@ -16,6 +16,7 @@ namespace CowLib
 {
     double LimitMix(double value, double maxValue);
     double LimitMix(double value);
+    float LimitMix(float value);
     double AnalogInScale(double oldx, double center);
     
     void PrintToLCD(const char *format, ...);
